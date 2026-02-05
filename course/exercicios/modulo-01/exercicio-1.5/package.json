@@ -1,0 +1,13 @@
+{
+  "name": "exercicio-1.5-plugin-vite",
+  "version": "1.0.0",
+  "description": "Exercício 1.5 - Criando um Plugin Vite",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "exercicio-2.4-theme-store",
+  "version": "1.0.0",
+  "description": "Exercício 2.4 - Store de Tema",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0"
+  }
+}

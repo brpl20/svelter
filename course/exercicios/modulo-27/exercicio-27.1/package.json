@@ -1,0 +1,14 @@
+{
+  "name": "exercicio-27.1",
+  "version": "1.0.0",
+  "description": "Exercício: $state - Estado Reativo",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0"
+  }
+}

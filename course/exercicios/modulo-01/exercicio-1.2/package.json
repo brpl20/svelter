@@ -1,0 +1,13 @@
+{
+  "name": "exercicio-1.2-esmodules",
+  "version": "1.0.0",
+  "description": "Exercício 1.2 - ESModules e Resolução",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0"
+  }
+}

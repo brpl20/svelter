@@ -1,0 +1,13 @@
+{
+  "name": "exercicio-2.5-css-escopo",
+  "version": "1.0.0",
+  "description": "Exercício 2.5 - CSS com Escopo vs CSS-in-JS",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0"
+  }
+}

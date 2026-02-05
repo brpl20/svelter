@@ -1,0 +1,13 @@
+{
+  "name": "exercicio-2.8-sveltekit-vs-nextjs",
+  "version": "1.0.0",
+  "description": "Exercício 2.8 - SvelteKit vs Next.js",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0"
+  }
+}

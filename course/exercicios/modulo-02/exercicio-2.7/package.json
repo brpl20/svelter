@@ -1,0 +1,13 @@
+{
+  "name": "exercicio-2.7-ecossistema",
+  "version": "1.0.0",
+  "description": "Exercício 2.7 - Ecossistema e Mercado",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0"
+  }
+}

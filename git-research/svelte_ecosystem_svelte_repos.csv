@@ -1,0 +1,272 @@
+full_name,description,url,stars,forks,language,svelte_version,is_svelte5,has_sveltekit,sveltekit_version
+VERT-sh/VERT,"The next-generation file converter. Open source, fully local* and free forever.",https://github.com/VERT-sh/VERT,13133,676,Svelte,5.43.14,1,1,^2.49.0
+huggingface/chat-ui,The open source codebase powering HuggingChat,https://github.com/huggingface/chat-ui,10411,1576,TypeScript,5.33.3,1,1,^2.21.1
+Abdenasser/neohtop,"💪🏻 Blazing-fast system monitoring for your desktop (built with Rust, Tauri & Svelte)",https://github.com/Abdenasser/neohtop,8727,276,Svelte,5.0.0,1,1,^2.7.0
+huntabyte/shadcn-svelte,"shadcn/ui, but for Svelte. ✨",https://github.com/huntabyte/shadcn-svelte,8108,495,TypeScript,catalog:,0,0,
+sveltejs/sapper,"The next small thing in web development, powered by Svelte",https://github.com/sveltejs/sapper,6963,416,TypeScript,3.24.0,0,0,
+evidence-dev/evidence,"Business intelligence as code: build fast, interactive data visualizations in SQL and markdown",https://github.com/evidence-dev/evidence,5797,306,JavaScript,4.2.19,0,1,2.8.4
+pheralb/svgl,🧩 A beautiful library with SVG logos. Built with Sveltekit & Tailwind CSS.,https://github.com/pheralb/svgl,5396,753,TypeScript,5.46.1,1,1,2.49.2
+rajnandan1/kener,"Stunning status pages, batteries included!",https://github.com/rajnandan1/kener,4658,234,Svelte,4.0.5,0,1,^1.27.4
+melt-ui/melt-ui,"A set of headless, accessible component builders for Svelte.",https://github.com/melt-ui/melt-ui,4131,224,TypeScript,4.2.9,0,1,^2.0.0
+hperrin/svelte-material-ui,Svelte Material UI Components,https://github.com/hperrin/svelte-material-ui,3416,282,Svelte,5.38.1,1,0,
+inokawa/virtua,"A zero-config, fast and small (~3kB) virtual list (and grid) component for React, Vue, Solid and Svelte.",https://github.com/inokawa/virtua,3327,94,TypeScript,5.38.9,1,0,
+huntabyte/bits-ui,The headless components for Svelte.,https://github.com/huntabyte/bits-ui,2939,176,TypeScript,catalog:,0,0,
+carbon-design-system/carbon-components-svelte,Svelte implementation of the Carbon Design System,https://github.com/carbon-design-system/carbon-components-svelte,2860,263,TypeScript,4.2.20,0,0,
+open-source-labs/Svelvet,"🎛 A Svelte library for building dynamic, infinitely customizable node-based user interfaces and flowcharts",https://github.com/open-source-labs/Svelvet,2753,177,Svelte,,0,1,^1.20.4
+ciscoheat/sveltekit-superforms,Making SvelteKit forms a pleasure to use!,https://github.com/ciscoheat/sveltekit-superforms,2701,100,TypeScript,5.46.0,1,1,^2.49.2
+goniszewski/grimoire,Bookmark manager for the wizards 🧙,https://github.com/goniszewski/grimoire,2690,80,TypeScript,4.2.19,0,1,^2.5.27
+PuruVJ/macos-web,,https://github.com/PuruVJ/macos-web,2567,318,Svelte,5.34.8,1,0,
+gurucomputing/headscale-ui,A web frontend for the headscale Tailscale-compatible coordination server,https://github.com/gurucomputing/headscale-ui,2455,165,Svelte,4,0,1,^2
+PuruVJ/neodrag,One Draggable to rule them all 💍,https://github.com/PuruVJ/neodrag,2409,62,TypeScript,4.2.14,0,0,
+scosman/CMSaasStarter,"A modern SaaS template/boilerplate built with SvelteKit, Tailwind, and Supabase. Includes marketing page, blog, subscriptions, auth, user dashboard, user settings, pricing page, and more.",https://github.com/scosman/CMSaasStarter,2263,468,Svelte,5.0.0,1,1,^2.21.1
+sveltia/sveltia-cms,"Netlify/Decap CMS successor. Fast, lightweight, Git-based headless CMS. Modern UX, first-class i18n support, mobile support + 100s of improvements. Framework-agnostic, open source & free.",https://github.com/sveltia/sveltia-cms,2014,111,JavaScript,5.46.1,1,0,
+rgossiaux/svelte-headlessui,Unofficial Svelte port of the Headless UI component library,https://github.com/rgossiaux/svelte-headlessui,1808,95,Svelte,3.47.0,0,1,^1.20.2
+michael/editable-website,A SvelteKit template for building CMS-free editable websites ,https://github.com/michael/editable-website,1682,146,JavaScript,5.45.6,1,1,^2.49.1
+svecosystem/runed,Magical utilities for your Svelte applications.,https://github.com/svecosystem/runed,1664,67,TypeScript,catalog:,0,0,
+Rich-Harris/pancake,Experimental charting library for Svelte,https://github.com/Rich-Harris/pancake,1324,65,JavaScript,3.42.1,0,1,next
+Rich-Harris/svelte-cubed,Svelte ❤️ Three,https://github.com/Rich-Harris/svelte-cubed,1190,73,Svelte,3.38.3,0,1,^1.0.0-next.196
+joshnuss/svelte-persisted-store,A Svelte store that persists to localStorage,https://github.com/joshnuss/svelte-persisted-store,1154,40,TypeScript,4.2.18,0,0,
+valqelyan/svelte-grid,"A responsive, draggable and resizable grid layout, for Svelte. [NOT MAINTAINED]",https://github.com/valqelyan/svelte-grid,1001,67,Svelte,3.30.0,0,0,
+sveltejs/vite-plugin-svelte,Svelte plugin for https://vite.dev,https://github.com/sveltejs/vite-plugin-svelte,988,126,JavaScript,5.45.4,1,1,^2.49.1
+creativetimofficial/notus-svelte,Notus Svelte: Free Tailwind CSS UI Kit and Admin,https://github.com/creativetimofficial/notus-svelte,862,463,Svelte,3.35.0,0,0,
+ankurrsinghal/svelte-legos,[NOT MAINTAINING ANYMORE] A framework for Svelte Utilities 💡 Current status: 87 utilities.,https://github.com/ankurrsinghal/svelte-legos,823,30,TypeScript,5.0.0,1,1,^2.7.7
+swyxio/swyxkit,An opinionated blog starter for SvelteKit + Tailwind + Netlify. Refreshed for SvelteKit 1.0!,https://github.com/swyxio/swyxkit,708,92,Svelte,4.2.7,0,1,1.27.6
+testing-library/svelte-testing-library,:chipmunk: Simple and complete Svelte DOM testing utilities that encourage good testing practices,https://github.com/testing-library/svelte-testing-library,655,32,JavaScript,5.28.2,1,0,
+ocluf/justship,"A svelte 5 and sveltekit saas boilerplate. Including database, authentication, email, analytics",https://github.com/ocluf/justship,650,55,TypeScript,5.1.1,1,1,^2.7.2
+paoloricciuti/sveltekit-search-params,The easiest way to read and WRITE from query parameters in sveltekit.,https://github.com/paoloricciuti/sveltekit-search-params,644,22,TypeScript,5.1.3,1,1,^2.7.3
+importantimport/urara,"🌸 Sweet, Powerful, IndieWeb-Compatible SvelteKit Blog Starter. [Polaris]",https://github.com/importantimport/urara,640,69,Svelte,4.2.10,0,1,^2.5.0
+svecosystem/paneforge,Resizable pane components for Svelte.,https://github.com/svecosystem/paneforge,619,9,TypeScript,5.34.3,1,0,
+TheComputerM/svelte-materialify,A Material UI Design Component library for Svelte heavily inspired by vuetify.,https://github.com/TheComputerM/svelte-materialify,617,83,Svelte,3.32.1,0,0,
+CaptainCodeman/svelte-headlessui,HeadlessUI components for Svelte,https://github.com/CaptainCodeman/svelte-headlessui,597,29,TypeScript,5.0.0,1,1,^2.7.2
+jonasgeiler/svelte-tiny-virtual-list,"📚  A tiny but mighty list virtualization library for Svelte, with zero dependencies 💪 Supports variable heights/widths, sticky items, scrolling to index, and more!",https://github.com/jonasgeiler/svelte-tiny-virtual-list,595,28,Svelte,5.34.9,1,1,2.25.2
+keenethics/svelte-notifications,Simple and flexible notifications system,https://github.com/keenethics/svelte-notifications,581,30,JavaScript,3.52.0,0,0,
+svecosystem/mode-watcher,Simple light/dark mode management for Svelte apps. 🌑 ←→ ☀️,https://github.com/svecosystem/mode-watcher,560,24,TypeScript,5.25.6,1,0,
+sveltejs/learn.svelte.dev,A soup-to-nuts interactive tutorial on how to build apps with Svelte,https://github.com/sveltejs/learn.svelte.dev,543,239,Svelte,4.2.0,0,1,^2.0.0
+c0bra/svelma,Bulma components for Svelte,https://github.com/c0bra/svelma,541,43,HTML,3.44.3,0,0,
+jorgegorka/svelte-router,"Svelte Router adds routing to your Svelte apps. It's designed for Single Page Applications (SPA). Includes localisation, guards and nested layouts.",https://github.com/jorgegorka/svelte-router,537,41,JavaScript,3.59.2,0,0,
+michael/svedit,A tiny library for building editable websites in Svelte,https://github.com/michael/svedit,520,11,JavaScript,5.43.4,1,1,^2.48.4
+sveltejs/rollup-plugin-svelte,Compile Svelte components with Rollup,https://github.com/sveltejs/rollup-plugin-svelte,513,82,JavaScript,4.0.0,0,0,
+josh-collinsworth/sveltekit-blog-starter,"A preconfigured SvelteKit static blog starter, with Sass, Markdown, MDSvex, Rehype, background preloading, and more. See the README for full details.",https://github.com/josh-collinsworth/sveltekit-blog-starter,501,100,Svelte,5.0.0,1,1,^2.5.27
+matiadev/joy-of-code,🌸 Joy of Code is a digital garden growing curious minds,https://github.com/matiadev/joy-of-code,500,126,Svelte,5.36.16,1,1,^2.26.0
+wiscaksono/site,Minimal portfolio site,https://github.com/wiscaksono/site,487,49,Svelte,5.46.1,1,1,^2.49.2
+thisuxhq/sveltednd,"A lightweight, flexible drag and drop library for Svelte 5 applications.",https://github.com/thisuxhq/sveltednd,485,20,Svelte,5.16.1,1,1,^2.15.1
+pstanoev/simple-svelte-autocomplete,Simple Autocomplete / typeahead component for Svelte,https://github.com/pstanoev/simple-svelte-autocomplete,478,78,Svelte,3.24.0,0,0,
+kwchang0831/svelte-QWER,✒︎ Simply Awesome Blog Starter built with SvelteKit and Love ❤,https://github.com/kwchang0831/svelte-QWER,474,54,Svelte,4.2.18,0,1,2.5.18
+N00nDay/stwui,Opinionated yet customizable Svelte-TailwindCSS component library,https://github.com/N00nDay/stwui,459,23,Svelte,4.2.8,0,1,^2.3.2
+svelte-society/sveltesociety.dev,The Svelte Society website,https://github.com/svelte-society/sveltesociety.dev,446,233,TypeScript,5.46.1,1,1,^2.49.2
+carbon-design-system/carbon-icons-svelte,Carbon Design System SVG icons as Svelte components,https://github.com/carbon-design-system/carbon-icons-svelte,444,25,TypeScript,5.43.14,1,0,
+sockmaster27/svader,Create GPU-rendered Svelte components,https://github.com/sockmaster27/svader,440,8,Svelte,5.46.1,1,1,^2.49.3
+flekschas/svelte-simple-modal,"A simple, small, and content-agnostic modal for Svelte v3, v4, and v5",https://github.com/flekschas/svelte-simple-modal,427,32,Svelte,4.0.0,0,0,
+swyxio/swyxdotio,"This is the repo for swyx's blog - Blog content is created in github issues, then posted on swyx.io as blog pages! Comment/watch to follow along my blog within GitHub",https://github.com/swyxio/swyxdotio,399,49,Svelte,4.2.0,0,1,1.22.5
+macleod-ee/svelte-capacitor,Build hybrid mobile apps using Svelte and CapacitorJS with live reloading on Android and iOS! [!] Moved to Codeberg,https://github.com/macleod-ee/svelte-capacitor,386,31,HTML,3.37.0,0,0,
+friendofsvelte/tipex,A goto styled text editor for SvelteKit; based on TipTap; tipex,https://github.com/friendofsvelte/tipex,381,9,Svelte,5.0.0,1,1,^2.0.0
+alysonhower/tauri2-svelte5-shadcn,"A clean desktop application template that combines Tauri 2 with Svelte 5 + Shadcn-svelte, including automated CI/CD pipelines for Windows, Linux, and Mac builds.",https://github.com/alysonhower/tauri2-svelte5-shadcn,336,20,Svelte,5.28.1,1,0,
+svelteplot/svelteplot,Svelte-native plotting framework based on the grammar of graphics,https://github.com/svelteplot/svelteplot,334,25,TypeScript,5,1,1,^2.49.2
+matfantinel/fantinel.dev,Personal website and blog made with SvelteKit,https://github.com/matfantinel/fantinel.dev,328,65,Svelte,5.23.1,1,0,
+jonasgeiler/svelte-infinite-loading,"An infinite scroll component for Svelte, to help you implement an infinite scroll list more easily.",https://github.com/jonasgeiler/svelte-infinite-loading,323,11,Svelte,3.31.0,0,0,
+beyonk-group/svelte-notifications,Svelte toast notifications component that can be used in any JS application,https://github.com/beyonk-group/svelte-notifications,318,26,Svelte,3.47.0,0,1,^1.0.0-next.322
+PuruVJ/neoconfetti,Confetti in Svelte,https://github.com/PuruVJ/neoconfetti,311,11,TypeScript,4.2.8,0,0,
+engageintellect/spatz-2,"just like spatz... but for svelte5, with shadcn-svelte, svelte-animations, svelte-superforms, stripe payments, subscriptions, content-filtering, and more.",https://github.com/engageintellect/spatz-2,308,32,Svelte,5.0.0,1,1,^2.5.27
+rodneylab/sveltekit-blog-mdx,SvelteKit MDX starter blog with MDsveX (Svelte in markdown),https://github.com/rodneylab/sveltekit-blog-mdx,300,40,Svelte,5.25.3,1,1,2.20.2
+mateothegreat/svelte5-router,"🫦 An SPA router for Svelte that allows you to divide & conquer your app with nested routers, snippets, and more.",https://github.com/mateothegreat/svelte5-router,296,19,TypeScript,5.38.6,1,0,
+jacobdeichert/svelvet,🧵 An experimental svelte compiler & watcher that works with snowpack,https://github.com/jacobdeichert/svelvet,293,7,TypeScript,3.20.1,0,0,
+poppa/sveltekit-svg,"SvelteKit plugin that makes it possible to import SVG files as Svelte components, inline SVG code or urls",https://github.com/poppa/sveltekit-svg,279,25,TypeScript,5.20.1,1,0,
+stephane-vanraes/renderless-svelte,A collection of renderless Svelte components,https://github.com/stephane-vanraes/renderless-svelte,278,11,Svelte,3.29.4,0,0,
+hanielu/dnd-kit-svelte,"The modern, lightweight, performant, accessible and extensible drag & drop toolkit for Svelte",https://github.com/hanielu/dnd-kit-svelte,274,7,TypeScript,5.0.0,1,1,^2.0.0
+mattjennings/sveltekit-blog-template,A SvelteKit blog template,https://github.com/mattjennings/sveltekit-blog-template,248,34,JavaScript,3.54.0,0,1,^1.22.3
+bmdavis419/SvelteKit-Ecommerce,"An opensource, fullstack e-commerce app build with SvelteKit",https://github.com/bmdavis419/SvelteKit-Ecommerce,245,38,Svelte,4.2.9,0,1,^2.5.0
+kampsy/ui,"A Svelte 5 UI component library, inspired by Vercel's Geist, thoughtfully designed to deliver consistent and cohesive web experiences.",https://github.com/kampsy/ui,244,6,Svelte,5.43.3,1,1,^2.48.4
+RiadhAdrani/slick-portfolio-svelte,Vercel-like style portfolio template for developers.,https://github.com/RiadhAdrani/slick-portfolio-svelte,237,122,Svelte,4.2.1,0,1,1.25.0
+noahlh/celestite,"Beautifully reactive, server-side rendered Svelte apps w/ a Crystal backend",https://github.com/noahlh/celestite,235,9,JavaScript,5.0.0,1,0,
+svar-widgets/core,SVAR Core library is a collection of essential UI components written with Svelte. ,https://github.com/svar-widgets/core,230,7,Svelte,5.1.9,1,0,
+Rich-Harris/sveltekit-on-the-edge,"SvelteKit, running on the edge",https://github.com/Rich-Harris/sveltekit-on-the-edge,226,26,Svelte,3.55.1,0,1,^1.8.3
+tretapey/svelte-pwa,Svelte Progresssive Web App (PWA) starter template,https://github.com/tretapey/svelte-pwa,224,27,JavaScript,3.49.0,0,0,
+Konixy/better-svelte-email,📧 Render emails in Svelte effortlessly with first-class tailwind support,https://github.com/Konixy/better-svelte-email,220,5,TypeScript,5.46.1,1,1,^2.49.2
+navneetsharmaui/sveltekit-blog,"Sveltekit blog starter project created with sveltekit, typescript, tailwindcss, postcss, husky, and storybook. The project has the structure set up for the scaleable web application.",https://github.com/navneetsharmaui/sveltekit-blog,211,28,Svelte,3.42.3,0,1,^1.0.0-next.165
+engageintellect/spatz,"An opinionated template for building full-stack Svelte applications ridiculously fast. Includes auth, database, admin panel, user dashboard, themes, icons, and more.",https://github.com/engageintellect/spatz,208,22,Svelte,4.2.12,0,1,^2.0.0
+svar-widgets/gantt,"Svelte Gantt chart component – lightweight, customizable, interactive, and fast.",https://github.com/svar-widgets/gantt,206,34,TypeScript,5.1.9,1,0,
+SveltyCMS/SveltyCMS,"SveltyCMS is a headless CMS. Built with modern and lightweight SvelteKit,  This CMS is designed for speed, flexibility, and scalability. Perfect for developers looking for a fast & fully customizable CMS with minimal setup. TailwindCSS, theme and widgets allow easy expansion. ",https://github.com/SveltyCMS/SveltyCMS,201,163,TypeScript,5.45.3,1,1,^2.49.1
+matfantinel/sveltekit-static-blog-template,"A lightweight and customizable template for blogs and portfolio websites, built with SvelteKit.",https://github.com/matfantinel/sveltekit-static-blog-template,199,37,Svelte,3.54.0,0,1,^1.0.0
+svar-widgets/grid,"Svelte datagrid component. Lightweight, fast, feature-rich.",https://github.com/svar-widgets/grid,191,8,Svelte,5.1.9,1,0,
+ONSvisual/svelte-scrolly,A rich media / scrollytelling template made with Svelte.,https://github.com/ONSvisual/svelte-scrolly,190,23,Svelte,3.0.0,0,0,
+tanhauhau/svelte-json-tree,JSON tree component for Svelte,https://github.com/tanhauhau/svelte-json-tree,187,43,Svelte,4.0.0,0,1,^1.20.4
+paoloricciuti/sveltekit-view-transition,Start using view transitions without any hassle!,https://github.com/paoloricciuti/sveltekit-view-transition,186,3,TypeScript,4.0.5,0,1,^1.20.4
+mvasigh/sveltekit-mdsvex-blog,A minimalistic blog template built with SvelteKit and MDsveX,https://github.com/mvasigh/sveltekit-mdsvex-blog,175,27,Svelte,3.54.0,0,1,^1.0.0
+svelteland/svelte-kit-blog-demo,"A demo of a markdown based blog with SvelteKit, deployed to Github Pages.",https://github.com/svelteland/svelte-kit-blog-demo,170,56,Svelte,3.29.0,0,1,next
+Rich-Harris/sveltesnaps,,https://github.com/Rich-Harris/sveltesnaps,164,13,Svelte,3.58.0,0,1,^1.16.2
+xulioc/sveltekit-supabase-dashboard,Dashboard inspired by Supabase UI  and made with SvelteKit as frontend and Supabase as backend.,https://github.com/xulioc/sveltekit-supabase-dashboard,147,29,Svelte,3.58.0,0,1,^1.15.9
+khromov/svelte-bench,"An LLM benchmark for Svelte 5 based on the OpenAI methodology from OpenAIs paper ""Evaluating Large Language Models Trained on Code"".",https://github.com/khromov/svelte-bench,145,7,TypeScript,5.46.0,1,0,
+x0k/svelte-jsonschema-form,Svelte 5 library for creating forms based on JSON schema.,https://github.com/x0k/svelte-jsonschema-form,142,6,TypeScript,,0,1,^2.49.2
+jesperorb/intl-explorer,Intl Explorer is an interactive tool for experimenting and trying out the ECMAScript Internationalization API.,https://github.com/jesperorb/intl-explorer,135,3,Svelte,5.25.3,1,1,2.48.5
+Rich-Harris/svelte-split-pane,A <SplitPane> component,https://github.com/Rich-Harris/svelte-split-pane,131,13,Svelte,5.43.6,1,1,^2.5.27
+aker-dev/microfolio,A modern static portfolio generator based on SvelteKit 2 and Tailwind CSS 4,https://github.com/aker-dev/microfolio,127,3,Svelte,5.45.6,1,1,^2.49.1
+xafn/afn.im,🎨 Personal website made with SvelteKit,https://github.com/xafn/afn.im,124,25,Svelte,4.2.9,0,1,^2.5.0
+Rich-Harris/sveltekit-movies-demo,Movies demo,https://github.com/Rich-Harris/sveltekit-movies-demo,121,7,Svelte,5.0.0-next.79,1,1,^2.5.4
+accretional/statue,"Statue: Svelte + Markdown Static Site Generator, launch a website for your business, blog, portfolio, or product in seconds, with one-line setup",https://github.com/accretional/statue,121,18,Svelte,5.46.0,1,1,^2.49.2
+kizivat/saas-kit,"Free SaaS template built with SvelteKit, Supabase, and shadcn-svelte.",https://github.com/kizivat/saas-kit,120,23,Svelte,4.0.5,0,1,^2.5.20
+Rich-Harris/snowpack-svelte-ssr,,https://github.com/Rich-Harris/snowpack-svelte-ssr,117,4,JavaScript,3.24.0,0,0,
+engageintellect/sveltekit-supabase,"A minimal starter template using Svelte 5, Supabase, shadcn-svelte, GitHub auth, iconify, and Zod.",https://github.com/engageintellect/sveltekit-supabase,117,23,TypeScript,5.0.0-next.1,1,1,^2.0.0
+akiarostami/sveltekit-tailwind-blog-starter,An easily configurable and customizable blog starter for SvelteKit + Tailwind CSS,https://github.com/akiarostami/sveltekit-tailwind-blog-starter,117,17,Svelte,4.2.12,0,1,2.5.4
+Rich-Harris/svelte-workshop,The website for the Svelte workshop,https://github.com/Rich-Harris/svelte-workshop,116,36,JavaScript,3.0.0,0,0,
+deid84/tauri-sveltekit-admin-template,"This repository contains a starter template for building Tauri apps using SvelteKit and the Tailwind CSS framework. The template includes a development server, build scripts, and other helpful tools to get started.",https://github.com/deid84/tauri-sveltekit-admin-template,116,4,Svelte,4.0.5,0,1,^1.22.3
+sveltejs/svelte-eslint-parser,Svelte parser for ESLint,https://github.com/sveltejs/svelte-eslint-parser,111,26,TypeScript,5.45.4,1,0,
+Rich-Harris/ematchi,,https://github.com/Rich-Harris/ematchi,108,13,Svelte,3.54.0,0,1,^1.5.0
+Naptie/nearcade,,https://github.com/Naptie/nearcade,107,5,Svelte,5.43.6,1,1,^2.48.5
+ndom91/svelte-infinite,Svelte 5 Infinite Loader using Runes,https://github.com/ndom91/svelte-infinite,106,8,Svelte,5.42.2,1,1,^2.48.0
+knrdl/hubleys-dashboard,Hubleys Brave New Dashboard,https://github.com/knrdl/hubleys-dashboard,105,9,TypeScript,4.2.20,0,1,^2.48.4
+andreock/nodeMyAdmin,A replace phpMyAdmin to Node.js with the help of Sveltekit,https://github.com/andreock/nodeMyAdmin,102,12,TypeScript,3.55.1,0,1,next
+TommyLec/SelfKit,"A self hosted oriented boilerplate for developers who want full control: cut your costs, secure your data, and focus on what matters.",https://github.com/TommyLec/SelfKit,96,4,TypeScript,5.19.0,1,1,^2.16.0
+SwiftMarket/swiftmarket-sveltekit,"E-Commerce solution built with SvelteKit, Pocketbase as a database and Stripe for payments, providing better performance and faster development time.",https://github.com/SwiftMarket/swiftmarket-sveltekit,86,12,Svelte,3.55.1,0,1,^1.9.3
+ClaytonFarr/sveltekit-netlify-stripe-fauna-example,SaaS boilerplate example with SvelteKit + Tailwind + Netlify Identity (GoTrue) + Stripe + Fauna.,https://github.com/ClaytonFarr/sveltekit-netlify-stripe-fauna-example,85,11,Svelte,3.38.2,0,1,next
+huntabyte/modern-saas,"Source code for Modern SaaS Apps with SvelteKit, Stripe, & Supabase",https://github.com/huntabyte/modern-saas,84,26,TypeScript,3.54.0,0,1,^1.5.0
+Zxce3/shadcn-sveltekit-landing-page,New Design 🪄 Sveltekit + Shadcn + TypeScript + Tailwind. Landing page template ease-to-use,https://github.com/Zxce3/shadcn-sveltekit-landing-page,84,18,Svelte,5.0.0,1,1,^2.16.0
+connorrothschild/v4,"My 2023 personal portfolio & blog, built with SvelteKit",https://github.com/connorrothschild/v4,80,11,JavaScript,3.34.0,0,1,1.0.0-next.434
+joachimchauvet/modernstack-saas,"A modern SaaS template/boilerplate built with SvelteKit, Convex, Better Auth, and shadcn-svelte. Includes subscriptions, auth, user & admin dashboard, user settings, and more.",https://github.com/joachimchauvet/modernstack-saas,78,11,Svelte,5.0.0,1,1,^2.43.5
+ansxuman/macOS-Themed-Portfolio,"An interactive portfolio website inspired by the macOS interface, built with SvelteKit, TailwindCSS, and TypeScript.  https://macosportfolio.netlify.app/",https://github.com/ansxuman/macOS-Themed-Portfolio,76,13,Svelte,4.2.7,0,1,^2.0.0
+paoloricciuti/optimistikit,Optimistic UI in sveltekit made easy,https://github.com/paoloricciuti/optimistikit,72,0,TypeScript,5.36.3,1,1,^2.5.18
+BrendanGlancy/dev-port,"My portfolio website, still in progress.",https://github.com/BrendanGlancy/dev-port,72,19,Svelte,5.13.0,1,1,^2.9.0
+borakilicoglu/svelte-tradingview-widget,Svelte component for rendering the TradingView Advanced Real-Time Chart Widget,https://github.com/borakilicoglu/svelte-tradingview-widget,71,8,HTML,3.22.2,0,0,
+sailkit/sailkit,SailKit is an open-source toolkit for composing responsive email templates in SvelteKit applications,https://github.com/sailkit/sailkit,70,2,Svelte,,0,1,^2.48.4
+Rich-Harris/local-storage-test,,https://github.com/Rich-Harris/local-storage-test,69,6,TypeScript,5.0.0,1,1,^2.0.0
+Ladvace/SvelteKit-Portfolio,Simple portfolio website made in svelteKit,https://github.com/Ladvace/SvelteKit-Portfolio,65,23,Svelte,4.2.18,0,1,^2.5.18
+joshnuss/sveltekit-saas,,https://github.com/joshnuss/sveltekit-saas,61,5,JavaScript,3.54.0,0,1,^1.0.0
+upperdo/backoffice-template,"Clean Architecture Sveltekit Appwrite template include admin area, auth, protected routes, it use ShadCN-Svelte as base component library, include authorization, designed to be easy to maintain and very scalable.",https://github.com/upperdo/backoffice-template,61,3,TypeScript,4.2.8,0,1,^1.30.3
+buhrmi/sveltekit-netlify-cms,A preconfigured SvelteKit skeleton app with Netlify CMS,https://github.com/buhrmi/sveltekit-netlify-cms,59,21,HTML,3.34.0,0,1,next
+WarningImHack3r/svelte-changelog,A nice UI to stay up-to-date with Svelte releases,https://github.com/WarningImHack3r/svelte-changelog,57,3,Svelte,5.46.1,1,1,^2.49.2
+zcsd/sveltekit-cloudflare-template,"A fully functional SvelteKit template that integrates Cloudflare services (Pages, D1, KV, Workers, Queues, R2, Turnstile). Good to be a starting point for a SaaS application or a membership site.",https://github.com/zcsd/sveltekit-cloudflare-template,56,14,JavaScript,4.2.18,0,1,^2.5.18
+YusufCeng1z/svelte-bash,"A fully typed, lightweight, and customizable terminal emulator component for Svelte 5. Features a virtual file system, custom commands, themes, and autoplay mode for demos. 🚀",https://github.com/YusufCeng1z/svelte-bash,53,1,Svelte,5.43.8,1,1,^2.48.5
+snuffyDev/svelte-worker-store,:zap: Turbocharge your apps with multithreaded Svelte stores.,https://github.com/snuffyDev/svelte-worker-store,53,0,Svelte,3.54.0,0,1,^1.5.0
+baseballyama/svelte-preprocess-delegate-events,You can delegate events by on:* 🎉,https://github.com/baseballyama/svelte-preprocess-delegate-events,53,0,JavaScript,4.2.20,0,0,
+unlocomqx/sveltekit-shopify-starter,A Shopify starter app using SvelteKit,https://github.com/unlocomqx/sveltekit-shopify-starter,51,4,TypeScript,3.44.0,0,1,next
+Meldiron/appwrite-cms,"Prepare admin panels for your projects rapidly using Appwrite CMS, a headless CMS for any Appwrite project.",https://github.com/Meldiron/appwrite-cms,49,20,Svelte,3.53.1,0,1,next
+RiadhAdrani/slick-portfolio-svelte-5,The rewrite of the slick-portfolio-svelte using sveltekit (svelte 5) and shadcn-svelte,https://github.com/RiadhAdrani/slick-portfolio-svelte-5,47,27,Svelte,5.0.0,1,1,^2.46.2
+rixo/rollup-plugin-svelte-hot,Fork of official rollup-plugin-svelte with added HMR support (for both Nollup or Rollup),https://github.com/rixo/rollup-plugin-svelte-hot,46,6,JavaScript,3.30.0,0,0,
+halfnelson/svelte-native-realworld,WIP svelte native realworld implementation,https://github.com/halfnelson/svelte-native-realworld,46,11,TypeScript,3.12.1,0,0,
+ak4zh/sveltekit-saas-starter,,https://github.com/ak4zh/sveltekit-saas-starter,44,3,Svelte,3.44.0,0,1,next
+softjapan/mini-webui,"mini-webui delivers a streamlined AI chat console for teams that need rapid iteration, reliable integrations, and production-ready guardrails. The application pairs a FastAPI backend with a SvelteKit front end, offering real-time conversations, LangGraph-powered retrieval, secure account management, and an operator-friendly admin console.",https://github.com/softjapan/mini-webui,44,3,Python,4.2.18,0,1,^2.5.20
+subhendupsingh/sveltekit-notion-blog,A plug and play library for setting up blogs in subdirectory or main directory in Sveltekit projects using Notion as CMS.,https://github.com/subhendupsingh/sveltekit-notion-blog,43,6,TypeScript,5.0.0,1,1,^2.5.27
+hygraph/hygraph-sveltekit-portfolio-and-blog-starter,Get started with your own portfolio and blog with SvelteKit and Hygraph,https://github.com/hygraph/hygraph-sveltekit-portfolio-and-blog-starter,43,11,Svelte,3.46.4,0,1,1.0.0-next.572
+gtm-nayan/svelte-pdfjs,,https://github.com/gtm-nayan/svelte-pdfjs,42,8,Svelte,4.2.16,0,1,^1.30.4
+loke-dev/sveltekit-mdsvex-blog-template,MDsveX blog starter template built with Sveltekit & Tailwind,https://github.com/loke-dev/sveltekit-mdsvex-blog-template,42,6,Svelte,5.25.0,1,1,^2.20.2
+opensas/sveltekit-landing-page,Tailwind Landing page template converted to SvelteKit components,https://github.com/opensas/sveltekit-landing-page,41,14,HTML,3.29.0,0,1,next
+CaptainCodeman/svelte-api-keys,"API Key Generation, Validation, and Rate Limiting for SvelteKit",https://github.com/CaptainCodeman/svelte-api-keys,40,2,TypeScript,5.0.0-next.85,1,1,^2.5.7
+Rich-Harris/snek,,https://github.com/Rich-Harris/snek,38,3,Svelte,5.28.6,1,1,^2.21.0
+tanhauhau/tanhauhau.github.io,Tan Li Hau's Personal Website,https://github.com/tanhauhau/tanhauhau.github.io,38,8,MDX,5.0.0,1,1,^2.16.0
+xulioc/sveltekit-multitenant-rbac,Svelte MultiTenant RBAC Dashboard,https://github.com/xulioc/sveltekit-multitenant-rbac,38,3,Svelte,5.0.2,1,1,^2.7.2
+spences10/sveltekit-vendure-commerce,SvelteKit and Vendure Commerce example  🤝,https://github.com/spences10/sveltekit-vendure-commerce,37,6,Svelte,4.2.9,0,1,2.5.15
+engageintellect/sveltekit-landing-daisy,"A landing page template with various persistent themes using SvelteKit, TailwindCSS, and DaisyUI.",https://github.com/engageintellect/sveltekit-landing-daisy,36,8,Svelte,4.0.0,0,1,^2.0.0
+idea2547/Alya_Sveltekit_SaaS,"Open-source sveltekit SaaS template including pocketbase back-end,  and stripe payment system for shipping your new SaaS product fast",https://github.com/idea2547/Alya_Sveltekit_SaaS,35,5,Svelte,4.2.7,0,1,^2.0.0
+startino/saas-starter,"A SvelteKit boilerplate offering user authentication, dashboards, marketing pages, a blog engine, and subscription management. Built with SvelteKit, Tailwind, shadcn-svelte, Supabase, and Stripe. This project's vision is to make our setup time 0.",https://github.com/startino/saas-starter,35,3,Svelte,5.0.3,1,1,^2.0.0
+kclejeune/TMobile-ISP-Client,"mobile friendly, self hosted status dashboard for T-Mobile ISP routers",https://github.com/kclejeune/TMobile-ISP-Client,35,5,Svelte,3.44.3,0,1,^1.0.0-next.231
+Nadeflore/watchface-web-editor,A web editor for huami bin watchfaces,https://github.com/Nadeflore/watchface-web-editor,32,4,Svelte,3.0.0,0,0,
+Tozaburo/liquid-glass-svelte,Svelte component to implement Apple’s Liquid Glass.,https://github.com/Tozaburo/liquid-glass-svelte,32,0,Svelte,5.0.0,1,1,^2.16.0
+PuruVJ/ios-web,,https://github.com/PuruVJ/ios-web,30,1,SCSS,3.46.2,0,0,
+khromov/sveltekit-capacitor-starter,A starter project that implemente SvelteKit and Capacitor,https://github.com/khromov/sveltekit-capacitor-starter,30,0,Swift,4.0.5,0,1,^1.20.4
+stordahl/svelte-cookbook,"A community built resource, for productive Svelte Development",https://github.com/stordahl/svelte-cookbook,26,0,Svelte,5.0.0-next.1,1,1,^2.0.0
+unlocomqx/shopify-app-sveltekit,,https://github.com/unlocomqx/shopify-app-sveltekit,24,4,TypeScript,3.38.2,0,1,next
+zitounao/Sveltekit-Shopify-App,Shopify embedded app with Sveltekit 1.0,https://github.com/zitounao/Sveltekit-Shopify-App,24,2,JavaScript,3.54.0,0,1,^1.5.0
+dummdidumm/tanstack-table-8-svelte-5,,https://github.com/dummdidumm/tanstack-table-8-svelte-5,22,1,TypeScript,5.0.0,1,1,^2.0.0
+wysher/svelte-overlay,"Fully customizable Svelte overlay. Great for creating dropdowns, tooltips and popovers",https://github.com/wysher/svelte-overlay,22,2,JavaScript,3.22.2,0,0,
+tanhauhau/sveet,,https://github.com/tanhauhau/sveet,22,3,Svelte,3.53.1,0,1,next
+kenny-io/sveltekit-shopify-ecommerce,,https://github.com/kenny-io/sveltekit-shopify-ecommerce,21,6,JavaScript,3.34.0,0,1,next
+jamezmca/gym-app-landingpage,SvelteKit & TailwindCSS Landing Page,https://github.com/jamezmca/gym-app-landingpage,21,12,Svelte,4.2.7,0,1,^1.27.4
+joshnuss/tonys-apizza,"POS for a pizza shop. Using SvelteKit, Prisma, and Stripe.",https://github.com/joshnuss/tonys-apizza,19,1,Svelte,3.44.0,0,1,next
+dummdidumm/remote-functions-demos,,https://github.com/dummdidumm/remote-functions-demos,18,4,Svelte,5.0.0,1,1,^2.22.0
+jacwright/svelte-navaid,A Svelte router powered by https://github.com/lukeed/navaid/,https://github.com/jacwright/svelte-navaid,18,3,HTML,3.9.1,0,0,
+PuruVJ/ms-todo-svelte,,https://github.com/PuruVJ/ms-todo-svelte,17,4,Svelte,3.49.0,0,1,^1.0.0-next.460
+dummdidumm/template,Template for building basic applications with Svelte,https://github.com/dummdidumm/template,16,0,JavaScript,3.0.0,0,0,
+paoloricciuti/sveltekit-server-islands,Userland implementation of server islands for sveltekit,https://github.com/paoloricciuti/sveltekit-server-islands,15,1,JavaScript,5.0.0,1,1,^2.16.0
+takempf/dither,Lofi dithered GIF chat,https://github.com/takempf/dither,15,1,Svelte,5.0.0-next.1,1,1,^2.0.0
+tanhauhau/create-a-svelte-router,,https://github.com/tanhauhau/create-a-svelte-router,14,4,JavaScript,3.44.0,0,0,
+svonic/svonic,Svonic is a UI component library for Svelte based on the Ionic Framework.,https://github.com/svonic/svonic,14,1,Svelte,4.2.2,0,0,
+khromov/svelte-neko,A Svelte 5 port of the Oneko.js library,https://github.com/khromov/svelte-neko,13,1,Svelte,5.0.0-next.1,1,1,^2.0.0
+Rich-Harris/hash-based-routing,SvelteKit hash-based routing demo,https://github.com/Rich-Harris/hash-based-routing,12,1,Svelte,5.0.0,1,1,^2.0.0
+dummdidumm/vercel-sveltekit-news-demo,,https://github.com/dummdidumm/vercel-sveltekit-news-demo,11,0,Svelte,5.0.0-next.1,1,1,^2.0.0
+tanhauhau/cloudinary-photo-album,,https://github.com/tanhauhau/cloudinary-photo-album,10,3,Svelte,4.2.7,0,1,^2.0.0
+PuruVJ/svelte-simple-code-editor,,https://github.com/PuruVJ/svelte-simple-code-editor,10,1,Svelte,3.44.3,0,1,next
+dummdidumm/svelte-async-remote-functions-example,,https://github.com/dummdidumm/svelte-async-remote-functions-example,6,2,Svelte,5.0.0,1,1,^2.16.0
+gtm-nayan/svelte-use-chessground,,https://github.com/gtm-nayan/svelte-use-chessground,6,2,CSS,3.44.2,0,1,next
+7nik/nm-trade-enhancements,,https://github.com/7nik/nm-trade-enhancements,6,0,TypeScript,3.53.1,0,0,
+tanhauhau/svelte-component-in-react-app,,https://github.com/tanhauhau/svelte-component-in-react-app,4,0,JavaScript,3.38.2,0,0,
+dummdidumm/sveltekit-server-islands,,https://github.com/dummdidumm/sveltekit-server-islands,3,0,Svelte,5.0.0-next.1,1,1,^2.0.0
+tanhauhau/advent-of-typescript-clone,,https://github.com/tanhauhau/advent-of-typescript-clone,3,1,TypeScript,5.0.0-next.1,1,1,^2.0.0
+tanhauhau/svelvety,,https://github.com/tanhauhau/svelvety,3,0,JavaScript,3.13.0,0,0,
+paoloricciuti/the-blog-of-alexandria,"The Blog of Alexandria, a never ending source of information",https://github.com/paoloricciuti/the-blog-of-alexandria,3,0,Svelte,5.0.0,1,1,^2.22.0
+paoloricciuti/dotprompts,An MCP server/Webapp to store all your favorite prompts and have them available everywhere,https://github.com/paoloricciuti/dotprompts,3,0,Svelte,5.41.0,1,1,^2.47.1
+svelte-society/advent-of-svelte,,https://github.com/svelte-society/advent-of-svelte,3,0,Svelte,5.44.0,1,1,^2.49.0
+PuruVJ/puruvj.dev,,https://github.com/PuruVJ/puruvj.dev,3,2,MDX,5.7.1,1,0,
+PuruVJ/peh3,,https://github.com/PuruVJ/peh3,3,1,Svelte,3.48.0,0,1,^1.0.0-next.350
+7nik/test-svelte-userscript,,https://github.com/7nik/test-svelte-userscript,3,0,JavaScript,3.0.0,0,0,
+mrkishi/svelte-template-electron,A template for building Electron apps with Svelte,https://github.com/mrkishi/svelte-template-electron,3,3,TypeScript,3.3.0,0,0,
+dummdidumm/component-template,A base for building shareable Svelte components,https://github.com/dummdidumm/component-template,2,0,,3.0.0,0,0,
+tanhauhau/the-js-we-do-not-deserve,,https://github.com/tanhauhau/the-js-we-do-not-deserve,2,0,JavaScript,3.24.0,0,0,
+paoloricciuti/moviemojis,Guess the movie based on the emoji list,https://github.com/paoloricciuti/moviemojis,2,0,Svelte,5.45.6,1,1,^2.49.1
+paoloricciuti/squiggles,"Personal note taking app, cause everything else sucks",https://github.com/paoloricciuti/squiggles,2,0,TypeScript,5.0.0,1,1,^2.22.0
+PuruVJ/100ms-svelte-guide-proj,,https://github.com/PuruVJ/100ms-svelte-guide-proj,2,1,Svelte,3.44.2,0,0,
+PuruVJ/svelte-repl-next,,https://github.com/PuruVJ/svelte-repl-next,2,0,JavaScript,4.0.5,0,1,^1.20.5
+baseballyama/svelte-in-vue3-ts,Using Svelte component in Vue3 app,https://github.com/baseballyama/svelte-in-vue3-ts,2,0,TypeScript,3.49.0,0,0,
+DreaminDani/cnc-treasure-generator,A Castles & Crusades Treasure Generator,https://github.com/DreaminDani/cnc-treasure-generator,2,0,JavaScript,3.0.0,0,0,
+dummdidumm/festive-remote-functions,,https://github.com/dummdidumm/festive-remote-functions,1,0,Svelte,5.43.8,1,1,^2.48.5
+dummdidumm/sveltekit-vercel-dev-repro,,https://github.com/dummdidumm/sveltekit-vercel-dev-repro,1,0,JavaScript,5.0.0,1,1,^2.0.0
+dummdidumm/vercel-rewrite-confusion,,https://github.com/dummdidumm/vercel-rewrite-confusion,1,0,TypeScript,5.0.0,1,1,^2.0.0
+dummdidumm/svelte-spa-router,Router for SPAs using Svelte 3,https://github.com/dummdidumm/svelte-spa-router,1,0,,3.29.0,0,0,
+dummdidumm/sapper,"The next small thing in web development, powered by Svelte",https://github.com/dummdidumm/sapper,1,0,,3.24.0,0,0,
+dummdidumm/sveltesociety.dev,"Community website for Svelte Society (Work in progress). The site will contain a component library list, a cookbook, tutorials, event information, talks etc.",https://github.com/dummdidumm/sveltesociety.dev,1,0,,3.23.2,0,0,
+trueadm/js-reactivity-benchmark,Benchmark comparing different standalone JS reactivity / signals frameworks.,https://github.com/trueadm/js-reactivity-benchmark,1,0,,5.0.0-next.249,1,0,
+tanhauhau/sveltekit-workshop-cityjs-2024-api,,https://github.com/tanhauhau/sveltekit-workshop-cityjs-2024-api,1,0,TypeScript,4.2.7,0,1,^2.0.0
+benmccann/svelte-adapter-azure-swa,SvelteKit adapter for Azure Static Web Apps.,https://github.com/benmccann/svelte-adapter-azure-swa,1,0,,,0,1,^2.17.3
+paoloricciuti/ricciuti.me,my personal website ,https://github.com/paoloricciuti/ricciuti.me,1,0,mdsvex,5.46.0,1,1,^2.5.27
+paoloricciuti/teaching-llms-how-to-svelte,"Slides for my talk ""How I taught LLMs how to Svelte""",https://github.com/paoloricciuti/teaching-llms-how-to-svelte,1,0,Svelte,5.34.7,1,1,^2.22.0
+PuruVJ/wordcounter,,https://github.com/PuruVJ/wordcounter,1,1,Svelte,3.42.3,0,1,^1.0.0-next.158
+baseballyama/svelte-ast-print-playground,The playground of svelte-ast-print,https://github.com/baseballyama/svelte-ast-print-playground,1,0,Svelte,5.16.1,1,1,^2.15.1
+gtm-nayan/js_trgm,,https://github.com/gtm-nayan/js_trgm,1,0,TypeScript,3.47.0,0,1,next
+DreaminDani/desandoval-blog,Hugo-based website for DESandoval.net,https://github.com/DreaminDani/desandoval-blog,1,0,JavaScript,3.48.0,0,0,
+7nik/ap-vk-poster,Userscript for posting pictures in VKontakte from Anime-Pictures,https://github.com/7nik/ap-vk-poster,1,0,TypeScript,5.0.0,1,0,
+Conduitry/sveltejs_prettier-plugin-svelte,Format your svelte components using prettier.,https://github.com/Conduitry/sveltejs_prettier-plugin-svelte,0,0,TypeScript,github:UnwrittenFun/svelte#fix/object-array-pattern-end,0,0,
+dummdidumm/sveltekit-vercel-redirect-example,,https://github.com/dummdidumm/sveltekit-vercel-redirect-example,0,0,TypeScript,5.0.0,1,1,^2.22.0
+dummdidumm/sveltia-ui,"Our goal is to create a collection of accessible, beautiful, customizable Svelte UI components. The core of Sveltia CMS. (Not ready for general use)",https://github.com/dummdidumm/sveltia-ui,0,0,,5.35.2,1,1,^2.22.2
+dummdidumm/superforms-bug,,https://github.com/dummdidumm/superforms-bug,0,0,HTML,4.0.0,0,1,^2.16.0
+dummdidumm/saraJones,,https://github.com/dummdidumm/saraJones,0,0,,5.0.0,1,1,^2.16.0
+dummdidumm/flags-precompute-manual-sveltekit,,https://github.com/dummdidumm/flags-precompute-manual-sveltekit,0,0,TypeScript,5.0.0,1,1,^2.18.0
+trueadm/kit,"web development, streamlined",https://github.com/trueadm/kit,0,0,,3.56.0,0,0,
+tanhauhau/svelte-ai-components,,https://github.com/tanhauhau/svelte-ai-components,0,0,TypeScript,5.0.0,1,1,^2.16.0
+benmccann/svelte-eslint-parser,Svelte parser for ESLint,https://github.com/benmccann/svelte-eslint-parser,0,0,,5.41.0,1,0,
+benmccann/enhanced-img-svgpng,,https://github.com/benmccann/enhanced-img-svgpng,0,0,,5.0.0,1,1,^2.16.0
+benmccann/svelte-highlight,Syntax Highlighting for Svelte using highlight.js,https://github.com/benmccann/svelte-highlight,0,0,,4.2.20,0,0,
+benmccann/evidence,"Business intelligence as code: build fast, interactive data visualizations in SQL and markdown",https://github.com/benmccann/evidence,0,0,,4.2.19,0,1,2.8.4
+paoloricciuti/aletamb-photos,Photo website for my wife,https://github.com/paoloricciuti/aletamb-photos,0,0,Svelte,5.43.14,1,1,^2.48.7
+PuruVJ/repro-async-bug-nested-layouts,,https://github.com/PuruVJ/repro-async-bug-nested-layouts,0,0,Svelte,5.41.2,1,1,^2.47.3
+PuruVJ/twis-neodrag-july,,https://github.com/PuruVJ/twis-neodrag-july,0,0,TypeScript,5.36.2,1,0,
+PuruVJ/uppy-spike,,https://github.com/PuruVJ/uppy-spike,0,0,Svelte,5.0.0,1,1,^2.16.0
+PuruVJ/bits-ui-accordian-wrong-type,Created with StackBlitz ⚡️,https://github.com/PuruVJ/bits-ui-accordian-wrong-type,0,0,Svelte,5.0.0,1,1,^2.16.0
+PuruVJ/neosvelte,,https://github.com/PuruVJ/neosvelte,0,0,TypeScript,5.0.0-next.244,1,0,
+baseballyama/vite-plugin-svelte,Svelte plugin for http://vitejs.dev/,https://github.com/baseballyama/vite-plugin-svelte,0,0,JavaScript,5.22.2,1,0,
+gtm-nayan/gradio,"Build and share delightful machine learning apps, all in Python. 🌟 Star to support our work!",https://github.com/gtm-nayan/gradio,0,0,,4.2.15,0,0,
+gtm-nayan/svelte-pdfjs-demo,,https://github.com/gtm-nayan/svelte-pdfjs-demo,0,0,JavaScript,4.2.7,0,1,^2.0.0
+gtm-nayan/tsconfck-bug-repro,,https://github.com/gtm-nayan/tsconfck-bug-repro,0,0,CSS,5.0.0-next.1,1,1,^2.0.0
+gtm-nayan/component-party.dev,🎉 Web component JS frameworks overview by their syntax and features,https://github.com/gtm-nayan/component-party.dev,0,0,,4.2.0,0,0,
+Ocean-OS/sswr,🔥 Svelte stale while revalidate (SWR) data fetching strategy,https://github.com/Ocean-OS/sswr,0,0,TypeScript,5.0.0,1,0,
+Ocean-OS/svelte,web development for the rest of us,https://github.com/Ocean-OS/svelte,0,0,JavaScript,workspace:,0,0,
+Ocean-OS/CheckIn,fork to fix input focusing,https://github.com/Ocean-OS/CheckIn,0,0,,4.0.5,0,1,^1.20.4
+Ocean-OS/ScoutClient2023,"Stable Circuits 2023 Scouting Client, but using a webhook to add a bit more automation. ",https://github.com/Ocean-OS/ScoutClient2023,0,0,Svelte,3.54.0,0,1,^1.5.0
+DreaminDani/dreamindani-site,Personal site and blog for Dani Sandoval (dreamindani.com),https://github.com/DreaminDani/dreamindani-site,0,0,HTML,5.0.0,1,1,^2.0.0
+DreaminDani/playahead-site,Playahead Games Website,https://github.com/DreaminDani/playahead-site,0,0,CSS,3.54.0,0,0,
+DreaminDani/svelte,Cybernetically enhanced web apps,https://github.com/DreaminDani/svelte,0,2,JavaScript,workspace:,0,0,
+DreaminDani/tokenbase,"Create, manage and distribute design tokens.",https://github.com/DreaminDani/tokenbase,0,0,,4.2.0,0,1,^1.8.6
+DreaminDani/yMR,Public repo for yMR releases and docs,https://github.com/DreaminDani/yMR,0,0,Svelte,4.2.7,0,1,^2.0.0
+DreaminDani/music-web,landing page for music,https://github.com/DreaminDani/music-web,0,0,Svelte,4.0.5,0,1,^1.20.4
+DreaminDani/wordpages,Make a bunch of pages with words on them,https://github.com/DreaminDani/wordpages,0,0,Svelte,3.44.0,0,1,next
+DreaminDani/chat-fallback,Screen participants for a video conversation based on their self-reported environment and internet speed,https://github.com/DreaminDani/chat-fallback,0,0,Svelte,3.34.0,0,1,next
+7nik/ap-import-tags-userscript,,https://github.com/7nik/ap-import-tags-userscript,0,0,TypeScript,5.19.3,1,0,
+7nik/svelte,web development for the rest of us,https://github.com/7nik/svelte,0,0,,workspace:,0,0,
+7nik/neonmob-a,Alternate client for NeonMob,https://github.com/7nik/neonmob-a,0,0,Svelte,3.58.0,0,1,^1.5.0
+7nik/component-party.dev,🎉 Web component JS frameworks overview by their syntax and features,https://github.com/7nik/component-party.dev,0,0,,4.2.0,0,0,
+7nik/rusbooru,,https://github.com/7nik/rusbooru,0,0,TypeScript,3.54.0,0,0,
+7nik/math-examples,Different examples for math,https://github.com/7nik/math-examples,0,0,Svelte,3.44.0,0,1,next
+mrkishi/kit-repros,,https://github.com/mrkishi/kit-repros,0,0,JavaScript,3.44.0,0,1,next
+mrkishi/kit,The fastest way to build Svelte apps,https://github.com/mrkishi/kit,0,0,JavaScript,3.48.0,0,0,
+mrkishi/kit-sandbox,A sandbox for maintainers,https://github.com/mrkishi/kit-sandbox,0,0,,3.44.0,0,1,next
+mrkishi/rollup-plugin-svelte,Compile Svelte components with Rollup,https://github.com/mrkishi/rollup-plugin-svelte,0,0,JavaScript,2.9.1,0,0,
+mrkishi/sapper,"Military-grade progressive web apps, powered by Svelte",https://github.com/mrkishi/sapper,0,0,TypeScript,3.6.9,0,0,
+mrkishi/svelte-repl,The <Repl> component used on the Svelte website,https://github.com/mrkishi/svelte-repl,0,0,JavaScript,3.0.0-beta.28,0,0,
+mrkishi/sapper-template,Starter template for Sapper apps,https://github.com/mrkishi/sapper-template,0,0,JavaScript,2.0.0,0,0,

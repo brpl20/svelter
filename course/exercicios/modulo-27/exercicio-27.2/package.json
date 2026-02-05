@@ -1,0 +1,14 @@
+{
+  "name": "exercicio-27.2",
+  "version": "1.0.0",
+  "description": "Exercício: $derived - Valores Derivados",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui"
+  },
+  "devDependencies": {
+    "vitest": "^1.0.0"
+  }
+}
