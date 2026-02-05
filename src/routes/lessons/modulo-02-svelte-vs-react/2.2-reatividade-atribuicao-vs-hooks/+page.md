@@ -1,0 +1,792 @@
+---
+title: "Reatividade: Atribuição vs Hooks"
+module: 2
+order: 2
+---
+
+# 2.2 — Reatividade: Atribuição vs Hooks
+
+> A forma mais natural de estado reativo que você já viu.
+
+## Objetivos da Aula
+
+- Comparar o modelo de reatividade do Svelte (atribuição) com React (hooks)
+- Entender por que hooks existem e suas regras
+- Ver como Svelte elimina a necessidade de hooks
+- Comparar valores derivados e efeitos colaterais
+
+---
+
+## O Problema que Hooks Resolvem
+
+No React, componentes funcionais eram originalmente **stateless**. Hooks foram criados para adicionar estado e ciclo de vida:
+
+```jsx
+// React ANTES dos Hooks (class components)
+class Counter extends React.Component {
+  state = { count: 0 }
+
+  increment = () => {
+    this.setState({ count: this.state.count + 1 })
+  }
+
+  render() {
+    return <button onClick={this.increment}>{this.state.count}</button>
+  }
+}
+
+// React COM Hooks (function components)
+function Counter() {
+  const [count, setCount] = useState(0)
+  return <button onClick={() => setCount(c => c + 1)}>{count}</button>
+}
+```
+
+Hooks são uma **solução elegante** para um problema que **Svelte não tem**.
+
+---
+
+## Reatividade em React vs Svelte
+
+### React: useState
+
+```jsx
+import { useState } from 'react'
+
+function Counter() {
+  // Declaração especial com hook
+  const [count, setCount] = useState(0)
+
+  // Função especial para atualizar
+  const increment = () => setCount(count + 1)
+  // ou: setCount(c => c + 1) para evitar stale closure
+
+  return <button onClick={increment}>{count}</button>
+}
+```
+
+**Características:**
+- ❌ Precisa importar `useState`
+- ❌ Sintaxe de desestruturação `[valor, setValor]`
+- ❌ Precisa chamar função setter
+- ❌ Não pode usar condicionalmente
+- ❌ Deve estar no topo do componente
+
+### Svelte: Atribuição Simples
+
+```svelte
+<script>
+  // Declaração normal de variável
+  let count = 0
+
+  // Atribuição normal atualiza o estado
+  function increment() {
+    count = count + 1
+    // ou: count += 1
+    // ou: count++
+  }
+</script>
+
+<button on:click={increment}>{count}</button>
+```
+
+**Características:**
+- ✅ Só JavaScript normal
+- ✅ Sem imports especiais
+- ✅ Atribuição = atualização
+- ✅ Pode usar em qualquer lugar
+- ✅ Pode usar condicionalmente
+
+---
+
+## Comparação Lado a Lado
+
+### Contador Simples
+
+```jsx
+// React
+function Counter() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount(c => c + 1)}>+</button>
+      <button onClick={() => setCount(c => c - 1)}>-</button>
+      <button onClick={() => setCount(0)}>Reset</button>
+    </div>
+  )
+}
+```
+
+```svelte
+<!-- Svelte -->
+<script>
+  let count = 0
+</script>
+
+<div>
+  <p>{count}</p>
+  <button on:click={() => count++}>+</button>
+  <button on:click={() => count--}>-</button>
+  <button on:click={() => count = 0}>Reset</button>
+</div>
+```
+
+### Múltiplos Estados
+
+```jsx
+// React
+function Form() {
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+  const [age, setAge] = useState(0)
+  const [newsletter, setNewsletter] = useState(false)
+
+  return (
+    <form>
+      <input
+        value={name}
+        onChange={e => setName(e.target.value)}
+      />
+      <input
+        value={email}
+        onChange={e => setEmail(e.target.value)}
+      />
+      <input
+        type="number"
+        value={age}
+        onChange={e => setAge(Number(e.target.value))}
+      />
+      <input
+        type="checkbox"
+        checked={newsletter}
+        onChange={e => setNewsletter(e.target.checked)}
+      />
+    </form>
+  )
+}
+```
+
+```svelte
+<!-- Svelte -->
+<script>
+  let name = ''
+  let email = ''
+  let age = 0
+  let newsletter = false
+</script>
+
+<form>
+  <input bind:value={name} />
+  <input bind:value={email} />
+  <input type="number" bind:value={age} />
+  <input type="checkbox" bind:checked={newsletter} />
+</form>
+```
+
+---
+
+## Valores Derivados (Computed)
+
+### React: useMemo
+
+```jsx
+import { useState, useMemo } from 'react'
+
+function ShoppingCart() {
+  const [items, setItems] = useState([
+    { name: 'Maçã', price: 2, qty: 3 },
+    { name: 'Banana', price: 1, qty: 5 }
+  ])
+
+  // useMemo para evitar recálculo desnecessário
+  const total = useMemo(() => {
+    console.log('Calculando total...')
+    return items.reduce((sum, item) => sum + item.price * item.qty, 0)
+  }, [items]) // Dependência explícita
+
+  const itemCount = useMemo(() => {
+    return items.reduce((sum, item) => sum + item.qty, 0)
+  }, [items])
+
+  return (
+    <div>
+      <p>Itens: {itemCount}</p>
+      <p>Total: R$ {total}</p>
+    </div>
+  )
+}
+```
+
+### Svelte: Declarações Reativas ($:)
+
+```svelte
+<script>
+  let items = [
+    { name: 'Maçã', price: 2, qty: 3 },
+    { name: 'Banana', price: 1, qty: 5 }
+  ]
+
+  // Declaração reativa - recalcula automaticamente quando items muda
+  $: total = items.reduce((sum, item) => sum + item.price * item.qty, 0)
+
+  $: itemCount = items.reduce((sum, item) => sum + item.qty, 0)
+
+  // Ou múltiplos em um bloco
+  $: {
+    console.log('Items mudou!')
+    console.log('Novo total:', total)
+  }
+</script>
+
+<div>
+  <p>Itens: {itemCount}</p>
+  <p>Total: R$ {total}</p>
+</div>
+```
+
+**Diferença crucial:**
+- React: você declara as dependências manualmente `[items]`
+- Svelte: dependências são detectadas automaticamente
+
+---
+
+## Efeitos Colaterais (Side Effects)
+
+### React: useEffect
+
+```jsx
+import { useState, useEffect } from 'react'
+
+function UserProfile({ userId }) {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  // Efeito com dependências
+  useEffect(() => {
+    setLoading(true)
+
+    fetch(`/api/users/${userId}`)
+      .then(r => r.json())
+      .then(data => {
+        setUser(data)
+        setLoading(false)
+      })
+
+    // Cleanup function (opcional)
+    return () => {
+      // Cancelar request se userId mudar
+    }
+  }, [userId]) // Executa quando userId muda
+
+  // Efeito que roda uma vez (mount)
+  useEffect(() => {
+    document.title = 'Perfil do Usuário'
+
+    return () => {
+      document.title = 'App' // Cleanup no unmount
+    }
+  }, []) // Array vazio = só no mount
+
+  if (loading) return <p>Carregando...</p>
+  return <h1>{user.name}</h1>
+}
+```
+
+### Svelte: Declarações Reativas e onMount
+
+```svelte
+<script>
+  import { onMount, onDestroy } from 'svelte'
+
+  export let userId
+
+  let user = null
+  let loading = true
+
+  // Efeito reativo - roda quando userId muda
+  $: {
+    loading = true
+    fetch(`/api/users/${userId}`)
+      .then(r => r.json())
+      .then(data => {
+        user = data
+        loading = false
+      })
+  }
+
+  // Efeito que roda uma vez no mount
+  onMount(() => {
+    document.title = 'Perfil do Usuário'
+
+    // Retorno é cleanup (onDestroy)
+    return () => {
+      document.title = 'App'
+    }
+  })
+
+  // Ou separadamente
+  onDestroy(() => {
+    // Cleanup
+  })
+</script>
+
+{#if loading}
+  <p>Carregando...</p>
+{:else}
+  <h1>{user.name}</h1>
+{/if}
+```
+
+---
+
+## Regras dos Hooks vs Liberdade do Svelte
+
+### React: Regras Rígidas dos Hooks
+
+```jsx
+// ❌ ERRO: Hook em condicional
+function Bad({ condition }) {
+  if (condition) {
+    const [value, setValue] = useState(0) // ❌
+  }
+}
+
+// ❌ ERRO: Hook em loop
+function Bad({ items }) {
+  items.forEach(item => {
+    const [state, setState] = useState(item) // ❌
+  })
+}
+
+// ❌ ERRO: Hook depois de return condicional
+function Bad({ loading }) {
+  if (loading) return <Spinner />
+  const [data, setData] = useState(null) // ❌
+}
+
+// ✅ CORRETO: Hooks sempre no topo, mesma ordem
+function Good({ condition }) {
+  const [value, setValue] = useState(0)
+  const [other, setOther] = useState('')
+
+  if (condition) {
+    // Usa value aqui
+  }
+
+  return <div>{value}</div>
+}
+```
+
+### Svelte: Sem Regras Especiais
+
+```svelte
+<script>
+  export let condition
+  export let items
+
+  // ✅ Variável reativa em qualquer lugar
+  let value = 0
+
+  // ✅ Condicionais normais
+  if (condition) {
+    let extraState = 'funciona!'
+  }
+
+  // ✅ Loops normais
+  let itemStates = items.map(item => ({
+    id: item.id,
+    selected: false
+  }))
+
+  // ✅ Declaração reativa em qualquer lugar
+  $: doubled = value * 2
+</script>
+```
+
+---
+
+## Svelte 5 Runes: Ainda Mais Simples
+
+No Svelte 5, runes tornam a reatividade ainda mais explícita:
+
+### Svelte 4 (atual)
+
+```svelte
+<script>
+  let count = 0
+  $: doubled = count * 2
+
+  $: {
+    console.log('count mudou:', count)
+  }
+</script>
+```
+
+### Svelte 5 (runes)
+
+```svelte
+<script>
+  let count = $state(0)
+  let doubled = $derived(count * 2)
+
+  $effect(() => {
+    console.log('count mudou:', count)
+  })
+</script>
+```
+
+**Comparação com React:**
+
+| Conceito | React | Svelte 4 | Svelte 5 |
+|----------|-------|----------|----------|
+| Estado | `useState()` | `let x` | `$state()` |
+| Derivado | `useMemo()` | `$: x = ...` | `$derived()` |
+| Efeito | `useEffect()` | `$: { }` | `$effect()` |
+| Props | `props.x` | `export let x` | `let { x } = $props()` |
+
+---
+
+## Arrays e Objetos: A Armadilha do React
+
+### React: Imutabilidade Obrigatória
+
+```jsx
+function TodoList() {
+  const [todos, setTodos] = useState([
+    { id: 1, text: 'Aprender React', done: false }
+  ])
+
+  // ❌ NÃO FUNCIONA - mutação direta
+  const addTodoBad = () => {
+    todos.push({ id: 2, text: 'Novo', done: false })
+    setTodos(todos) // Mesma referência, React ignora!
+  }
+
+  // ✅ CORRETO - criar novo array
+  const addTodo = () => {
+    setTodos([
+      ...todos,
+      { id: Date.now(), text: 'Novo', done: false }
+    ])
+  }
+
+  // ❌ NÃO FUNCIONA
+  const toggleBad = (id) => {
+    const todo = todos.find(t => t.id === id)
+    todo.done = !todo.done // Mutação!
+    setTodos(todos)
+  }
+
+  // ✅ CORRETO - map criando novos objetos
+  const toggle = (id) => {
+    setTodos(todos.map(todo =>
+      todo.id === id
+        ? { ...todo, done: !todo.done }
+        : todo
+    ))
+  }
+}
+```
+
+### Svelte: Mutação Funciona (com cuidado)
+
+```svelte
+<script>
+  let todos = [
+    { id: 1, text: 'Aprender Svelte', done: false }
+  ]
+
+  // ✅ Funciona! Mas precisa da reatribuição
+  function addTodo() {
+    todos.push({ id: Date.now(), text: 'Novo', done: false })
+    todos = todos // Trigger reatividade
+  }
+
+  // ✅ Melhor: spread operator
+  function addTodoBetter() {
+    todos = [...todos, { id: Date.now(), text: 'Novo', done: false }]
+  }
+
+  // ✅ Mutação direta funciona se reatribuir
+  function toggle(id) {
+    const todo = todos.find(t => t.id === id)
+    todo.done = !todo.done
+    todos = todos // Trigger
+  }
+
+  // ✅ Ou mais idiomático
+  function toggleBetter(id) {
+    todos = todos.map(todo =>
+      todo.id === id
+        ? { ...todo, done: !todo.done }
+        : todo
+    )
+  }
+</script>
+```
+
+---
+
+## Exemplo Completo: Todo App
+
+### React
+
+```jsx
+import { useState, useMemo, useCallback } from 'react'
+
+function TodoApp() {
+  const [todos, setTodos] = useState([])
+  const [input, setInput] = useState('')
+  const [filter, setFilter] = useState('all')
+
+  const addTodo = useCallback(() => {
+    if (!input.trim()) return
+    setTodos(prev => [
+      ...prev,
+      { id: Date.now(), text: input, done: false }
+    ])
+    setInput('')
+  }, [input])
+
+  const toggle = useCallback((id) => {
+    setTodos(prev => prev.map(todo =>
+      todo.id === id ? { ...todo, done: !todo.done } : todo
+    ))
+  }, [])
+
+  const remove = useCallback((id) => {
+    setTodos(prev => prev.filter(todo => todo.id !== id))
+  }, [])
+
+  const filteredTodos = useMemo(() => {
+    switch (filter) {
+      case 'active': return todos.filter(t => !t.done)
+      case 'done': return todos.filter(t => t.done)
+      default: return todos
+    }
+  }, [todos, filter])
+
+  const remaining = useMemo(
+    () => todos.filter(t => !t.done).length,
+    [todos]
+  )
+
+  return (
+    <div>
+      <input
+        value={input}
+        onChange={e => setInput(e.target.value)}
+        onKeyDown={e => e.key === 'Enter' && addTodo()}
+      />
+      <button onClick={addTodo}>Adicionar</button>
+
+      <div>
+        <button onClick={() => setFilter('all')}>Todos</button>
+        <button onClick={() => setFilter('active')}>Ativos</button>
+        <button onClick={() => setFilter('done')}>Feitos</button>
+      </div>
+
+      <ul>
+        {filteredTodos.map(todo => (
+          <li key={todo.id}>
+            <input
+              type="checkbox"
+              checked={todo.done}
+              onChange={() => toggle(todo.id)}
+            />
+            <span style={{
+              textDecoration: todo.done ? 'line-through' : 'none'
+            }}>
+              {todo.text}
+            </span>
+            <button onClick={() => remove(todo.id)}>×</button>
+          </li>
+        ))}
+      </ul>
+
+      <p>{remaining} itens restantes</p>
+    </div>
+  )
+}
+```
+
+### Svelte
+
+```svelte
+<script>
+  let todos = []
+  let input = ''
+  let filter = 'all'
+
+  function addTodo() {
+    if (!input.trim()) return
+    todos = [...todos, { id: Date.now(), text: input, done: false }]
+    input = ''
+  }
+
+  function toggle(id) {
+    todos = todos.map(todo =>
+      todo.id === id ? { ...todo, done: !todo.done } : todo
+    )
+  }
+
+  function remove(id) {
+    todos = todos.filter(todo => todo.id !== id)
+  }
+
+  $: filteredTodos = filter === 'all'
+    ? todos
+    : filter === 'active'
+      ? todos.filter(t => !t.done)
+      : todos.filter(t => t.done)
+
+  $: remaining = todos.filter(t => !t.done).length
+</script>
+
+<div>
+  <input
+    bind:value={input}
+    on:keydown={e => e.key === 'Enter' && addTodo()}
+  />
+  <button on:click={addTodo}>Adicionar</button>
+
+  <div>
+    <button on:click={() => filter = 'all'}>Todos</button>
+    <button on:click={() => filter = 'active'}>Ativos</button>
+    <button on:click={() => filter = 'done'}>Feitos</button>
+  </div>
+
+  <ul>
+    {#each filteredTodos as todo (todo.id)}
+      <li>
+        <input
+          type="checkbox"
+          checked={todo.done}
+          on:change={() => toggle(todo.id)}
+        />
+        <span class:done={todo.done}>{todo.text}</span>
+        <button on:click={() => remove(todo.id)}>×</button>
+      </li>
+    {/each}
+  </ul>
+
+  <p>{remaining} itens restantes</p>
+</div>
+
+<style>
+  .done { text-decoration: line-through; }
+</style>
+```
+
+**Comparação:**
+- React: ~55 linhas + imports + useCallback/useMemo
+- Svelte: ~45 linhas, sem imports, sem hooks
+
+---
+
+## ✅ Desafio da Aula
+
+### Objetivo
+Converter um componente React com múltiplos hooks para Svelte.
+
+### Componente React para Converter
+
+```jsx
+import { useState, useEffect, useMemo } from 'react'
+
+function Timer() {
+  const [seconds, setSeconds] = useState(0)
+  const [isRunning, setIsRunning] = useState(false)
+
+  useEffect(() => {
+    let interval = null
+
+    if (isRunning) {
+      interval = setInterval(() => {
+        setSeconds(s => s + 1)
+      }, 1000)
+    }
+
+    return () => clearInterval(interval)
+  }, [isRunning])
+
+  const formatted = useMemo(() => {
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+  }, [seconds])
+
+  return (
+    <div>
+      <h1>{formatted}</h1>
+      <button onClick={() => setIsRunning(!isRunning)}>
+        {isRunning ? 'Pausar' : 'Iniciar'}
+      </button>
+      <button onClick={() => { setSeconds(0); setIsRunning(false) }}>
+        Reset
+      </button>
+    </div>
+  )
+}
+```
+
+### Spec de Verificação
+
+- [ ] Timer conta segundos quando rodando
+- [ ] Botão alterna entre Iniciar/Pausar
+- [ ] Reset zera e para o timer
+- [ ] Formato MM:SS funciona corretamente
+- [ ] **Sem** imports de hooks do Svelte (use `$:` e `onDestroy` se necessário)
+
+### Solução
+
+<details>
+<summary>🔍 Clique para ver a solução</summary>
+
+```svelte
+<script>
+  import { onDestroy } from 'svelte'
+
+  let seconds = 0
+  let isRunning = false
+  let interval = null
+
+  $: {
+    clearInterval(interval)
+    if (isRunning) {
+      interval = setInterval(() => {
+        seconds += 1
+      }, 1000)
+    }
+  }
+
+  onDestroy(() => clearInterval(interval))
+
+  $: formatted = (() => {
+    const mins = Math.floor(seconds / 60)
+    const secs = seconds % 60
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`
+  })()
+
+  function reset() {
+    seconds = 0
+    isRunning = false
+  }
+</script>
+
+<div>
+  <h1>{formatted}</h1>
+  <button on:click={() => isRunning = !isRunning}>
+    {isRunning ? 'Pausar' : 'Iniciar'}
+  </button>
+  <button on:click={reset}>Reset</button>
+</div>
+```
+
+</details>
+
+---
+
+**Próxima aula:** [2.3 — Sintaxe de Templates vs JSX](./2.3-templates-vs-jsx.md)
