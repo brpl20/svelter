@@ -1,17 +1,12 @@
 export const modules = [
 	{
 		id: 1,
-		title: 'Fundamentos do Vite',
-		slug: 'modulo-01-vite',
+		title: 'Primeiros Passos',
+		slug: 'modulo-01-primeiros-passos',
 		lessons: [
-			{ order: 1, title: 'O que é o Vite e por que ele existe', slug: '1.1-o-que-e-vite' },
-			{ order: 2, title: 'Arquitetura do Vite', slug: '1.2-arquitetura-vite' },
-			{ order: 3, title: 'Criando e Explorando um Projeto Vite', slug: '1.3-criando-projeto-vite' },
-			{ order: 4, title: 'Configuração do vite.config.js', slug: '1.4-configuracao-vite' },
-			{ order: 5, title: 'Plugins do Vite', slug: '1.5-plugins-vite' },
-			{ order: 6, title: 'Variáveis de Ambiente e Modos', slug: '1.6-variaveis-ambiente' },
-			{ order: 7, title: 'Build de Produção e Otimização', slug: '1.7-build-producao' },
-			{ order: 8, title: 'Vite para Diferentes Frameworks', slug: '1.8-vite-frameworks' }
+			{ order: 1, title: 'O que é o Svelte', slug: '1.1-o-que-e-svelte' },
+			{ order: 2, title: 'Criando um Projeto com sv create', slug: '1.2-criando-projeto-sv-create' },
+			{ order: 3, title: 'Estrutura de Arquivos', slug: '1.3-estrutura-arquivos' }
 		]
 	},
 	{
@@ -44,6 +39,21 @@ export const modules = [
 			{ order: 8, title: 'Snippets — Nova Composição', slug: '27.8-snippets-composicao' },
 			{ order: 9, title: 'Event Handlers no Svelte 5', slug: '27.9-event-handlers' },
 			{ order: 10, title: 'Migração: Svelte 4 para 5', slug: '27.10-migracao-svelte4-5' }
+		]
+	},
+	{
+		id: 77,
+		title: 'Fundamentos do Vite',
+		slug: 'modulo-77-vite',
+		lessons: [
+			{ order: 1, title: 'O que é o Vite e por que ele existe', slug: '77.1-o-que-e-vite' },
+			{ order: 2, title: 'Arquitetura do Vite', slug: '77.2-arquitetura-vite' },
+			{ order: 3, title: 'Criando e Explorando um Projeto Vite', slug: '77.3-criando-projeto-vite' },
+			{ order: 4, title: 'Configuração do vite.config.js', slug: '77.4-configuracao-vite' },
+			{ order: 5, title: 'Plugins do Vite', slug: '77.5-plugins-vite' },
+			{ order: 6, title: 'Variáveis de Ambiente e Modos', slug: '77.6-variaveis-ambiente' },
+			{ order: 7, title: 'Build de Produção e Otimização', slug: '77.7-build-producao' },
+			{ order: 8, title: 'Vite para Diferentes Frameworks', slug: '77.8-vite-frameworks' }
 		]
 	},
 	{
