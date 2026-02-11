@@ -16,7 +16,7 @@ import Question from '$lib/components/Question.svelte';
 ## Objetivos da Aula
 
 - Conhecer o `sv` — a CLI oficial do Svelte
-- Criar um projeto SvelteKit com `npx sv create`
+- Criar um projeto SvelteKit com `pnpm dlx sv create`
 - Entender cada opcao do wizard interativo
 - Conhecer os add-ons disponiveis e quando usar cada um
 - Rodar o servidor de desenvolvimento pela primeira vez
@@ -56,7 +56,7 @@ Agora, tudo isso vive dentro do `sv`.
 </div>
 
 <Question question="Preciso instalar o sv globalmente?">
-Nao. Voce usa o `sv` atraves do `npx` (que ja vem com o npm). Ao rodar `npx sv create`, o npm baixa e executa o `sv` automaticamente, sempre na versao mais recente. Nao precisa instalar nada antes.
+Nao. Voce usa o `sv` atraves do `pnpm dlx` (equivalente ao `npx`). Ao rodar `pnpm dlx sv create`, o pnpm baixa e executa o `sv` automaticamente, sempre na versao mais recente. Basta ter o pnpm instalado (veja a aula 1.4).
 </Question>
 
 ---
@@ -66,13 +66,13 @@ Nao. Voce usa o `sv` atraves do `npx` (que ja vem com o npm). Ao rodar `npx sv c
 Abra o terminal e execute:
 
 ```bash
-npx sv create meu-projeto
+pnpm dlx sv create meu-projeto
 ```
 
 Esse comando vai iniciar um **wizard interativo** que guia voce pelas opcoes do projeto. Vamos entender cada etapa.
 
 <Tip>
-Se voce usa `pnpm`, o comando equivalente e `pnpx sv create meu-projeto`. Com `bun`, use `bunx sv create meu-projeto`. Neste curso usaremos `npm`/`npx` por ser o mais universal.
+Se voce usa `npm`, o comando equivalente e `npx sv create meu-projeto`. Com `bun`, use `bunx sv create meu-projeto`. Neste curso usaremos `pnpm` por suas vantagens de performance e economia de disco (veja a aula 1.4).
 </Tip>
 
 ---
@@ -315,13 +315,13 @@ Apos selecionar os add-ons, o wizard pergunta qual gerenciador de pacotes usar:
 
 ```text
 ◇  Which package manager do you want to install dependencies with?
-│  ● npm
-│  ○ pnpm
+│  ○ npm
+│  ● pnpm
 │  ○ yarn
 │  ○ bun
 ```
 
-**Escolha `npm`** (o padrao, ja vem com o Node.js).
+**Escolha `pnpm`**. Ele e mais rapido, economiza espaco em disco e tem resolucao de dependencias mais segura que o npm. Veja a aula 1.4 para saber mais.
 
 ---
 
@@ -331,21 +331,21 @@ Agora que voce entende cada opcao, vamos criar o projeto de fato:
 
 ```bash
 # 1. Crie o projeto
-npx sv create meu-projeto
+pnpm dlx sv create meu-projeto
 ```
 
 Selecione:
 - Template: **SvelteKit minimal**
 - TypeScript: **Yes, using Typescript syntax**
 - Add-ons: **prettier** e **eslint**
-- Package manager: **npm**
+- Package manager: **pnpm**
 
 ```bash
 # 2. Entre na pasta do projeto
 cd meu-projeto
 
 # 3. Inicie o servidor de desenvolvimento
-npm run dev
+pnpm dev
 ```
 
 Voce vera algo assim no terminal:
@@ -374,17 +374,17 @@ Se voce ja sabe o que quer, pode pular o wizard passando as opcoes diretamente:
 
 ```bash
 # Criar com template minimal e TypeScript
-npx sv create meu-projeto --template minimal --types ts
+pnpm dlx sv create meu-projeto --template minimal --types ts
 
 # Criar e ja adicionar Tailwind e Prettier
-npx sv create meu-projeto --template minimal --types ts --add prettier,tailwindcss
+pnpm dlx sv create meu-projeto --template minimal --types ts --add prettier,tailwindcss
 
 # Criar sem instalar dependencias (instalar manualmente depois)
-npx sv create meu-projeto --no-install
+pnpm dlx sv create meu-projeto --no-install
 ```
 
-<Question question="Qual a diferenca entre sv create e npm create vite?">
-O <code>npm create vite</code> cria projetos Vite genericos (React, Vue, Svelte puro, etc.). Ja o <code>npx sv create</code> cria projetos <strong>SvelteKit</strong> — que vem com roteamento, SSR, e toda a estrutura do framework. Para projetos Svelte serios, use sempre <code>sv create</code>.
+<Question question="Qual a diferenca entre sv create e pnpm create vite?">
+O <code>pnpm create vite</code> cria projetos Vite genericos (React, Vue, Svelte puro, etc.). Ja o <code>pnpm dlx sv create</code> cria projetos <strong>SvelteKit</strong> — que vem com roteamento, SSR, e toda a estrutura do framework. Para projetos Svelte serios, use sempre <code>sv create</code>.
 </Question>
 
 ---
@@ -395,13 +395,13 @@ Esqueceu de adicionar Tailwind na criacao? Sem problema:
 
 ```bash
 # Adicionar Tailwind a um projeto existente
-npx sv add tailwindcss
+pnpm dlx sv add tailwindcss
 
 # Adicionar testes
-npx sv add vitest
+pnpm dlx sv add vitest
 
 # Adicionar multiplos add-ons de uma vez
-npx sv add prettier eslint
+pnpm dlx sv add prettier eslint
 ```
 
 O `sv add` modifica os arquivos necessarios automaticamente — instala dependencias, cria arquivos de configuracao e atualiza o que for preciso.
@@ -414,25 +414,25 @@ Apos criar o projeto, voce tem estes scripts no `package.json`:
 
 ```bash
 # Iniciar servidor de desenvolvimento
-npm run dev
+pnpm dev
 
 # Gerar build de producao
-npm run build
+pnpm build
 
 # Visualizar o build localmente
-npm run preview
+pnpm preview
 
 # Verificar tipos TypeScript
-npm run check
+pnpm check
 
 # Rodar o linter (se adicionou ESLint)
-npm run lint
+pnpm lint
 
 # Formatar codigo (se adicionou Prettier)
-npm run format
+pnpm format
 ```
 
-### O mais importante: `npm run dev`
+### O mais importante: `pnpm dev`
 
 Este e o comando que voce mais vai usar. Ele inicia o servidor de desenvolvimento com:
 - **Hot Module Replacement (HMR)** — alteracoes aparecem instantaneamente no navegador
@@ -440,16 +440,16 @@ Este e o comando que voce mais vai usar. Ele inicia o servidor de desenvolviment
 - **Deteccao de erros** — erros aparecem direto no navegador e no terminal
 
 ```bash
-npm run dev
+pnpm dev
 
 # Opcoes uteis:
-npm run dev -- --open
+pnpm dev --open
 # Abre o navegador automaticamente
 
-npm run dev -- --port 3000
+pnpm dev --port 3000
 # Usa a porta 3000 em vez da 5173
 
-npm run dev -- --host
+pnpm dev --host
 # Expoe na rede local (para testar no celular)
 ```
 
@@ -459,11 +459,11 @@ npm run dev -- --host
 
 | Comando | O que faz |
 |---------|-----------|
-| `npx sv create` | Cria novo projeto SvelteKit (interativo) |
-| `npx sv add` | Adiciona funcionalidades a projeto existente |
-| `npx sv migrate` | Migra codigo entre versoes do Svelte |
-| `npm run dev` | Inicia servidor de desenvolvimento |
-| `npm run build` | Gera build de producao |
+| `pnpm dlx sv create` | Cria novo projeto SvelteKit (interativo) |
+| `pnpm dlx sv add` | Adiciona funcionalidades a projeto existente |
+| `pnpm dlx sv migrate` | Migra codigo entre versoes do Svelte |
+| `pnpm dev` | Inicia servidor de desenvolvimento |
+| `pnpm build` | Gera build de producao |
 
 ---
 
@@ -475,9 +475,9 @@ Criar seu primeiro projeto SvelteKit e confirmar que esta funcionando.
 ### Instrucoes
 
 1. Abra o terminal
-2. Execute `npx sv create meu-primeiro-svelte`
-3. Selecione: minimal, TypeScript, prettier + eslint
-4. Entre na pasta e rode `npm run dev`
+2. Execute `pnpm dlx sv create meu-primeiro-svelte`
+3. Selecione: minimal, TypeScript, prettier + eslint, **pnpm**
+4. Entre na pasta e rode `pnpm dev`
 5. Acesse `http://localhost:5173` no navegador
 
 ### Spec de Verificacao
@@ -489,4 +489,4 @@ Criar seu primeiro projeto SvelteKit e confirmar que esta funcionando.
 
 ---
 
-**Proxima aula:** [1.3 — Estrutura de Arquivos do Projeto](../1.3-estrutura-arquivos)
+**Proxima aula:** [1.3 — Estrutura de Arquivos do Projeto](/lessons/modulo-01-primeiros-passos/1.3-estrutura-arquivos)

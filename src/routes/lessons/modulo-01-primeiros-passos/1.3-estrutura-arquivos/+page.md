@@ -24,7 +24,7 @@ import Question from '$lib/components/Question.svelte';
 
 ## Visao Geral da Estrutura
 
-Apos criar um projeto com `npx sv create` (template minimal, TypeScript, prettier, eslint), voce tera algo assim:
+Apos criar um projeto com `pnpm dlx sv create` (template minimal, TypeScript, prettier, eslint), voce tera algo assim:
 
 <div class="not-prose my-6 rounded-xl border border-base-content/10 bg-base-200 p-4 sm:p-6 font-mono text-sm">
   <div class="mb-3 font-bold text-base-content text-base font-sans">Estrutura do projeto</div>
@@ -116,21 +116,21 @@ src/routes/
 
 <div class="not-prose my-6 rounded-xl border border-base-content/10 bg-base-200 overflow-hidden">
   <div class="bg-success text-success-content px-4 py-2 font-bold text-center text-sm sm:text-base tracking-wide">PASTA → URL</div>
-  <div class="p-4 sm:p-6 space-y-3">
-    <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-      <code class="bg-base-300 px-3 py-1 rounded text-sm font-mono w-full sm:w-auto text-center">src/routes/+page.svelte</code>
+  <div class="p-4 sm:p-6 space-y-3 overflow-x-auto">
+    <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 min-w-0">
+      <code class="bg-base-300 px-3 py-1 rounded text-xs sm:text-sm font-mono w-full sm:w-auto text-center break-all">src/routes/+page.svelte</code>
       <span class="text-success font-bold shrink-0">→</span>
-      <code class="bg-success/20 text-success px-3 py-1 rounded text-sm font-mono w-full sm:w-auto text-center">/</code>
+      <code class="bg-success/20 text-success px-3 py-1 rounded text-xs sm:text-sm font-mono w-full sm:w-auto text-center">/</code>
     </div>
-    <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-      <code class="bg-base-300 px-3 py-1 rounded text-sm font-mono w-full sm:w-auto text-center">src/routes/about/+page.svelte</code>
+    <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 min-w-0">
+      <code class="bg-base-300 px-3 py-1 rounded text-xs sm:text-sm font-mono w-full sm:w-auto text-center break-all">src/routes/about/+page.svelte</code>
       <span class="text-success font-bold shrink-0">→</span>
-      <code class="bg-success/20 text-success px-3 py-1 rounded text-sm font-mono w-full sm:w-auto text-center">/about</code>
+      <code class="bg-success/20 text-success px-3 py-1 rounded text-xs sm:text-sm font-mono w-full sm:w-auto text-center">/about</code>
     </div>
-    <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-      <code class="bg-base-300 px-3 py-1 rounded text-sm font-mono w-full sm:w-auto text-center">src/routes/blog/[slug]/+page.svelte</code>
+    <div class="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 min-w-0">
+      <code class="bg-base-300 px-3 py-1 rounded text-xs sm:text-sm font-mono w-full sm:w-auto text-center break-all">src/routes/blog/[slug]/+page.svelte</code>
       <span class="text-success font-bold shrink-0">→</span>
-      <code class="bg-success/20 text-success px-3 py-1 rounded text-sm font-mono w-full sm:w-auto text-center">/blog/qualquer-coisa</code>
+      <code class="bg-success/20 text-success px-3 py-1 rounded text-xs sm:text-sm font-mono w-full sm:w-auto text-center break-all">/blog/qualquer-coisa</code>
     </div>
   </div>
 </div>
@@ -382,19 +382,11 @@ Os principais campos que voce vai usar ao longo do curso:
 
 ### `vite.config.ts`
 
-Configuracao do Vite (o bundler por baixo do SvelteKit):
+O Vite e o bundler usado pelo SvelteKit. Na maioria dos casos, voce nao precisa mexer neste arquivo — o plugin `sveltekit()` ja configura tudo que e necessario.
 
-```typescript
-// vite.config.ts
-import { sveltekit } from '@sveltejs/kit/vite';
-import { defineConfig } from 'vite';
-
-export default defineConfig({
-  plugins: [sveltekit()]
-});
-```
-
-Na maioria dos casos, voce nao precisa mexer neste arquivo. O plugin `sveltekit()` ja configura tudo que e necessario.
+<Tip>
+Vamos explorar o Vite em detalhes no <a href="/lessons/modulo-02-configuracoes-vite/2.1-o-que-e-vite">Modulo 2 — Configuracoes e Vite</a>.
+</Tip>
 
 ### `tsconfig.json`
 
@@ -432,7 +424,7 @@ Seu projeto vem com estas dependencias essenciais:
     "dev": "vite dev",
     "build": "vite build",
     "preview": "vite preview",
-    "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
+    "check": "svelte-kit sync && svelte-check"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^4.0.0",
@@ -454,7 +446,7 @@ Note o <code>"type": "module"</code>. Isso habilita ESModules nativos no Node.js
 
 ## A pasta `.svelte-kit/` — Gerada automaticamente
 
-Quando voce roda `npm run dev` ou `npm run build`, o SvelteKit gera uma pasta `.svelte-kit/` com arquivos internos. Voce **nunca deve editar** esses arquivos — eles sao regenerados automaticamente.
+Quando voce roda `pnpm dev` ou `pnpm build`, o SvelteKit gera uma pasta `.svelte-kit/` com arquivos internos. Voce **nunca deve editar** esses arquivos — eles sao regenerados automaticamente.
 
 Esta pasta esta no `.gitignore` e nao vai para o repositorio.
 
@@ -616,24 +608,4 @@ Crie tambem um `+layout.svelte` na raiz (`src/routes/+layout.svelte`) com uma na
 
 ---
 
-## Conclusao do Modulo 0
-
-Parabens! Voce completou o **Modulo 1 — Primeiros Passos**.
-
-### O que voce aprendeu
-
-- O que e Svelte e como ele se diferencia de outros frameworks
-- Como criar um projeto SvelteKit com `npx sv create`
-- As opcoes do wizard: templates, TypeScript e add-ons
-- A estrutura completa de arquivos e pastas
-- Como o roteamento baseado em arquivos funciona
-- Os arquivos especiais do SvelteKit (`+page`, `+layout`, `+server`)
-- O papel de cada arquivo de configuracao
-
-### Proximos passos
-
-No proximo modulo, vamos mergulhar no **Vite** — o bundler que roda por baixo do SvelteKit. Entender o Vite vai te ajudar a compreender porque tudo e tao rapido e como otimizar seu ambiente de desenvolvimento.
-
----
-
-**Proximo modulo:** [Fundamentos do Vite](../../modulo-77-vite/77.1-o-que-e-vite)
+**Proxima aula:** [1.4 — Por que usamos pnpm neste curso](/lessons/modulo-01-primeiros-passos/1.4-por-que-pnpm)

@@ -1,0 +1,551 @@
+---
+title: "$effect — Efeitos Colaterais"
+module: 8
+order: 4
+---
+
+# 8.4 — `$effect` — Efeitos Colaterais
+
+> Side effects que reagem automaticamente a mudanças de estado.
+
+## Objetivos da Aula
+
+- Entender quando usar `$effect`
+- Dominar cleanup de efeitos
+- Conhecer `$effect.pre` e `$effect.root`
+- **EVITAR** as armadilhas mais comuns
+
+---
+
+## ⚠️ AVISO IMPORTANTE
+
+**`$effect` é a rune mais mal utilizada.** Antes de usar, pergunte-se:
+
+> Isso deveria ser um `$derived` ou isso REALMENTE é um efeito colateral?
+
+```svelte
+<script>
+  let count = $state(0)
+
+  // ❌ ERRADO — isso é um valor derivado!
+  let doubled
+  $effect(() => {
+    doubled = count * 2
+  })
+
+  // ✅ CORRETO
+  let doubled = $derived(count * 2)
+</script>
+```
+
+---
+
+## Sintaxe Básica
+
+```svelte
+<script>
+  let count = $state(0)
+
+  // Efeito simples — roda quando count muda
+  $effect(() => {
+    console.log('count agora é:', count)
+  })
+
+  // Efeito com múltiplas dependências
+  let name = $state('João')
+  $effect(() => {
+    console.log(`${name} tem ${count} pontos`)
+  })
+</script>
+```
+
+---
+
+## Quando Usar `$effect`
+
+### ✅ Casos de Uso Legítimos
+
+**1. Sincronizar com APIs externas**
+
+```svelte
+<script>
+  let searchTerm = $state('')
+  let results = $state([])
+
+  $effect(() => {
+    // Sincronizar com API quando searchTerm muda
+    if (searchTerm.length >= 3) {
+      fetch(`/api/search?q=${searchTerm}`)
+        .then(r => r.json())
+        .then(data => results = data)
+    }
+  })
+</script>
+```
+
+**2. Integrar com bibliotecas externas**
+
+```svelte
+<script>
+  import * as d3 from 'd3'
+
+  let data = $state([10, 20, 30, 40])
+  let svgRef
+
+  $effect(() => {
+    if (!svgRef) return
+
+    // D3 precisa manipular o DOM diretamente
+    d3.select(svgRef)
+      .selectAll('rect')
+      .data(data)
+      .join('rect')
+      .attr('height', d => d)
+  })
+</script>
+
+<svg bind:this={svgRef}></svg>
+```
+
+**3. Logging e analytics**
+
+```svelte
+<script>
+  let currentPage = $state('home')
+
+  $effect(() => {
+    // Enviar para analytics
+    analytics.pageView(currentPage)
+  })
+</script>
+```
+
+**4. Persistir em localStorage**
+
+```svelte
+<script>
+  let settings = $state({
+    theme: 'dark',
+    language: 'pt-BR'
+  })
+
+  $effect(() => {
+    localStorage.setItem('settings', JSON.stringify($state.snapshot(settings)))
+  })
+</script>
+```
+
+**5. Títulos e meta tags**
+
+```svelte
+<script>
+  let pageTitle = $state('Início')
+
+  $effect(() => {
+    document.title = `${pageTitle} | Meu App`
+  })
+</script>
+```
+
+---
+
+## Cleanup: Limpando Efeitos
+
+Retorne uma função para cleanup:
+
+```svelte
+<script>
+  let interval = $state(1000)
+
+  $effect(() => {
+    console.log(`Iniciando timer com intervalo de ${interval}ms`)
+
+    const id = setInterval(() => {
+      console.log('tick')
+    }, interval)
+
+    // Cleanup: roda quando efeito re-executa ou componente é destruído
+    return () => {
+      console.log('Limpando timer anterior')
+      clearInterval(id)
+    }
+  })
+</script>
+
+<input type="range" min="100" max="2000" bind:value={interval} />
+```
+
+### Event Listeners
+
+```svelte
+<script>
+  let mousePosition = $state({ x: 0, y: 0 })
+
+  $effect(() => {
+    function handleMouseMove(e) {
+      mousePosition = { x: e.clientX, y: e.clientY }
+    }
+
+    window.addEventListener('mousemove', handleMouseMove)
+
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+    }
+  })
+</script>
+
+<p>Mouse: {mousePosition.x}, {mousePosition.y}</p>
+```
+
+### WebSocket
+
+```svelte
+<script>
+  let connected = $state(false)
+  let messages = $state([])
+  let serverUrl = $state('wss://api.example.com')
+
+  $effect(() => {
+    const ws = new WebSocket(serverUrl)
+
+    ws.onopen = () => connected = true
+    ws.onclose = () => connected = false
+    ws.onmessage = (e) => messages.push(JSON.parse(e.data))
+
+    return () => {
+      ws.close()  // Cleanup!
+    }
+  })
+</script>
+```
+
+---
+
+## `$effect.pre` — Antes do DOM
+
+Roda ANTES do Svelte atualizar o DOM:
+
+```svelte
+<script>
+  let messages = $state([])
+  let container
+
+  // Scroll para baixo quando novas mensagens chegam
+  $effect.pre(() => {
+    // Salva posição do scroll ANTES do DOM atualizar
+    const wasAtBottom = container &&
+      container.scrollTop + container.clientHeight >= container.scrollHeight - 10
+
+    // Retorna cleanup que roda DEPOIS do DOM atualizar
+    return () => {
+      if (wasAtBottom && container) {
+        container.scrollTop = container.scrollHeight
+      }
+    }
+  })
+</script>
+
+<div bind:this={container} class="chat">
+  {#each messages as msg}
+    <p>{msg}</p>
+  {/each}
+</div>
+```
+
+---
+
+## `$effect.root` — Efeitos Fora de Componentes
+
+Por padrão, `$effect` só funciona dentro de componentes. Para usar fora:
+
+```javascript
+// utils.svelte.js
+export function createAutoSaver(getData, saveKey) {
+  // $effect.root permite usar $effect fora de componentes
+  const cleanup = $effect.root(() => {
+    $effect(() => {
+      const data = getData()
+      localStorage.setItem(saveKey, JSON.stringify(data))
+    })
+  })
+
+  // Retorna função para parar o efeito
+  return cleanup
+}
+```
+
+```svelte
+<script>
+  import { createAutoSaver } from './utils.svelte.js'
+  import { onDestroy } from 'svelte'
+
+  let settings = $state({ theme: 'dark' })
+
+  const stopAutoSave = createAutoSaver(
+    () => $state.snapshot(settings),
+    'app-settings'
+  )
+
+  onDestroy(stopAutoSave)
+</script>
+```
+
+---
+
+## Dependências: Auto-Tracking
+
+O Svelte rastreia automaticamente o que você lê:
+
+```svelte
+<script>
+  let a = $state(1)
+  let b = $state(2)
+  let mode = $state('sum')
+
+  $effect(() => {
+    // Dependências dependem do código executado!
+    if (mode === 'sum') {
+      console.log('Soma:', a + b)  // Depende de: mode, a, b
+    } else {
+      console.log('Só A:', a)  // Depende de: mode, a (não b!)
+    }
+  })
+</script>
+```
+
+### Evitando Dependências Indesejadas
+
+```svelte
+<script>
+  let count = $state(0)
+  let config = $state({ threshold: 10 })
+
+  // ❌ Re-executa toda vez que config muda (qualquer prop)
+  $effect(() => {
+    if (count > config.threshold) {
+      alert('Limite atingido!')
+    }
+  })
+
+  // ✅ Extrai o valor que precisa antes
+  $effect(() => {
+    const threshold = config.threshold  // Só depende de threshold
+
+    return () => {
+      // Use threshold aqui se precisar
+    }
+  })
+</script>
+```
+
+---
+
+## ⚠️ Armadilhas Comuns
+
+### 1. Usar `$effect` para valores derivados
+
+```svelte
+<script>
+  let items = $state([1, 2, 3])
+
+  // ❌ TERRÍVEL — causa loop infinito!
+  let total
+  $effect(() => {
+    total = items.reduce((a, b) => a + b, 0)
+    // total muda → re-renderiza → effect roda → total muda → ...
+  })
+
+  // ✅ Use $derived
+  let total = $derived(items.reduce((a, b) => a + b, 0))
+</script>
+```
+
+### 2. Atualizar estado que é dependência
+
+```svelte
+<script>
+  let count = $state(0)
+
+  // ❌ LOOP INFINITO!
+  $effect(() => {
+    count = count + 1  // Lê count → atribui count → efeito re-executa → ...
+  })
+
+  // ✅ Se precisa incrementar, use evento ou outra trigger
+  function handleClick() {
+    count++
+  }
+</script>
+```
+
+### 3. Efeitos que deveriam ser event handlers
+
+```svelte
+<script>
+  let buttonClicked = $state(false)
+
+  // ❌ Não use effect para responder a "eventos"
+  $effect(() => {
+    if (buttonClicked) {
+      doSomething()
+      buttonClicked = false  // Reset — isso é confuso!
+    }
+  })
+
+  // ✅ Use event handler diretamente
+  function handleClick() {
+    doSomething()
+  }
+</script>
+
+<button onclick={handleClick}>Clique</button>
+```
+
+### 4. Esquecer o cleanup
+
+```svelte
+<script>
+  // ❌ Vazamento de memória!
+  $effect(() => {
+    window.addEventListener('resize', handleResize)
+    // Esqueceu de remover!
+  })
+
+  // ✅ Sempre faça cleanup
+  $effect(() => {
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  })
+</script>
+```
+
+### 5. Assumir ordem de execução
+
+```svelte
+<script>
+  let a = $state(1)
+  let b = $state(2)
+
+  // ❌ Não assuma que esse roda primeiro
+  $effect(() => console.log('A:', a))
+
+  // ❌ Ou que esse roda segundo
+  $effect(() => console.log('B:', b))
+
+  // A ordem pode mudar baseada em dependências!
+</script>
+```
+
+---
+
+## Fluxograma: Quando Usar Cada Rune
+
+<div class="not-prose my-8 flex flex-col items-center gap-0 text-base-content">
+
+  <div class="rounded-lg border-2 border-primary bg-primary/10 px-6 py-3 text-center font-semibold text-sm">
+    Preciso reagir a estado
+  </div>
+
+  <div class="w-0.5 h-5 bg-base-content/30"></div>
+
+  <div class="rounded-lg border-2 border-warning bg-warning/10 px-6 py-3 text-center text-sm max-w-xs">
+    <div class="font-semibold">É um valor computado?</div>
+    <div class="text-xs text-base-content/60 mt-1">(Depende só de outros estados)</div>
+  </div>
+
+  <div class="w-0.5 h-3 bg-base-content/30"></div>
+
+  <div class="grid grid-cols-2 gap-4 w-full max-w-lg">
+    <div class="flex flex-col items-center gap-0">
+      <span class="badge badge-sm badge-success mb-2">SIM</span>
+      <div class="rounded-lg border-2 border-success bg-success/10 px-4 py-3 text-center text-sm font-semibold w-full">
+        Use <code class="bg-success/20 px-1 rounded">$derived</code>
+      </div>
+    </div>
+    <div class="flex flex-col items-center gap-0">
+      <span class="badge badge-sm badge-error mb-2">NÃO</span>
+      <div class="w-0.5 h-4 bg-base-content/30"></div>
+      <div class="rounded-lg border-2 border-info bg-info/10 px-4 py-3 text-center text-sm w-full">
+        <div class="font-semibold">É efeito externo?</div>
+        <div class="text-xs text-base-content/60 mt-1">(API, DOM, log)</div>
+      </div>
+
+      <div class="w-0.5 h-3 bg-base-content/30"></div>
+
+      <div class="grid grid-cols-2 gap-3 w-full">
+        <div class="flex flex-col items-center gap-0">
+          <span class="badge badge-xs badge-success mb-2">SIM</span>
+          <div class="rounded-lg border-2 border-accent bg-accent/10 px-3 py-2.5 text-center text-sm font-semibold w-full">
+            Use <code class="bg-accent/20 px-1 rounded">$effect</code>
+          </div>
+        </div>
+        <div class="flex flex-col items-center gap-0">
+          <span class="badge badge-xs badge-error mb-2">NÃO</span>
+          <div class="rounded-lg border-2 border-warning bg-warning/10 px-3 py-2.5 text-center text-xs w-full">
+            <div class="font-bold">Repense!</div>
+            <div class="text-base-content/60 mt-0.5">Provavelmente não precisa de nada</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+---
+
+## Resumo
+
+| API | Quando Usar |
+|-----|-------------|
+| `$effect(() => {})` | Side effects externos (API, DOM, storage) |
+| `$effect.pre` | Efeitos antes do DOM atualizar |
+| `$effect.root` | Efeitos fora de componentes |
+| `return () => {}` | Cleanup quando efeito re-executa |
+
+### Regra de Ouro
+
+> **Se o resultado é um VALOR, use `$derived`.**
+> **Se é uma AÇÃO externa, use `$effect`.**
+
+---
+
+## ✅ Desafio da Aula
+
+### Objetivo
+Criar um hook de debounced search que:
+1. Espera 300ms após o usuário parar de digitar
+2. Faz fetch da API
+3. Tem cleanup correto
+
+### Estrutura
+
+```javascript
+// search.svelte.js
+export function createDebouncedSearch(delay = 300) {
+  let query = $state('')
+  let results = $state([])
+  let loading = $state(false)
+
+  // TODO: Implementar $effect com debounce e cleanup
+
+  return {
+    get query() { return query },
+    set query(v) { query = v },
+    get results() { return results },
+    get loading() { return loading }
+  }
+}
+```
+
+### Spec de Verificação
+
+- [ ] Não faz fetch enquanto usuário digita
+- [ ] Faz fetch 300ms após parar de digitar
+- [ ] Mostra loading durante fetch
+- [ ] Cancela fetch pendente se query mudar
+- [ ] Limpa timeout no cleanup
+
+---
+
+**Próxima aula:** [8.5 — `$props` — Props com Runes](../8.5-props-com-runes)

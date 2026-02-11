@@ -18,6 +18,7 @@ import Question from '$lib/components/Question.svelte';
 - Entender o que é o Svelte e sua proposta
 - Conhecer a diferença entre compilador e runtime
 - Saber a relação entre Svelte e SvelteKit
+- Conhecer as estrategias de renderizacao da web (SSR, CSR, SSG e outras)
 - Entender por que Svelte é ideal para quem está começando
 
 ---
@@ -130,6 +131,141 @@ Neste curso, vamos usar o SvelteKit desde o inicio. Isso significa que voce vai 
 
 ---
 
+## Como a web renderiza: SSR, CSR e alem
+
+Antes de seguir, vale entender um conceito fundamental que voce vai encontrar o tempo todo: **como o HTML chega ate o navegador do usuario**.
+
+### Server-Side Rendering (SSR)
+
+No SSR, o **servidor** gera o HTML completo da pagina e envia pronto para o navegador. E assim que a web funcionou desde o inicio — PHP, Ruby on Rails, Django e outros frameworks tradicionais fazem exatamente isso.
+
+<div class="not-prose my-6 rounded-xl border border-base-content/10 bg-base-200 overflow-hidden">
+  <div class="bg-info text-info-content px-4 py-2 font-bold text-center text-sm sm:text-base tracking-wide">SERVER-SIDE RENDERING (SSR)</div>
+  <div class="p-4 sm:p-6">
+    <div class="flex flex-col items-center gap-3">
+      <div class="bg-base-100 rounded-lg border border-base-content/10 px-4 py-3 text-base-content text-sm text-center w-full sm:w-auto">
+        <span class="font-bold">Navegador</span> pede a pagina
+      </div>
+      <div class="text-2xl text-info font-bold">&#9660;</div>
+      <div class="bg-base-100 rounded-lg border border-info/30 px-4 py-3 text-base-content text-sm text-center w-full sm:w-auto">
+        <span class="font-bold text-info">Servidor</span> monta o HTML completo<br>
+        <span class="text-base-content/70">(busca dados, renderiza componentes)</span>
+      </div>
+      <div class="text-2xl text-info font-bold">&#9660;</div>
+      <div class="bg-base-100 rounded-lg border border-success/30 px-4 py-3 text-base-content text-sm text-center w-full sm:w-auto">
+        <span class="font-bold text-success">HTML pronto</span> chega no navegador<br>
+        <span class="text-base-content/70">o usuario ja ve o conteudo</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+**Vantagens:** o conteudo aparece rapido na tela e buscadores como o Google conseguem ler a pagina facilmente (bom para SEO).
+
+**Desvantagem:** cada clique em um link exige uma nova ida ao servidor, o que pode deixar a navegacao mais lenta.
+
+### Client-Side Rendering (CSR)
+
+No CSR, o servidor envia um HTML quase vazio junto com um arquivo JavaScript grande. O **navegador** e quem faz todo o trabalho — executa o JavaScript, busca os dados e monta a interface na tela.
+
+<div class="not-prose my-6 rounded-xl border border-base-content/10 bg-base-200 overflow-hidden">
+  <div class="bg-accent text-accent-content px-4 py-2 font-bold text-center text-sm sm:text-base tracking-wide">CLIENT-SIDE RENDERING (CSR)</div>
+  <div class="p-4 sm:p-6">
+    <div class="flex flex-col items-center gap-3">
+      <div class="bg-base-100 rounded-lg border border-base-content/10 px-4 py-3 text-base-content text-sm text-center w-full sm:w-auto">
+        <span class="font-bold">Navegador</span> pede a pagina
+      </div>
+      <div class="text-2xl text-accent font-bold">&#9660;</div>
+      <div class="bg-base-100 rounded-lg border border-accent/30 px-4 py-3 text-base-content text-sm text-center w-full sm:w-auto">
+        Servidor envia <span class="font-bold text-accent">HTML vazio + JavaScript</span><br>
+        <span class="text-base-content/70">(pagina em branco por um instante)</span>
+      </div>
+      <div class="text-2xl text-accent font-bold">&#9660;</div>
+      <div class="bg-base-100 rounded-lg border border-accent/30 px-4 py-3 text-base-content text-sm text-center w-full sm:w-auto">
+        <span class="font-bold text-accent">JavaScript no navegador</span> monta a UI<br>
+        <span class="text-base-content/70">(busca dados, renderiza componentes)</span>
+      </div>
+      <div class="text-2xl text-accent font-bold">&#9660;</div>
+      <div class="bg-base-100 rounded-lg border border-success/30 px-4 py-3 text-base-content text-sm text-center w-full sm:w-auto">
+        <span class="font-bold text-success">Conteudo aparece</span> na tela
+      </div>
+    </div>
+  </div>
+</div>
+
+**Vantagens:** depois do carregamento inicial, a navegacao entre paginas e muito rapida (sem recarregar a pagina inteira). Excelente para dashboards e aplicacoes interativas.
+
+**Desvantagem:** o primeiro carregamento pode ser lento (tela em branco enquanto o JavaScript executa) e buscadores tem dificuldade para indexar o conteudo.
+
+### Outras estrategias de renderizacao
+
+SSR e CSR nao sao as unicas opcoes. A web moderna oferece mais abordagens:
+
+<div class="not-prose my-6 space-y-3">
+  <div class="rounded-xl border border-base-content/10 bg-base-200 p-4">
+    <div class="flex items-start gap-3">
+      <div class="badge badge-neutral font-bold shrink-0">SSG</div>
+      <div>
+        <div class="font-bold text-base-content">Static Site Generation</div>
+        <div class="text-sm text-base-content/80">
+          As paginas sao geradas em HTML <strong>no momento do build</strong>, nao a cada requisicao. O servidor so entrega arquivos prontos. Extremamente rapido, ideal para blogs, documentacoes e landing pages.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rounded-xl border border-base-content/10 bg-base-200 p-4">
+    <div class="flex items-start gap-3">
+      <div class="badge badge-neutral font-bold shrink-0">ISR</div>
+      <div>
+        <div class="font-bold text-base-content">Incremental Static Regeneration</div>
+        <div class="text-sm text-base-content/80">
+          Combina SSG com atualizacao automatica. As paginas sao estaticas, mas o servidor pode regenera-las em segundo plano depois de um tempo definido. Equilibrio entre performance e conteudo atualizado.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="rounded-xl border border-base-content/10 bg-base-200 p-4">
+    <div class="flex items-start gap-3">
+      <div class="badge badge-neutral font-bold shrink-0">STREAMING</div>
+      <div>
+        <div class="font-bold text-base-content">Streaming SSR</div>
+        <div class="text-sm text-base-content/80">
+          Em vez de esperar o HTML inteiro ficar pronto, o servidor vai enviando pedacos conforme ficam prontos. O usuario ve o conteudo aparecer progressivamente, sem esperar por dados lentos.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+### E o SvelteKit nisso tudo?
+
+O SvelteKit permite usar **todas** essas estrategias — e ainda mistura-las no mesmo projeto. Uma pagina pode ser SSR, outra SSG, outra CSR. Voce escolhe por rota, de acordo com a necessidade.
+
+```text
+src/routes/
+├── blog/
+│   └── +page.svelte
+│   → SSG (conteudo estatico, gerado no build)
+├── dashboard/
+│   └── +page.svelte
+│   → CSR (app interativa, so no navegador)
+└── produtos/
+    └── +page.svelte
+    → SSR (dados frescos do servidor a cada acesso)
+```
+
+<Tip>
+Nao se preocupe em dominar todas essas siglas agora. O importante e saber que elas existem e que o SvelteKit te da flexibilidade total. Vamos aprofundar cada estrategia nas aulas de renderizacao mais adiante no curso.
+</Tip>
+
+<Question question="Qual estrategia de renderizacao devo usar?">
+Depende do tipo de conteudo. Conteudo que quase nao muda (blog, documentacao) combina com SSG. Conteudo que precisa estar sempre atualizado (preco de produtos, feed de noticias) combina com SSR. Aplicacoes autenticadas como dashboards funcionam bem com CSR. O SvelteKit permite misturar tudo no mesmo projeto — voce decide por pagina.
+</Question>
+
+---
+
 ## Por que aprender Svelte?
 
 ### Para iniciantes
@@ -191,6 +327,9 @@ Ao longo do curso, voce vai aprender Svelte e SvelteKit construindo projetos pra
 | **Svelte** | Compilador de componentes — transforma `.svelte` em JS otimizado |
 | **SvelteKit** | Framework fullstack construido sobre o Svelte |
 | **Compilador vs Runtime** | Svelte faz o trabalho no build, nao no navegador |
+| **SSR** | Servidor monta o HTML e envia pronto ao navegador |
+| **CSR** | Navegador recebe JavaScript e monta a UI localmente |
+| **SSG** | Paginas geradas como HTML estatico no momento do build |
 | **`sv` CLI** | Ferramenta oficial para criar e gerenciar projetos |
 
 ---
@@ -213,4 +352,4 @@ Se voce ainda nao tem o Node.js instalado, baixe em <a href="https://nodejs.org"
 
 ---
 
-**Proxima aula:** [1.2 — Criando seu Projeto com `sv create`](../1.2-criando-projeto-sv-create)
+**Proxima aula:** [1.2 — Criando seu Projeto com `sv create`](/lessons/modulo-01-primeiros-passos/1.2-criando-projeto-sv-create)
