@@ -92,3 +92,16 @@ Do NOT use ASCII art diagrams (box-drawing characters like ┌─┐│└┘) i
 - Vue: `bg-success`, `border-success`, `text-success`
 - Svelte: `bg-warning`, `border-warning`, `text-warning`
 - Angular: `bg-error`, `border-error`, `text-error`
+
+## USE SPECIAL ELEMENTS IN MD 
+Check the Class 88 to extract element information 
+
+## BLOCK CODE
+Do not use long BLOCK CODE inline , this will breake smartphone responsivity 
+Use comments line by line 
+
+```
+let x = 10 // this commend is bad
+let x = 10 
+// this comment is good! 
+    
