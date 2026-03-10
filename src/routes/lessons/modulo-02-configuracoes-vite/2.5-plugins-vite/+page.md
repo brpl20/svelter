@@ -4,6 +4,11 @@ module: 2
 order: 5
 ---
 
+<script>
+import Tip from '$lib/components/Tip.svelte';
+import Question from '$lib/components/Question.svelte';
+</script>
+
 # 2.5 — Plugins do Vite
 
 > Entenda o sistema de plugins, conheça os mais úteis e crie seu próprio plugin.
@@ -74,27 +79,33 @@ Plugins do Vite são baseados na interface de plugins do **Rollup**, com extens�
   </div>
 </div>
 
-### Estrutura Básica de um Plugin
+<Tip title="A ordem dos plugins importa!">
+Plugins sao executados na ordem em que aparecem no array <code>plugins</code> do <code>vite.config.ts</code>. Plugins de framework (como o do Svelte) devem vir primeiro, seguidos por plugins utilitarios. A ordem pode afetar como as transformacoes sao aplicadas ao codigo.
+</Tip>
 
-```javascript
-// Um plugin Vite é um objeto com nome e hooks
-const meuPlugin = {
-  // Nome do plugin (obrigatório)
+### Estrutura Basica de um Plugin
+
+```typescript
+// Um plugin Vite e um objeto com nome e hooks
+import type { Plugin } from 'vite'
+
+const meuPlugin: Plugin = {
+  // Nome do plugin (obrigatorio)
   name: 'meu-plugin',
 
-  // Hooks do Vite (específicos)
+  // Hooks do Vite (especificos)
   configureServer(server) {
     // Adiciona middleware ao servidor dev
   },
 
   // Hooks do Rollup (compartilhados)
-  transform(code, id) {
-    // Transforma código fonte
+  transform(code: string, id: string) {
+    // Transforma codigo fonte
     return code
   }
 }
 
-// Usar no vite.config.js
+// Usar no vite.config.ts
 export default defineConfig({
   plugins: [meuPlugin]
 })
@@ -104,61 +115,71 @@ export default defineConfig({
 
 ## Plugins Oficiais
 
+### @sveltejs/vite-plugin-svelte
+
+O plugin principal para projetos Svelte e SvelteKit. Ele processa arquivos `.svelte`, habilita HMR, e integra o compilador Svelte ao pipeline do Vite.
+
+```bash
+pnpm add @sveltejs/vite-plugin-svelte -D
+```
+
+```typescript
+// vite.config.ts
+import { svelte } from '@sveltejs/vite-plugin-svelte'
+
+export default defineConfig({
+  plugins: [
+    svelte({
+      // Opcoes do compilador Svelte
+      compilerOptions: {
+        // Habilita verificacoes em dev
+        dev: true
+      },
+      // Pre-processadores (SCSS, TS, etc.)
+      preprocess: [],
+      // HMR habilitado por padrao em dev
+      hot: true
+    })
+  ]
+})
+```
+
+O SvelteKit ja configura este plugin automaticamente, mas e importante saber que ele existe e quais opcoes aceita. No `svelte.config.js` do SvelteKit, as opcoes do compilador sao passadas diretamente.
+
 ### @vitejs/plugin-legacy
 
 Suporte para navegadores antigos:
 
 ```bash
-npm install @vitejs/plugin-legacy -D
+pnpm add @vitejs/plugin-legacy -D
 ```
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import legacy from '@vitejs/plugin-legacy'
 
 export default defineConfig({
   plugins: [
     legacy({
       targets: ['defaults', 'not IE 11'],
-      additionalLegacyPolyfills: ['regenerator-runtime/runtime']
+      additionalLegacyPolyfills: [
+        'regenerator-runtime/runtime'
+      ]
     })
   ]
 })
 ```
 
-### @vitejs/plugin-vue
+### @vitejs/plugin-react (para referencia)
 
-Para projetos Vue:
+Plugin para projetos React. Mencionamos aqui apenas como referencia, ja que o Vite suporta multiplos frameworks:
 
-```javascript
-import vue from '@vitejs/plugin-vue'
-
-export default defineConfig({
-  plugins: [vue()]
-})
-```
-
-### @vitejs/plugin-react
-
-Para projetos React:
-
-```javascript
+```typescript
+// vite.config.ts
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()]
-})
-```
-
-### @sveltejs/vite-plugin-svelte
-
-Para projetos Svelte (usaremos muito!):
-
-```javascript
-import { svelte } from '@sveltejs/vite-plugin-svelte'
-
-export default defineConfig({
-  plugins: [svelte()]
 })
 ```
 
@@ -168,13 +189,14 @@ export default defineConfig({
 
 ### vite-plugin-compression
 
-Comprime assets para produção:
+Comprime assets para producao:
 
 ```bash
-npm install vite-plugin-compression -D
+pnpm add vite-plugin-compression -D
 ```
 
-```javascript
+```typescript
+// vite.config.ts
 import compression from 'vite-plugin-compression'
 
 export default defineConfig({
@@ -196,10 +218,11 @@ export default defineConfig({
 Transforma seu app em PWA:
 
 ```bash
-npm install vite-plugin-pwa -D
+pnpm add vite-plugin-pwa -D
 ```
 
-```javascript
+```typescript
+// vite.config.ts
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
@@ -211,8 +234,16 @@ export default defineConfig({
         short_name: 'App',
         theme_color: '#646cff',
         icons: [
-          { src: '/icon-192.png', sizes: '192x192', type: 'image/png' },
-          { src: '/icon-512.png', sizes: '512x512', type: 'image/png' }
+          {
+            src: '/icon-192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: '/icon-512.png',
+            sizes: '512x512',
+            type: 'image/png'
+          }
         ]
       }
     })
@@ -222,18 +253,20 @@ export default defineConfig({
 
 ### vite-plugin-inspect
 
-Debug de transformações de plugins:
+Debug de transformacoes de plugins:
 
 ```bash
-npm install vite-plugin-inspect -D
+pnpm add vite-plugin-inspect -D
 ```
 
-```javascript
+```typescript
+// vite.config.ts
 import Inspect from 'vite-plugin-inspect'
 
 export default defineConfig({
   plugins: [
-    Inspect() // Acesse localhost:3000/__inspect/
+    // Acesse localhost:3000/__inspect/
+    Inspect()
   ]
 })
 ```
@@ -243,10 +276,11 @@ export default defineConfig({
 Visualiza o bundle:
 
 ```bash
-npm install rollup-plugin-visualizer -D
+pnpm add rollup-plugin-visualizer -D
 ```
 
-```javascript
+```typescript
+// vite.config.ts
 import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineConfig({
@@ -262,23 +296,35 @@ export default defineConfig({
 
 ### unplugin-auto-import
 
-Auto-import de funções comuns:
+Auto-import de funcoes comuns:
 
 ```bash
-npm install unplugin-auto-import -D
+pnpm add unplugin-auto-import -D
 ```
 
-```javascript
+```typescript
+// vite.config.ts
 import AutoImport from 'unplugin-auto-import/vite'
 
 export default defineConfig({
   plugins: [
     AutoImport({
-      imports: ['vue', 'vue-router'],
-      // ou para Svelte
       imports: [
         {
-          svelte: ['onMount', 'onDestroy', 'createEventDispatcher']
+          svelte: [
+            'onMount',
+            'onDestroy',
+            'tick',
+            'untrack'
+          ]
+        },
+        {
+          'svelte/store': [
+            'writable',
+            'readable',
+            'derived',
+            'get'
+          ]
         }
       ]
     })
@@ -288,74 +334,91 @@ export default defineConfig({
 
 ---
 
+<Question question="Quando criar um plugin customizado?">
+Crie um plugin customizado quando precisar de algo que <strong>nenhum plugin existente resolve</strong>. Casos comuns: injetar dados de build no codigo, criar modulos virtuais com configuracao dinamica, adicionar middlewares ao servidor dev, ou transformar arquivos de formas especificas ao seu projeto. Antes de criar, pesquise no <strong>awesome-vite</strong> se ja existe uma solucao pronta.
+</Question>
+
 ## Criando Plugins Customizados
 
 ### Plugin Simples: Log de Builds
 
-```javascript
-// plugins/build-logger.js
-export function buildLogger() {
-  let startTime
+```typescript
+// plugins/build-logger.ts
+import type { Plugin } from 'vite'
+
+export function buildLogger(): Plugin {
+  let startTime: number
 
   return {
     name: 'build-logger',
 
-    // Início do build
+    // Inicio do build
     buildStart() {
       startTime = Date.now()
-      console.log('\n🚀 Build iniciado...\n')
+      console.log('\n Build iniciado...\n')
     },
 
     // Fim do build
     closeBundle() {
-      const duration = Date.now() - startTime
-      console.log(`\n✅ Build completo em ${duration}ms\n`)
+      const duration: number = Date.now() - startTime
+      console.log(
+        `\n Build completo em ${duration}ms\n`
+      )
     }
   }
 }
 ```
 
-```javascript
-// vite.config.js
-import { buildLogger } from './plugins/build-logger.js'
+```typescript
+// vite.config.ts
+import { buildLogger } from './plugins/build-logger'
 
 export default defineConfig({
   plugins: [buildLogger()]
 })
 ```
 
-### Plugin: Transformar Código
+### Plugin: Transformar Codigo
 
-```javascript
-// plugins/banner.js
-export function banner(text) {
+```typescript
+// plugins/banner.ts
+import type { Plugin } from 'vite'
+
+export function banner(text: string): Plugin {
   return {
     name: 'banner',
 
     // Transforma arquivos JS
-    transform(code, id) {
-      // Só processa arquivos JS/TS
+    transform(code: string, id: string) {
+      // So processa arquivos JS/TS
       if (!id.match(/\.[jt]sx?$/)) return
 
-      // Adiciona comentário no topo
-      const bannerComment = `/**\n * ${text}\n * Gerado em: ${new Date().toISOString()}\n */\n`
+      // Adiciona comentario no topo
+      const bannerComment: string =
+        `/**\n * ${text}\n` +
+        ` * Gerado em: ${new Date().toISOString()}\n */\n`
 
       return {
         code: bannerComment + code,
-        map: null // Sem sourcemap para esta transformação
+        // Sem sourcemap para esta transformacao
+        map: null
       }
     }
   }
 }
 ```
 
-### Plugin: Módulo Virtual
+### Plugin: Modulo Virtual
 
-Módulos virtuais existem apenas em memória:
+Modulos virtuais existem apenas em memoria:
 
-```javascript
-// plugins/virtual-config.js
-export function virtualConfig(config) {
+```typescript
+// plugins/virtual-config.ts
+import type { Plugin } from 'vite'
+
+export function virtualConfig(
+  config: Record<string, unknown>
+): Plugin {
   const virtualModuleId = 'virtual:config'
   const resolvedVirtualModuleId = '\0' + virtualModuleId
 
@@ -363,14 +426,14 @@ export function virtualConfig(config) {
     name: 'virtual-config',
 
     // Resolve o import
-    resolveId(id) {
+    resolveId(id: string) {
       if (id === virtualModuleId) {
         return resolvedVirtualModuleId
       }
     },
 
-    // Carrega o conteúdo
-    load(id) {
+    // Carrega o conteudo
+    load(id: string) {
       if (id === resolvedVirtualModuleId) {
         return `export default ${JSON.stringify(config)}`
       }
@@ -381,9 +444,9 @@ export function virtualConfig(config) {
 
 Uso:
 
-```javascript
-// vite.config.js
-import { virtualConfig } from './plugins/virtual-config.js'
+```typescript
+// vite.config.ts
+import { virtualConfig } from './plugins/virtual-config'
 
 export default defineConfig({
   plugins: [
@@ -396,28 +459,47 @@ export default defineConfig({
 })
 ```
 
-```javascript
-// No seu código
+```typescript
+// No seu codigo
 import config from 'virtual:config'
 
-console.log(config.appName) // "Meu Dashboard"
-console.log(config.features) // ["dark-mode", "notifications"]
+// "Meu Dashboard"
+console.log(config.appName)
+// ["dark-mode", "notifications"]
+console.log(config.features)
 ```
+
+<Tip title="Modulos virtuais sao poderosos!">
+Modulos virtuais permitem injetar dados em tempo de build diretamente no codigo da aplicacao. Isso e util para configuracoes dinamicas, informacoes de versao, feature flags, e qualquer dado que so existe no momento do build. O prefixo <code>\0</code> no ID resolvido e uma convencao do Rollup que impede outros plugins de tentar processar o modulo.
+</Tip>
 
 ### Plugin: Middleware do Servidor Dev
 
-```javascript
-// plugins/api-mock.js
-export function apiMock() {
+```typescript
+// plugins/api-mock.ts
+import type { Plugin } from 'vite'
+import type {
+  IncomingMessage,
+  ServerResponse
+} from 'http'
+
+export function apiMock(): Plugin {
   return {
     name: 'api-mock',
 
     configureServer(server) {
       // Adiciona middleware ANTES do Vite
-      server.middlewares.use((req, res, next) => {
+      server.middlewares.use((
+        req: IncomingMessage,
+        res: ServerResponse,
+        next: () => void
+      ) => {
         // Mock de API
         if (req.url === '/api/status') {
-          res.setHeader('Content-Type', 'application/json')
+          res.setHeader(
+            'Content-Type',
+            'application/json'
+          )
           res.end(JSON.stringify({
             status: 'ok',
             timestamp: Date.now(),
@@ -427,7 +509,10 @@ export function apiMock() {
         }
 
         if (req.url === '/api/users') {
-          res.setHeader('Content-Type', 'application/json')
+          res.setHeader(
+            'Content-Type',
+            'application/json'
+          )
           res.end(JSON.stringify([
             { id: 1, name: 'Alice' },
             { id: 2, name: 'Bob' }
@@ -435,7 +520,7 @@ export function apiMock() {
           return
         }
 
-        // Passa para o próximo middleware
+        // Passa para o proximo middleware
         next()
       })
     }
@@ -447,41 +532,52 @@ export function apiMock() {
 
 ## Plugin Completo: Build Info
 
-Vamos criar um plugin útil que injeta informações de build:
+Vamos criar um plugin util que injeta informacoes de build:
 
-```javascript
-// plugins/build-info.js
+```typescript
+// plugins/build-info.ts
+import type { Plugin } from 'vite'
 import { execSync } from 'child_process'
 
-export function buildInfo() {
+interface BuildInfoData {
+  buildTime: string
+  nodeVersion: string
+  gitCommit: string
+  gitBranch: string
+  env: string
+}
+
+export function buildInfo(): Plugin {
   const virtualModuleId = 'virtual:build-info'
   const resolvedVirtualModuleId = '\0' + virtualModuleId
 
   return {
     name: 'build-info',
 
-    resolveId(id) {
+    resolveId(id: string) {
       if (id === virtualModuleId) {
         return resolvedVirtualModuleId
       }
     },
 
-    load(id) {
+    load(id: string) {
       if (id === resolvedVirtualModuleId) {
-        // Coleta informações
+        // Coleta informacoes
         let gitCommit = 'unknown'
         let gitBranch = 'unknown'
 
         try {
-          gitCommit = execSync('git rev-parse --short HEAD')
-            .toString().trim()
-          gitBranch = execSync('git rev-parse --abbrev-ref HEAD')
-            .toString().trim()
+          gitCommit = execSync(
+            'git rev-parse --short HEAD'
+          ).toString().trim()
+          gitBranch = execSync(
+            'git rev-parse --abbrev-ref HEAD'
+          ).toString().trim()
         } catch (e) {
-          // Não está em um repositório git
+          // Nao esta em um repositorio git
         }
 
-        const info = {
+        const info: BuildInfoData = {
           buildTime: new Date().toISOString(),
           nodeVersion: process.version,
           gitCommit,
@@ -489,16 +585,18 @@ export function buildInfo() {
           env: process.env.NODE_ENV || 'development'
         }
 
-        return `export default ${JSON.stringify(info, null, 2)}`
+        return (
+          `export default ${JSON.stringify(info, null, 2)}`
+        )
       }
     }
   }
 }
 ```
 
-Uso no código:
+Uso no codigo:
 
-```javascript
+```typescript
 import buildInfo from 'virtual:build-info'
 
 console.log(`
@@ -511,23 +609,34 @@ console.log(`
 
 ---
 
-## 🎯 Mini-Projeto: Plugin de Métricas
+## Mini-Projeto: Plugin de Metricas
 
 Vamos criar um plugin customizado para nosso Dashboard:
 
-### Plugin: Métricas de Build
+### Plugin: Metricas de Build
 
-```javascript
-// src/plugins/metrics-plugin.js
+```typescript
+// src/plugins/metrics-plugin.ts
+import type { Plugin } from 'vite'
 
-export function metricsPlugin() {
-  let buildStartTime
-  const moduleCount = { js: 0, css: 0, other: 0 }
+interface ModuleCount {
+  js: number
+  css: number
+  other: number
+}
+
+export function metricsPlugin(): Plugin {
+  let buildStartTime: number
+  const moduleCount: ModuleCount = {
+    js: 0,
+    css: 0,
+    other: 0
+  }
 
   return {
     name: 'metrics-plugin',
 
-    // Início do build
+    // Inicio do build
     buildStart() {
       buildStartTime = Date.now()
       moduleCount.js = 0
@@ -535,8 +644,8 @@ export function metricsPlugin() {
       moduleCount.other = 0
     },
 
-    // Conta módulos transformados
-    transform(code, id) {
+    // Conta modulos transformados
+    transform(code: string, id: string) {
       if (id.includes('node_modules')) return
 
       if (id.match(/\.[jt]sx?$/)) {
@@ -547,61 +656,99 @@ export function metricsPlugin() {
         moduleCount.other++
       }
 
-      return null // Não modifica o código
+      // Nao modifica o codigo
+      return null
     },
 
-    // Relatório final
+    // Relatorio final
     closeBundle() {
-      const buildTime = Date.now() - buildStartTime
+      const buildTime: number =
+        Date.now() - buildStartTime
+      const total: number =
+        moduleCount.js +
+        moduleCount.css +
+        moduleCount.other
 
-      console.log('\n' + '═'.repeat(50))
-      console.log('📊 MÉTRICAS DE BUILD')
-      console.log('═'.repeat(50))
-      console.log(`⏱️  Tempo total: ${buildTime}ms`)
-      console.log(`📄 Módulos JS/TS: ${moduleCount.js}`)
-      console.log(`🎨 Módulos CSS: ${moduleCount.css}`)
-      console.log(`📦 Outros: ${moduleCount.other}`)
-      console.log(`📁 Total: ${moduleCount.js + moduleCount.css + moduleCount.other}`)
-      console.log('═'.repeat(50) + '\n')
+      console.log('\n' + '='.repeat(50))
+      console.log(' METRICAS DE BUILD')
+      console.log('='.repeat(50))
+      console.log(
+        ` Tempo total: ${buildTime}ms`
+      )
+      console.log(
+        ` Modulos JS/TS: ${moduleCount.js}`
+      )
+      console.log(
+        ` Modulos CSS: ${moduleCount.css}`
+      )
+      console.log(
+        ` Outros: ${moduleCount.other}`
+      )
+      console.log(
+        ` Total: ${total}`
+      )
+      console.log('='.repeat(50) + '\n')
     }
   }
 }
 ```
 
-### Plugin: Módulo Virtual de Métricas Dev
+### Plugin: Modulo Virtual de Metricas Dev
 
-```javascript
-// src/plugins/dev-metrics.js
+```typescript
+// src/plugins/dev-metrics.ts
+import type { Plugin } from 'vite'
+import type {
+  IncomingMessage,
+  ServerResponse
+} from 'http'
 
-export function devMetricsPlugin() {
+interface TransformEntry {
+  file: string
+  time: string
+}
+
+export function devMetricsPlugin(): Plugin {
   const virtualId = 'virtual:dev-metrics'
   const resolvedId = '\0' + virtualId
 
   let requestCount = 0
   let transformCount = 0
-  const transformedFiles = []
+  const transformedFiles: TransformEntry[] = []
 
   return {
     name: 'dev-metrics',
 
-    // Só em desenvolvimento
+    // So em desenvolvimento
     apply: 'serve',
 
     configureServer(server) {
-      // Conta requisições
-      server.middlewares.use((req, res, next) => {
+      // Conta requisicoes
+      server.middlewares.use((
+        req: IncomingMessage,
+        res: ServerResponse,
+        next: () => void
+      ) => {
         requestCount++
         next()
       })
 
-      // Endpoint de métricas
-      server.middlewares.use((req, res, next) => {
+      // Endpoint de metricas
+      server.middlewares.use((
+        req: IncomingMessage,
+        res: ServerResponse,
+        next: () => void
+      ) => {
         if (req.url === '/__metrics') {
-          res.setHeader('Content-Type', 'application/json')
+          res.setHeader(
+            'Content-Type',
+            'application/json'
+          )
           res.end(JSON.stringify({
             requests: requestCount,
             transforms: transformCount,
-            files: transformedFiles.slice(-20) // Últimos 20
+            // Ultimos 20
+            files: transformedFiles.slice(-20)
           }))
           return
         }
@@ -609,22 +756,22 @@ export function devMetricsPlugin() {
       })
     },
 
-    transform(code, id) {
+    transform(code: string, id: string) {
       if (!id.includes('node_modules')) {
         transformCount++
         transformedFiles.push({
-          file: id.split('/').pop(),
+          file: id.split('/').pop() ?? '',
           time: new Date().toISOString()
         })
       }
       return null
     },
 
-    resolveId(id) {
+    resolveId(id: string) {
       if (id === virtualId) return resolvedId
     },
 
-    load(id) {
+    load(id: string) {
       if (id === resolvedId) {
         return `
           export async function getDevMetrics() {
@@ -638,21 +785,25 @@ export function devMetricsPlugin() {
 }
 ```
 
-### Integrar no vite.config.js
+### Integrar no vite.config.ts
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
 import path from 'path'
-import { metricsPlugin } from './src/plugins/metrics-plugin.js'
-import { devMetricsPlugin } from './src/plugins/dev-metrics.js'
+import { metricsPlugin } from './src/plugins/metrics-plugin'
+import { devMetricsPlugin } from './src/plugins/dev-metrics'
 
 export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@utils': path.resolve(__dirname, './src/utils'),
+      '@components': path.resolve(
+        __dirname, './src/components'
+      ),
+      '@utils': path.resolve(
+        __dirname, './src/utils'
+      ),
     }
   },
 
@@ -668,26 +819,31 @@ export default defineConfig({
 })
 ```
 
-### Usar as Métricas no Dashboard
+### Usar as Metricas no Dashboard
 
-```javascript
-// src/main.js
+```typescript
+// src/main.ts
 import { getDevMetrics } from 'virtual:dev-metrics'
 
-// Adicionar card de métricas do servidor
-async function exibirMetricasServidor() {
+// Adicionar card de metricas do servidor
+async function exibirMetricasServidor(): Promise<void> {
   const metricas = await getDevMetrics()
 
-  const container = document.querySelector('#metricas-servidor')
+  const container =
+    document.querySelector('#metricas-servidor')
   if (container) {
     container.innerHTML = `
       <div class="performance-card">
-        <h3 class="card-title">Requisições</h3>
-        <p class="card-value">${metricas.requests}</p>
+        <h3 class="card-title">Requisicoes</h3>
+        <p class="card-value">
+          ${metricas.requests}
+        </p>
       </div>
       <div class="performance-card">
-        <h3 class="card-title">Transformações</h3>
-        <p class="card-value">${metricas.transforms}</p>
+        <h3 class="card-title">Transformacoes</h3>
+        <p class="card-value">
+          ${metricas.transforms}
+        </p>
       </div>
     `
   }
@@ -699,32 +855,41 @@ setInterval(exibirMetricasServidor, 2000)
 
 ---
 
-## ✅ Desafio da Aula
+## Desafio da Aula
 
 ### Objetivo
-Criar um plugin que adiciona um watermark nos arquivos JS em produção.
+Criar um plugin que adiciona um watermark nos arquivos JS em producao.
 
-### Instruções
+### Instrucoes
 
 1. Crie um plugin chamado `watermarkPlugin`
-2. O plugin deve adicionar um comentário no topo de cada arquivo JS
-3. O comentário deve incluir: nome do projeto, versão e data de build
-4. O plugin só deve funcionar em build de produção (`apply: 'build'`)
+2. O plugin deve adicionar um comentario no topo de cada arquivo JS
+3. O comentario deve incluir: nome do projeto, versao e data de build
+4. O plugin so deve funcionar em build de producao (`apply: 'build'`)
 
-### Spec de Verificação
+### Spec de Verificacao
 
-- [ ] Rode `npm run build`
+- [ ] Rode `pnpm build`
 - [ ] Abra qualquer arquivo `.js` em `dist/`
-- [ ] O arquivo deve começar com o comentário de watermark
+- [ ] O arquivo deve comecar com o comentario de watermark
 
-### Solução
+### Solucao
 
 <details>
-<summary>🔍 Clique para ver a solução</summary>
+<summary>Clique para ver a solucao</summary>
 
-```javascript
-// plugins/watermark.js
-export function watermarkPlugin(options = {}) {
+```typescript
+// plugins/watermark.ts
+import type { Plugin } from 'vite'
+
+interface WatermarkOptions {
+  projectName?: string
+  version?: string
+}
+
+export function watermarkPlugin(
+  options: WatermarkOptions = {}
+): Plugin {
   const {
     projectName = 'Meu Projeto',
     version = '1.0.0'
@@ -733,21 +898,25 @@ export function watermarkPlugin(options = {}) {
   return {
     name: 'watermark',
 
-    // Só em build
+    // So em build
     apply: 'build',
 
     // Gera o banner antes de emitir
     generateBundle(_, bundle) {
-      const watermark = `/**
- * ${projectName} v${version}
- * Build: ${new Date().toISOString()}
- * Este arquivo foi gerado automaticamente.
- */
-`
+      const watermark =
+        `/**\n` +
+        ` * ${projectName} v${version}\n` +
+        ` * Build: ${new Date().toISOString()}\n` +
+        ` * Este arquivo foi gerado automaticamente.\n` +
+        ` */\n`
+
       // Adiciona watermark em cada chunk JS
       for (const fileName in bundle) {
         const chunk = bundle[fileName]
-        if (chunk.type === 'chunk' && fileName.endsWith('.js')) {
+        if (
+          chunk.type === 'chunk' &&
+          fileName.endsWith('.js')
+        ) {
           chunk.code = watermark + chunk.code
         }
       }
@@ -756,9 +925,9 @@ export function watermarkPlugin(options = {}) {
 }
 ```
 
-```javascript
-// vite.config.js
-import { watermarkPlugin } from './plugins/watermark.js'
+```typescript
+// vite.config.ts
+import { watermarkPlugin } from './plugins/watermark'
 import pkg from './package.json'
 
 export default defineConfig({
@@ -775,4 +944,4 @@ export default defineConfig({
 
 ---
 
-**Próxima aula:** [2.6 — Variáveis de Ambiente e Modos](../2.6-variaveis-ambiente)
+**Proxima aula:** [2.6 — Variaveis de Ambiente e Modos](../2.6-variaveis-ambiente)

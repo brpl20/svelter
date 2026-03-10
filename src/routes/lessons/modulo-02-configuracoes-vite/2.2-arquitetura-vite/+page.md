@@ -4,6 +4,11 @@ module: 2
 order: 2
 ---
 
+<script>
+import Tip from '$lib/components/Tip.svelte';
+import Question from '$lib/components/Question.svelte';
+</script>
+
 # 2.2 — Arquitetura do Vite
 
 > Entenda como o Vite funciona internamente: servidor de desenvolvimento, pré-bundling e o papel do esbuild e Rollup.
@@ -31,7 +36,7 @@ O Vite possui duas arquiteturas distintas que trabalham em conjunto:
         <li>+ esbuild</li>
         <li>+ HMR nativo</li>
       </ul>
-      <div class="mt-3 rounded bg-base-200 px-2 py-1 text-center font-mono text-sm text-base-content/70">npm run dev</div>
+      <div class="mt-3 rounded bg-base-200 px-2 py-1 text-center font-mono text-sm text-base-content/70">pnpm dev</div>
     </div>
     <div class="rounded-lg border border-secondary/30 bg-base-100 p-4">
       <div class="mb-3 rounded-md bg-secondary px-3 py-1.5 text-center font-semibold text-secondary-content">PRODUÇÃO</div>
@@ -40,7 +45,7 @@ O Vite possui duas arquiteturas distintas que trabalham em conjunto:
         <li>+ Plugins</li>
         <li>+ Otimizações</li>
       </ul>
-      <div class="mt-3 rounded bg-base-200 px-2 py-1 text-center font-mono text-sm text-base-content/70">npm run build</div>
+      <div class="mt-3 rounded bg-base-200 px-2 py-1 text-center font-mono text-sm text-base-content/70">pnpm build</div>
     </div>
   </div>
 </div>
@@ -66,28 +71,28 @@ Quando você acessa `http://localhost:5173`, acontece o seguinte:
     </div>
     <div class="text-2xl text-center text-base-content/30">&#9660;</div>
     <div class="rounded-lg border border-base-content/10 bg-base-100 px-4 py-2 text-center text-sm text-base-content/70">
-      Navegador encontra <code class="text-xs bg-base-200 px-1 py-0.5 rounded">&lt;script type="module" src="/src/main.js"&gt;</code>
+      Navegador encontra <code class="text-xs bg-base-200 px-1 py-0.5 rounded">&lt;script type="module" src="/src/main.ts"&gt;</code>
     </div>
     <div class="text-2xl text-center text-base-content/30">&#9660;</div>
     <div class="flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
       <div class="badge badge-secondary badge-lg font-bold">2</div>
       <div class="flex flex-1 flex-col items-center gap-2 sm:flex-row sm:gap-4">
-        <div class="w-full rounded-lg border border-base-content/10 bg-base-100 px-4 py-2 text-center text-sm font-mono sm:w-auto">GET /src/main.js</div>
+        <div class="w-full rounded-lg border border-base-content/10 bg-base-100 px-4 py-2 text-center text-sm font-mono sm:w-auto">GET /src/main.ts</div>
         <span class="text-xl text-base-content/50 rotate-90 sm:rotate-0">&#9654;</span>
-        <div class="w-full rounded-lg border border-secondary/30 bg-secondary/10 px-4 py-2 text-center text-sm sm:w-auto">Transforma main.js sob demanda</div>
+        <div class="w-full rounded-lg border border-secondary/30 bg-secondary/10 px-4 py-2 text-center text-sm sm:w-auto">Transforma main.ts sob demanda</div>
       </div>
     </div>
     <div class="text-2xl text-center text-base-content/30">&#9660;</div>
     <div class="rounded-lg border border-base-content/10 bg-base-100 px-4 py-2 text-center text-sm text-base-content/70">
-      Navegador recebe main.js, encontra: <code class="text-xs bg-base-200 px-1 py-0.5 rounded">import './app.js'</code>
+      Navegador recebe main.ts, encontra: <code class="text-xs bg-base-200 px-1 py-0.5 rounded">import './app.ts'</code>
     </div>
     <div class="text-2xl text-center text-base-content/30">&#9660;</div>
     <div class="flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
       <div class="badge badge-accent badge-lg font-bold">3</div>
       <div class="flex flex-1 flex-col items-center gap-2 sm:flex-row sm:gap-4">
-        <div class="w-full rounded-lg border border-base-content/10 bg-base-100 px-4 py-2 text-center text-sm font-mono sm:w-auto">GET /src/app.js</div>
+        <div class="w-full rounded-lg border border-base-content/10 bg-base-100 px-4 py-2 text-center text-sm font-mono sm:w-auto">GET /src/app.ts</div>
         <span class="text-xl text-base-content/50 rotate-90 sm:rotate-0">&#9654;</span>
-        <div class="w-full rounded-lg border border-accent/30 bg-accent/10 px-4 py-2 text-center text-sm sm:w-auto">Transforma app.js sob demanda</div>
+        <div class="w-full rounded-lg border border-accent/30 bg-accent/10 px-4 py-2 text-center text-sm sm:w-auto">Transforma app.ts sob demanda</div>
       </div>
     </div>
     <div class="text-2xl text-center text-base-content/30">&#9660;</div>
@@ -101,25 +106,25 @@ Quando você acessa `http://localhost:5173`, acontece o seguinte:
 
 Crie estes arquivos no seu projeto:
 
-```javascript
-// src/main.js
-import { saudacao } from './utils/saudacao.js'
-import { formataData } from './utils/data.js'
+```typescript
+// src/main.ts
+import { saudacao } from './utils/saudacao'
+import { formataData } from './utils/data'
 
 console.log(saudacao('Mundo'))
 console.log(formataData(new Date()))
 ```
 
-```javascript
-// src/utils/saudacao.js
-export function saudacao(nome) {
+```typescript
+// src/utils/saudacao.ts
+export function saudacao(nome: string): string {
   return `Olá, ${nome}!`
 }
 ```
 
-```javascript
-// src/utils/data.js
-export function formataData(data) {
+```typescript
+// src/utils/data.ts
+export function formataData(data: Date): string {
   return data.toLocaleDateString('pt-BR')
 }
 ```
@@ -127,9 +132,9 @@ export function formataData(data) {
 Abra o **DevTools do navegador** → **Network** e observe:
 
 ```text
-Request 1: /src/main.js         (200 OK)
-Request 2: /src/utils/saudacao.js (200 OK)
-Request 3: /src/utils/data.js     (200 OK)
+Request 1: /src/main.ts         (200 OK)
+Request 2: /src/utils/saudacao.ts (200 OK)
+Request 3: /src/utils/data.ts     (200 OK)
 ```
 
 Cada arquivo é uma requisição separada! O navegador resolve os imports.
@@ -138,17 +143,21 @@ Cada arquivo é uma requisição separada! O navegador resolve os imports.
 
 ## Pré-bundling de Dependências
 
+<Tip title="O que é pré-bundling?">
+  Pré-bundling é o processo onde o Vite converte dependências do node_modules em módulos ESM otimizados antes de iniciar o servidor. Isso resolve dois problemas: bibliotecas com centenas de arquivos internos (que causariam centenas de requisições HTTP) e bibliotecas que usam CommonJS (que o navegador nao suporta nativamente).
+</Tip>
+
 ### O Problema com node_modules
 
 Nem todas as dependências funcionam bem com ESModules nativos:
 
-```javascript
+```typescript
 // lodash tem centenas de módulos internos
 import { debounce } from 'lodash-es'
 // Isso causaria CENTENAS de requisições HTTP!
 
-// react usa CommonJS internamente
-import React from 'react'
+// algumas libs usam CommonJS internamente
+import dayjs from 'dayjs'
 // CommonJS não funciona direto no navegador!
 ```
 
@@ -158,7 +167,7 @@ O Vite usa o **esbuild** para pré-compilar dependências no primeiro start:
 
 <div class="not-prose my-6 rounded-xl border border-base-content/10 bg-base-200 p-4 sm:p-6">
   <h3 class="mb-2 text-center text-lg font-bold text-base-content">PRÉ-BUNDLING</h3>
-  <p class="mb-4 text-center text-sm text-base-content/60">Primeiro <code class="bg-base-300 px-1 py-0.5 rounded text-xs">npm run dev</code>:</p>
+  <p class="mb-4 text-center text-sm text-base-content/60">Primeiro <code class="bg-base-300 px-1 py-0.5 rounded text-xs">pnpm dev</code>:</p>
   <div class="grid grid-cols-1 gap-4 md:grid-cols-[1fr_auto_1fr]">
     <div class="rounded-lg border border-error/30 bg-base-100 p-4">
       <div class="mb-3 font-mono text-sm font-bold text-base-content">node_modules/</div>
@@ -167,9 +176,9 @@ O Vite usa o **esbuild** para pré-compilar dependências no primeiro start:
         <div class="ml-6 text-base-content/50">debounce.js</div>
         <div class="ml-6 text-base-content/50">throttle.js</div>
         <div class="ml-6 text-base-content/50">...300+ files</div>
-        <div class="ml-2 mt-2">react/</div>
+        <div class="ml-2 mt-2">dayjs/</div>
         <div class="ml-6 text-base-content/50">index.js</div>
-        <div class="ml-6 text-base-content/50">cjs/</div>
+        <div class="ml-6 text-base-content/50">locale/</div>
         <div class="ml-6 text-base-content/50">...</div>
       </div>
     </div>
@@ -181,7 +190,7 @@ O Vite usa o **esbuild** para pré-compilar dependências no primeiro start:
       <div class="mb-3 font-mono text-sm font-bold text-base-content">node_modules/.vite/deps/</div>
       <div class="space-y-1 text-sm font-mono">
         <div class="ml-2 text-success">lodash-es.js <span class="text-base-content/50 font-sans">(1 arquivo)</span></div>
-        <div class="ml-2 mt-2 text-success">react.js <span class="text-base-content/50 font-sans">(1 arquivo)</span></div>
+        <div class="ml-2 mt-2 text-success">dayjs.js <span class="text-base-content/50 font-sans">(1 arquivo)</span></div>
         <div class="ml-6 text-base-content/50 font-sans text-xs">(CommonJS &rarr; ESM)</div>
       </div>
     </div>
@@ -191,7 +200,7 @@ O Vite usa o **esbuild** para pré-compilar dependências no primeiro start:
 
 ### Vendo o Cache
 
-Após rodar `npm run dev`, observe a pasta criada:
+Após rodar `pnpm dev`, observe a pasta criada:
 
 ```bash
 ls node_modules/.vite/deps/
@@ -202,15 +211,15 @@ Você verá arquivos como:
 _metadata.json
 lodash-es.js
 lodash-es.js.map
-react.js
-react.js.map
+dayjs.js
+dayjs.js.map
 ```
 
 ### Reescrita de Imports
 
 O Vite reescreve seus imports automaticamente:
 
-```javascript
+```typescript
 // Seu código (o que você escreve):
 import { debounce } from 'lodash-es'
 
@@ -222,6 +231,10 @@ import { debounce } from '/node_modules/.vite/deps/lodash-es.js?v=abc123'
 
 ## Hot Module Replacement (HMR)
 
+<Question question="Por que o Vite usa WebSockets para HMR?">
+  O protocolo HTTP tradicional funciona no modelo request-response: o cliente pede, o servidor responde. Com WebSockets, o servidor pode enviar mensagens ao navegador a qualquer momento, sem que o cliente precise ficar perguntando "mudou algo?". Isso permite que o Vite notifique o navegador instantaneamente quando um arquivo muda no disco.
+</Question>
+
 ### Como Funciona
 
 O HMR do Vite usa WebSockets para comunicação instantânea:
@@ -231,7 +244,7 @@ O HMR do Vite usa WebSockets para comunicação instantânea:
   <div class="space-y-3">
     <div class="flex items-start gap-3 rounded-lg border border-primary/30 bg-base-100 p-3">
       <div class="badge badge-primary font-bold shrink-0">1</div>
-      <div class="text-sm text-base-content">Você edita: <code class="bg-base-200 px-1 py-0.5 rounded text-xs">src/components/Button.js</code></div>
+      <div class="text-sm text-base-content">Você edita: <code class="bg-base-200 px-1 py-0.5 rounded text-xs">src/components/Button.svelte</code></div>
     </div>
     <div class="text-2xl text-center text-base-content/30">&#9660;</div>
     <div class="flex items-start gap-3 rounded-lg border border-secondary/30 bg-base-100 p-3">
@@ -245,7 +258,7 @@ O HMR do Vite usa WebSockets para comunicação instantânea:
         <div class="mb-1">Vite envia via WebSocket:</div>
         <div class="rounded bg-base-200 p-2 font-mono text-xs text-base-content/80">
           &#123; type: 'update', updates: [&#123;<br>
-          &nbsp;&nbsp;path: '/src/components/Button.js',<br>
+          &nbsp;&nbsp;path: '/src/components/Button.svelte',<br>
           &nbsp;&nbsp;timestamp: 1699123456789<br>
           &#125;] &#125;
         </div>
@@ -277,18 +290,21 @@ Abra o DevTools → Console e observe as mensagens:
 [vite] connected.
 
 # Quando você edita um arquivo:
-[vite] hot updated: /src/main.js
+[vite] hot updated: /src/main.ts
 ```
 
 ### API do HMR
 
 Você pode interagir com o HMR programaticamente:
 
-```javascript
-// main.js
-import { contador } from './contador.js'
+```typescript
+// main.ts
+import { contador } from './contador'
 
-console.log('Contagem:', contador)
+// tipagem para o contador
+const valor: number = contador
+
+console.log('Contagem:', valor)
 
 // API de HMR do Vite
 if (import.meta.hot) {
@@ -376,13 +392,13 @@ No build de produção, o Vite usa **Rollup**:
 
 <div class="not-prose my-6 rounded-xl border border-base-content/10 bg-base-200 p-4 sm:p-6">
   <h3 class="mb-2 text-center text-lg font-bold text-base-content">BUILD DE PRODUÇÃO</h3>
-  <p class="mb-4 text-center text-sm font-mono text-base-content/60">npm run build</p>
+  <p class="mb-4 text-center text-sm font-mono text-base-content/60">pnpm build</p>
   <div class="grid grid-cols-1 gap-4 md:grid-cols-[1fr_auto_1fr]">
     <div class="rounded-lg border border-warning/30 bg-base-100 p-4">
       <div class="mb-3 font-mono text-sm font-bold text-base-content">src/</div>
       <div class="space-y-1 font-mono text-sm text-base-content/70">
-        <div class="ml-2">main.js</div>
-        <div class="ml-2">app.js</div>
+        <div class="ml-2">main.ts</div>
+        <div class="ml-2">app.ts</div>
         <div class="ml-2">utils/</div>
         <div class="ml-2">styles.css</div>
       </div>
@@ -415,17 +431,21 @@ No build de produção, o Vite usa **Rollup**:
 
 ### Por que Rollup e não esbuild para produção?
 
+<Question question="Por que nao usar esbuild para tudo?">
+  O esbuild é incrivelmente rapido, mas ainda nao oferece code splitting tao maduro quanto o Rollup. O Rollup tem um ecossistema de plugins muito mais robusto e otimizacoes avancadas para producao. Como o build de producao acontece apenas ocasionalmente (nao a cada salvamento), a velocidade menor do Rollup nao impacta a experiencia do desenvolvedor.
+</Question>
+
 ```text
 esbuild:
-✓ Extremamente rápido
-✗ Code splitting ainda não é ideal
-✗ Plugins menos flexíveis
+  Extremamente rápido
+  Code splitting ainda não é ideal
+  Plugins menos flexíveis
 
 Rollup:
-✓ Code splitting maduro
-✓ Ecossistema de plugins robusto
-✓ Otimizações avançadas
-✗ Mais lento (mas OK para builds ocasionais)
+  Code splitting maduro
+  Ecossistema de plugins robusto
+  Otimizações avançadas
+  Mais lento (mas OK para builds ocasionais)
 ```
 
 ---
@@ -439,13 +459,13 @@ Rollup:
 rm -rf node_modules/.vite
 
 # Rode o dev server e observe o terminal
-npm run dev
+pnpm dev
 ```
 
 Você verá:
 ```text
 Optimizing dependencies:
-  lodash-es, react, react-dom
+  lodash-es, dayjs, svelte
 Pre-bundling them to speed up dev server page load...
 ```
 
@@ -453,81 +473,104 @@ Pre-bundling them to speed up dev server page load...
 
 ```bash
 # Em desenvolvimento
-npm run dev
-# Abra DevTools → Network → observe dezenas de arquivos .js
+pnpm dev
+# Abra DevTools → Network
+# observe dezenas de arquivos .ts
 
 # Para build
-npm run build
-# Observe a pasta dist/ → poucos arquivos otimizados
+pnpm build
+# Observe a pasta dist/
+# poucos arquivos otimizados
 ```
 
 ### 3. Inspecione o output do build
 
 ```bash
-npm run build
+pnpm build
 cat dist/assets/index-*.js | head -20
 # Código minificado e otimizado!
 ```
 
 ---
 
-## 🎯 Mini-Projeto: Continuação
+## Mini-Projeto: Continuação
 
 Vamos adicionar **monitoramento de HMR** ao nosso Dashboard:
 
-### Arquivo: src/hmr-monitor.js
+### Arquivo: src/hmr-monitor.ts
 
-```javascript
-// src/hmr-monitor.js
+```typescript
+// src/hmr-monitor.ts
 // Monitor de atualizações HMR
 
-const atualizacoes = []
+interface Atualizacao {
+  path: string
+  timestamp: string
+}
 
-export function registrarAtualizacao(path) {
+const atualizacoes: Atualizacao[] = []
+
+export function registrarAtualizacao(
+  path: string
+): void {
   atualizacoes.push({
     path,
     timestamp: new Date().toLocaleTimeString('pt-BR')
   })
 }
 
-export function getAtualizacoes() {
+export function getAtualizacoes(): Atualizacao[] {
   return [...atualizacoes]
 }
 
-export function getUltimaAtualizacao() {
+export function getUltimaAtualizacao(): Atualizacao | null {
   return atualizacoes[atualizacoes.length - 1] || null
 }
 
 // Configura listener de HMR
 if (import.meta.hot) {
   // Quando QUALQUER módulo for atualizado
-  import.meta.hot.on('vite:beforeUpdate', (payload) => {
-    payload.updates.forEach(update => {
-      registrarAtualizacao(update.path)
-      console.log(`🔄 HMR: ${update.path}`)
-    })
-  })
+  import.meta.hot.on(
+    'vite:beforeUpdate',
+    (payload) => {
+      payload.updates.forEach(
+        (update: { path: string }) => {
+          registrarAtualizacao(update.path)
+          console.log(`HMR: ${update.path}`)
+        }
+      )
+    }
+  )
 }
 ```
 
-### Atualize o main.js
+### Atualize o main.ts
 
-```javascript
-// main.js
+```typescript
+// main.ts
 import './style.css'
-import { setupCounter } from './counter.js'
-import { getAtualizacoes, getUltimaAtualizacao } from './hmr-monitor.js'
+import { setupCounter } from './counter'
+import {
+  getAtualizacoes,
+  getUltimaAtualizacao
+} from './hmr-monitor'
 
-const inicioCarregamento = performance.now()
+const inicioCarregamento: number = performance.now()
 
-function renderApp() {
+function renderApp(): void {
   const atualizacoes = getAtualizacoes()
   const ultima = getUltimaAtualizacao()
 
-  document.querySelector('#app').innerHTML = `
+  const app = document.querySelector<HTMLDivElement>(
+    '#app'
+  )
+  if (!app) return
+
+  app.innerHTML = `
     <div>
       <a href="https://vitejs.dev" target="_blank">
-        <img src="/vite.svg" class="logo" alt="Vite logo" />
+        <img src="/vite.svg" class="logo"
+          alt="Vite logo" />
       </a>
       <h1>Dashboard Vite</h1>
 
@@ -536,22 +579,36 @@ function renderApp() {
       </div>
 
       <div class="stats">
-        <p id="tempo-carregamento">Calculando...</p>
+        <p id="tempo-carregamento">
+          Calculando...
+        </p>
         <p id="hmr-stats">
-          📊 HMR Updates: ${atualizacoes.length}
-          ${ultima ? `<br>Último: ${ultima.path} às ${ultima.timestamp}` : ''}
+          HMR Updates: ${atualizacoes.length}
+          ${ultima
+            ? `<br>Último: ${ultima.path} às ${ultima.timestamp}`
+            : ''
+          }
         </p>
       </div>
     </div>
   `
 
-  setupCounter(document.querySelector('#counter'))
+  const btn = document.querySelector<HTMLButtonElement>(
+    '#counter'
+  )
+  if (btn) setupCounter(btn)
 
   requestAnimationFrame(() => {
-    const fimCarregamento = performance.now()
-    const tempoTotal = (fimCarregamento - inicioCarregamento).toFixed(2)
-    document.querySelector('#tempo-carregamento').textContent =
-      `⚡ Carregado em ${tempoTotal}ms`
+    const fimCarregamento: number = performance.now()
+    const tempoTotal: string = (
+      fimCarregamento - inicioCarregamento
+    ).toFixed(2)
+    const el = document.querySelector(
+      '#tempo-carregamento'
+    )
+    if (el) {
+      el.textContent = `Carregado em ${tempoTotal}ms`
+    }
   })
 }
 
@@ -567,30 +624,36 @@ if (import.meta.hot) {
 
 ### Teste o HMR
 
-1. Rode `npm run dev`
+1. Rode `pnpm dev`
 2. Abra o navegador em `http://localhost:5173`
 3. Edite qualquer arquivo e salve
 4. Observe o contador de HMR aumentar!
 
 ---
 
-## ✅ Desafio da Aula
+## Desafio da Aula
 
 ### Objetivo
 Criar um componente que mostra o tempo de cada atualização HMR.
 
 ### Instruções
 
-1. Modifique `hmr-monitor.js` para também registrar **quanto tempo** cada HMR levou
+1. Modifique `hmr-monitor.ts` para também registrar **quanto tempo** cada HMR levou
 2. Use `performance.now()` para medir o tempo entre o início e fim do HMR
 3. Exiba a média de tempo de HMR no dashboard
 
 ### Dica
 
-```javascript
+```typescript
 // Você pode usar estes eventos do HMR:
-import.meta.hot.on('vite:beforeUpdate', () => { /* antes */ })
-import.meta.hot.on('vite:afterUpdate', () => { /* depois */ })
+import.meta.hot.on(
+  'vite:beforeUpdate',
+  () => { /* antes */ }
+)
+import.meta.hot.on(
+  'vite:afterUpdate',
+  () => { /* depois */ }
+)
 ```
 
 ### Spec de Verificação
@@ -602,20 +665,27 @@ import.meta.hot.on('vite:afterUpdate', () => { /* depois */ })
 ### Solução
 
 <details>
-<summary>🔍 Clique para ver a solução</summary>
+<summary>Clique para ver a solução</summary>
 
-```javascript
-// src/hmr-monitor.js
-const atualizacoes = []
-let hmrInicio = null
+```typescript
+// src/hmr-monitor.ts
 
-export function registrarInicio() {
+interface AtualizacaoComTempo {
+  path: string
+  timestamp: string
+  duracao: string
+}
+
+const atualizacoes: AtualizacaoComTempo[] = []
+let hmrInicio: number | null = null
+
+export function registrarInicio(): void {
   hmrInicio = performance.now()
 }
 
-export function registrarFim(path) {
+export function registrarFim(path: string): void {
   if (hmrInicio) {
-    const duracao = performance.now() - hmrInicio
+    const duracao: number = performance.now() - hmrInicio
     atualizacoes.push({
       path,
       timestamp: new Date().toLocaleTimeString('pt-BR'),
@@ -625,27 +695,38 @@ export function registrarFim(path) {
   }
 }
 
-export function getAtualizacoes() {
+export function getAtualizacoes(): AtualizacaoComTempo[] {
   return [...atualizacoes]
 }
 
-export function getMediaTempo() {
-  if (atualizacoes.length === 0) return 0
-  const soma = atualizacoes.reduce((acc, a) => acc + parseFloat(a.duracao), 0)
+export function getMediaTempo(): string {
+  if (atualizacoes.length === 0) return '0'
+  const soma: number = atualizacoes.reduce(
+    (acc, a) => acc + parseFloat(a.duracao),
+    0
+  )
   return (soma / atualizacoes.length).toFixed(2)
 }
 
 if (import.meta.hot) {
-  import.meta.hot.on('vite:beforeUpdate', () => {
-    registrarInicio()
-  })
+  import.meta.hot.on(
+    'vite:beforeUpdate',
+    () => {
+      registrarInicio()
+    }
+  )
 
-  import.meta.hot.on('vite:afterUpdate', (payload) => {
-    payload.updates.forEach(update => {
-      registrarFim(update.path)
-      console.log(`🔄 HMR: ${update.path}`)
-    })
-  })
+  import.meta.hot.on(
+    'vite:afterUpdate',
+    (payload) => {
+      payload.updates.forEach(
+        (update: { path: string }) => {
+          registrarFim(update.path)
+          console.log(`HMR: ${update.path}`)
+        }
+      )
+    }
+  )
 }
 ```
 
@@ -653,7 +734,7 @@ if (import.meta.hot) {
 
 ---
 
-## 📚 Recursos Adicionais
+## Recursos Adicionais
 
 - [Dependency Pre-Bundling - Vite Docs](https://vite.dev/guide/dep-pre-bundling)
 - [HMR API - Vite Docs](https://vite.dev/guide/api-hmr)

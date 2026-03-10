@@ -4,6 +4,11 @@ module: 2
 order: 8
 ---
 
+<script>
+import Tip from '$lib/components/Tip.svelte';
+import Question from '$lib/components/Question.svelte';
+</script>
+
 # 2.8 — Vite para Diferentes Frameworks
 
 > Entenda como o Vite se integra com React, Vue e Svelte, preparando-se para o restante do curso.
@@ -78,104 +83,58 @@ Cada framework precisa de transformações específicas:
   </div>
 </div>
 
+<Tip title="Svelte e diferente!">
+Diferente de React e Vue, que enviam um <strong>runtime</strong> inteiro para o navegador, o Svelte <strong>compila</strong> seus componentes em JavaScript puro durante o build. O resultado e um bundle muito menor e mais rapido, porque nao ha framework rodando no browser.
+</Tip>
+
 ---
 
-## Vite + React
+## Vite + React (referencia rapida)
 
-### Setup
+React usa plugins para transformar JSX em chamadas `createElement`.
 
 ```bash
-npm create vite@latest meu-app-react -- --template react
-# ou com TypeScript
-npm create vite@latest meu-app-react -- --template react-ts
+pnpm create vite@latest meu-app-react -- --template react-ts
 ```
 
-### Configuração
-
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [
     react({
-      // Opções do Babel
-      babel: {
-        plugins: ['@emotion/babel-plugin']
-      },
-      // Fast Refresh
+      // Fast Refresh habilitado por padrao
       fastRefresh: true
     })
   ]
 })
 ```
 
-### Alternativa: React + SWC (mais rápido)
-
-```bash
-npm create vite@latest meu-app -- --template react-swc
-```
-
-```javascript
-import react from '@vitejs/plugin-react-swc'
-
-export default defineConfig({
-  plugins: [react()]
-})
-```
-
-### Estrutura Típica
-
-```text
-src/
-├── App.jsx
-├── main.jsx
-├── index.css
-└── components/
-    └── Button.jsx
-```
-
-```jsx
-// main.jsx
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import './index.css'
-
-ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-)
-```
+Estrutura tipica: `App.tsx`, `main.tsx`, componentes em `.tsx`.
 
 ---
 
-## Vite + Vue
+## Vite + Vue (referencia rapida)
 
-### Setup
+Vue usa Single File Components (`.vue`) com template, script e style.
 
 ```bash
-npm create vite@latest meu-app-vue -- --template vue
-# ou com TypeScript
-npm create vite@latest meu-app-vue -- --template vue-ts
+pnpm create vite@latest meu-app-vue -- --template vue-ts
 ```
 
-### Configuração
-
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
 export default defineConfig({
   plugins: [
     vue({
-      // Opções do compilador Vue
       template: {
         compilerOptions: {
-          // Tratar tags com hífen como custom elements
+          // Tratar tags com hifen como custom elements
           isCustomElement: (tag) => tag.includes('-')
         }
       }
@@ -184,41 +143,7 @@ export default defineConfig({
 })
 ```
 
-### Estrutura Típica
-
-```text
-src/
-├── App.vue
-├── main.js
-├── style.css
-└── components/
-    └── Button.vue
-```
-
-```javascript
-// main.js
-import { createApp } from 'vue'
-import App from './App.vue'
-import './style.css'
-
-createApp(App).mount('#app')
-```
-
-```vue
-<!-- App.vue -->
-<script setup>
-import { ref } from 'vue'
-const count = ref(0)
-</script>
-
-<template>
-  <button @click="count++">Count: {{ count }}</button>
-</template>
-
-<style scoped>
-button { color: blue; }
-</style>
-```
+Estrutura tipica: `App.vue`, `main.ts`, componentes em `.vue`.
 
 ---
 
@@ -229,15 +154,15 @@ Este é o foco do nosso curso!
 ### Setup
 
 ```bash
-npm create vite@latest meu-app-svelte -- --template svelte
-# ou com TypeScript
-npm create vite@latest meu-app-svelte -- --template svelte-ts
+pnpm create vite@latest meu-app-svelte -- --template svelte
+# ou com TypeScript (recomendado!)
+pnpm create vite@latest meu-app-svelte -- --template svelte-ts
 ```
 
 ### Configuração Básica
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 
@@ -248,35 +173,34 @@ export default defineConfig({
 
 ### Configuração Avançada
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 
 export default defineConfig({
   plugins: [
     svelte({
-      // Opções do compilador Svelte
+      // Opcoes do compilador Svelte
       compilerOptions: {
         // Modo de desenvolvimento
         dev: true,
 
         // CSS em arquivo separado ou injetado
-        css: 'injected', // 'external' | 'injected' | 'none'
+        // 'external' | 'injected' | 'none'
+        css: 'injected',
 
         // Habilitar runes (Svelte 5)
         runes: true,
 
-        // Gerar código acessível
-        accessors: false,
-
-        // Preservar espaços em branco
+        // Preservar espacos em branco
         preserveWhitespace: false
       },
 
-      // Pré-processadores
+      // Pre-processadores
       preprocess: [
-        // vitePreprocess() // Para TypeScript, SCSS, etc.
+        // vitePreprocess()
+        // Para TypeScript, SCSS, etc.
       ],
 
       // Hot Module Replacement
@@ -285,10 +209,10 @@ export default defineConfig({
         preserveLocalState: true
       },
 
-      // Extensões de arquivo
+      // Extensoes de arquivo
       extensions: ['.svelte'],
 
-      // Modo de emissão de CSS
+      // Modo de emissao de CSS
       emitCss: true
     })
   ]
@@ -301,11 +225,11 @@ export default defineConfig({
 meu-app-svelte/
 ├── index.html
 ├── package.json
-├── svelte.config.js          # Configuração do Svelte
-├── vite.config.js            # Configuração do Vite
+├── svelte.config.ts          # Configuração do Svelte
+├── vite.config.ts            # Configuração do Vite
 ├── src/
 │   ├── App.svelte            # Componente raiz
-│   ├── main.js               # Ponto de entrada
+│   ├── main.ts               # Ponto de entrada
 │   ├── app.css               # Estilos globais
 │   ├── lib/                  # Componentes reutilizáveis
 │   │   └── Counter.svelte
@@ -328,18 +252,20 @@ meu-app-svelte/
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
 ```
 
-```javascript
-// src/main.js
+```typescript
+// src/main.ts
 import './app.css'
 import App from './App.svelte'
+import { mount } from 'svelte'
 
-const app = new App({
-  target: document.getElementById('app')
+// Svelte 5: usa mount() em vez de new App()
+const app = mount(App, {
+  target: document.getElementById('app')!
 })
 
 export default app
@@ -347,10 +273,10 @@ export default app
 
 ```svelte
 <!-- src/App.svelte -->
-<script>
+<script lang="ts">
   import Counter from './lib/Counter.svelte'
 
-  let name = 'mundo'
+  let name: string = $state('mundo')
 </script>
 
 <main>
@@ -372,15 +298,15 @@ export default app
 
 ```svelte
 <!-- src/lib/Counter.svelte -->
-<script>
-  let count = 0
+<script lang="ts">
+  let count: number = $state(0)
 
-  function increment() {
+  function increment(): void {
     count += 1
   }
 </script>
 
-<button on:click={increment}>
+<button onclick={increment}>
   Cliques: {count}
 </button>
 
@@ -439,11 +365,12 @@ button { /* estilos */ }
 
 ```svelte
 <!-- Counter.svelte -->
-<script>
-  let count = 0
+<script lang="ts">
+  // Svelte 5: $state() cria reatividade
+  let count: number = $state(0)
 </script>
 
-<button on:click={() => count++}>
+<button onclick={() => count++}>
   Cliques: {count}
 </button>
 
@@ -452,12 +379,16 @@ button { /* estilos */ }
 </style>
 ```
 
+<Question question="Por que o bundle do Svelte e menor?">
+Porque o Svelte <strong>compila</strong> seus componentes em JavaScript puro durante o build. React e Vue precisam enviar um <strong>runtime</strong> (o motor do framework) junto com seu codigo. O Svelte elimina essa necessidade -- o compilador gera exatamente o codigo DOM necessario, sem intermediarios. Isso resulta em bundles significativamente menores.
+</Question>
+
 ### Comparação
 
-| Aspecto | React | Vue | Svelte |
-|---------|-------|-----|--------|
-| **Estado** | `useState` hook | `ref()` | `let` simples |
-| **Eventos** | `onClick` | `@click` | `on:click` |
+| Aspecto | React | Vue | Svelte 5 |
+|---------|-------|-----|----------|
+| **Estado** | `useState` hook | `ref()` | `$state()` rune |
+| **Eventos** | `onClick` | `@click` | `onclick` |
 | **Interpolação** | `{valor}` | `{{ valor }}` | `{valor}` |
 | **CSS** | Externo/CSS-in-JS | `<style scoped>` | `<style>` (escopo auto) |
 | **Bundle** | Runtime React | Runtime Vue | Zero runtime |
@@ -469,15 +400,16 @@ button { /* estilos */ }
 ### Instalação do vitePreprocess
 
 ```bash
-npm install -D @sveltejs/vite-plugin-svelte
-npm install -D sass  # Para SCSS
-npm install -D typescript  # Para TS
+pnpm add -D @sveltejs/vite-plugin-svelte
+pnpm add -D sass  # Para SCSS
+pnpm add -D typescript  # Para TS
 ```
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 
 export default defineConfig({
   plugins: [
@@ -498,9 +430,10 @@ export default defineConfig({
     age: number
   }
 
-  export let user: User
+  // Svelte 5: $props() em vez de export let
+  let { user }: { user: User } = $props()
 
-  let count: number = 0
+  let count: number = $state(0)
 </script>
 
 <p>{user.name} tem {user.age} anos</p>
@@ -525,19 +458,19 @@ export default defineConfig({
 
 ---
 
-## svelte.config.js
+## svelte.config.ts
 
-Além do `vite.config.js`, projetos Svelte têm um arquivo de configuração específico:
+Além do `vite.config.ts`, projetos Svelte têm um arquivo de configuração específico:
 
-```javascript
-// svelte.config.js
+```typescript
+// svelte.config.ts
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 
 export default {
-  // Pré-processadores (TS, SCSS, etc)
+  // Pre-processadores (TS, SCSS, etc)
   preprocess: vitePreprocess(),
 
-  // Opções do compilador
+  // Opcoes do compilador
   compilerOptions: {
     // Svelte 5 runes
     runes: true
@@ -545,19 +478,23 @@ export default {
 
   // Avisos a ignorar
   onwarn: (warning, handler) => {
-    // Ignora avisos de acessibilidade específicos
+    // Ignora avisos de acessibilidade especificos
     if (warning.code === 'a11y-click-events-have-key-events') return
     handler(warning)
   },
 
-  // Extensões de arquivo
+  // Extensoes de arquivo
   extensions: ['.svelte']
 }
 ```
 
+<Tip title="Runes sao o futuro do Svelte">
+No Svelte 5, as <strong>runes</strong> (`$state`, `$derived`, `$effect`) substituem o modelo de reatividade implicito do Svelte 4. Elas tornam a reatividade <strong>explicita e previsivel</strong>, facilitando o entendimento do fluxo de dados. O `svelte.config` com `runes: true` garante que todos os componentes usem esse novo modelo.
+</Tip>
+
 ---
 
-## 🎯 Mini-Projeto: Migrando para Svelte
+## Mini-Projeto: Migrando para Svelte
 
 Vamos criar a versão Svelte do nosso Dashboard!
 
@@ -565,16 +502,16 @@ Vamos criar a versão Svelte do nosso Dashboard!
 
 ```bash
 # Na pasta do curso
-npm create vite@latest dashboard-svelte -- --template svelte
+pnpm create vite@latest dashboard-svelte -- --template svelte-ts
 
 cd dashboard-svelte
-npm install
+pnpm install
 ```
 
 ### Passo 2: Configurar Aliases
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import path from 'path'
@@ -585,8 +522,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@utils': path.resolve(__dirname, './src/utils')
+      '@components': path.resolve(
+        __dirname, './src/components'
+      ),
+      '@utils': path.resolve(
+        __dirname, './src/utils'
+      )
     }
   },
 
@@ -601,10 +542,17 @@ export default defineConfig({
 
 ```svelte
 <!-- src/components/PerformanceCard.svelte -->
-<script>
-  export let titulo = ''
-  export let valor = 0
-  export let unidade = 'ms'
+<script lang="ts">
+  // Svelte 5: $props() com tipagem
+  let {
+    titulo = '',
+    valor = 0,
+    unidade = 'ms'
+  }: {
+    titulo?: string
+    valor?: number | string
+    unidade?: string
+  } = $props()
 </script>
 
 <div class="performance-card">
@@ -654,33 +602,46 @@ export default defineConfig({
 
 ```svelte
 <!-- src/App.svelte -->
-<script>
+<script lang="ts">
   import { onMount } from 'svelte'
-  import PerformanceCard from '@components/PerformanceCard.svelte'
+  import PerformanceCard from
+    '@components/PerformanceCard.svelte'
 
-  let metricas = {
+  // Svelte 5: $state() para reatividade
+  let metricas = $state({
     domReady: 0,
     pageLoad: 0,
-    fcp: 'N/A',
+    fcp: 'N/A' as string | number,
     renderTime: 0
-  }
+  })
 
   const inicioRender = performance.now()
 
   onMount(() => {
     // Calcula tempo de render
-    metricas.renderTime = (performance.now() - inicioRender).toFixed(2)
+    metricas.renderTime = parseFloat(
+      (performance.now() - inicioRender).toFixed(2)
+    )
 
-    // Espera página carregar para métricas completas
+    // Espera pagina carregar para metricas completas
     window.addEventListener('load', () => {
       const timing = performance.timing
-      metricas.domReady = timing.domContentLoadedEventEnd - timing.navigationStart
-      metricas.pageLoad = timing.loadEventEnd - timing.navigationStart
+      metricas.domReady =
+        timing.domContentLoadedEventEnd
+        - timing.navigationStart
+      metricas.pageLoad =
+        timing.loadEventEnd
+        - timing.navigationStart
 
       // FCP
-      const paintEntries = performance.getEntriesByType('paint')
-      const fcp = paintEntries.find(e => e.name === 'first-contentful-paint')
-      metricas.fcp = fcp ? fcp.startTime.toFixed(2) : 'N/A'
+      const paintEntries =
+        performance.getEntriesByType('paint')
+      const fcp = paintEntries.find(
+        e => e.name === 'first-contentful-paint'
+      )
+      metricas.fcp = fcp
+        ? fcp.startTime.toFixed(2)
+        : 'N/A'
     })
   })
 </script>
@@ -689,30 +650,45 @@ export default defineConfig({
   <header class="header">
     <img src="/vite.svg" class="logo" alt="Vite logo" />
     <h1>Dashboard Svelte</h1>
-    <p class="subtitle">Agora com o poder do Svelte! ⚡</p>
+    <p class="subtitle">
+      Agora com o poder do Svelte 5!
+    </p>
   </header>
 
   <main class="main">
     <section class="section">
-      <h2>📊 Métricas de Performance</h2>
+      <h2>Metricas de Performance</h2>
       <div class="cards-grid">
-        <PerformanceCard titulo="DOM Ready" valor={metricas.domReady} />
-        <PerformanceCard titulo="Page Load" valor={metricas.pageLoad} />
-        <PerformanceCard titulo="FCP" valor={metricas.fcp} />
-        <PerformanceCard titulo="Render" valor={metricas.renderTime} />
+        <PerformanceCard
+          titulo="DOM Ready"
+          valor={metricas.domReady}
+        />
+        <PerformanceCard
+          titulo="Page Load"
+          valor={metricas.pageLoad}
+        />
+        <PerformanceCard
+          titulo="FCP"
+          valor={metricas.fcp}
+        />
+        <PerformanceCard
+          titulo="Render"
+          valor={metricas.renderTime}
+        />
       </div>
     </section>
   </main>
 
   <footer class="footer">
-    <p>Feito com Svelte + Vite</p>
+    <p>Feito com Svelte 5 + Vite</p>
   </footer>
 </div>
 
 <style>
   :global(body) {
     margin: 0;
-    font-family: Inter, system-ui, -apple-system, sans-serif;
+    font-family: Inter, system-ui,
+      -apple-system, sans-serif;
     background-color: #0f0f0f;
     color: #ffffff;
   }
@@ -742,7 +718,9 @@ export default defineConfig({
   .header h1 {
     font-size: 2.5rem;
     margin: 1rem 0 0.5rem;
-    background: linear-gradient(135deg, #ff3e00, #ff8a00);
+    background: linear-gradient(
+      135deg, #ff3e00, #ff8a00
+    );
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -765,7 +743,9 @@ export default defineConfig({
 
   .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(
+      auto-fit, minmax(200px, 1fr)
+    );
     gap: 1rem;
   }
 
@@ -780,16 +760,16 @@ export default defineConfig({
 ### Passo 5: Testar
 
 ```bash
-npm run dev
+pnpm dev
 # Acesse http://localhost:3000
 
-npm run build
+pnpm build
 # Observe: bundle MUITO menor que React/Vue!
 ```
 
 ---
 
-## ✅ Desafio da Aula
+## Desafio da Aula
 
 ### Objetivo
 Adicionar um componente Counter interativo ao Dashboard Svelte.
@@ -811,18 +791,21 @@ Adicionar um componente Counter interativo ao Dashboard Svelte.
 ### Solução
 
 <details>
-<summary>🔍 Clique para ver a solução</summary>
+<summary>Clique para ver a solução</summary>
 
 ```svelte
 <!-- src/components/Counter.svelte -->
-<script>
-  let count = 0
+<script lang="ts">
+  let count: number = $state(0)
 
-  function increment() {
+  // $derived() para verificar se houve mudanca
+  let hasMoved: boolean = $derived(count !== 0)
+
+  function increment(): void {
     count += 1
   }
 
-  function decrement() {
+  function decrement(): void {
     count -= 1
   }
 </script>
@@ -830,9 +813,24 @@ Adicionar um componente Counter interativo ao Dashboard Svelte.
 <div class="counter-card">
   <h3>Contador Interativo</h3>
   <div class="counter-display">
-    <button on:click={decrement} class="btn-minus">−</button>
-    <span class="count" class:bump={count !== 0}>{count}</span>
-    <button on:click={increment} class="btn-plus">+</button>
+    <button
+      onclick={decrement}
+      class="btn-minus"
+    >
+      -
+    </button>
+    <span
+      class="count"
+      class:bump={hasMoved}
+    >
+      {count}
+    </span>
+    <button
+      onclick={increment}
+      class="btn-plus"
+    >
+      +
+    </button>
   </div>
 </div>
 
@@ -906,7 +904,7 @@ Adicionar um componente Counter interativo ao Dashboard Svelte.
 
 No App.svelte, adicione:
 ```svelte
-<script>
+<script lang="ts">
   import Counter from '@components/Counter.svelte'
 </script>
 
@@ -918,20 +916,20 @@ No App.svelte, adicione:
 
 ---
 
-## 🎉 Conclusão do Módulo — Fundamentos do Vite
+## Conclusão do Módulo — Fundamentos do Vite
 
 Parabéns! Você completou o módulo sobre **Fundamentos do Vite**.
 
 ### O que você aprendeu
 
-- ✅ Por que o Vite é mais rápido que bundlers tradicionais
-- ✅ Arquitetura de ESModules nativos e HMR
-- ✅ Criação e estrutura de projetos Vite
-- ✅ Configuração avançada com `vite.config.js`
-- ✅ Sistema de plugins e criação de plugins customizados
-- ✅ Variáveis de ambiente e múltiplos modos
-- ✅ Build de produção e otimização
-- ✅ Integração com diferentes frameworks (React, Vue, Svelte)
+- Por que o Vite é mais rápido que bundlers tradicionais
+- Arquitetura de ESModules nativos e HMR
+- Criação e estrutura de projetos Vite
+- Configuração avançada com `vite.config.ts`
+- Sistema de plugins e criação de plugins customizados
+- Variáveis de ambiente e múltiplos modos
+- Build de produção e otimização
+- Integração com diferentes frameworks (React, Vue, Svelte)
 
 ### Próximos passos
 

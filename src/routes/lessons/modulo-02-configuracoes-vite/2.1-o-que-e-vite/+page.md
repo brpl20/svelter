@@ -4,6 +4,11 @@ module: 2
 order: 1
 ---
 
+<script>
+import Tip from '$lib/components/Tip.svelte';
+import Question from '$lib/components/Question.svelte';
+</script>
+
 # 2.1 — O que é o Vite e por que ele existe
 
 > Entenda o problema que o Vite resolve e por que ele é tão mais rápido que bundlers tradicionais.
@@ -29,7 +34,7 @@ Antes dos ES Modules serem suportados nativamente pelos navegadores, não existi
       <div class="bg-base-100 rounded-lg border border-base-content/10 p-4 font-mono text-sm text-base-content w-full sm:w-auto">
         <div class="font-bold mb-1">src/</div>
         <div class="pl-3">├── index.js</div>
-        <div class="pl-3">├── App.js</div>
+        <div class="pl-3">├── App.svelte</div>
         <div class="pl-3">├── utils.js</div>
         <div class="pl-3">└── styles.css</div>
       </div>
@@ -69,19 +74,22 @@ Projetos modernos podem ter **milhares de módulos**. Em aplicações grandes:
 - Alterações simples podem demorar **segundos** para aparecer no navegador
 - O Hot Module Replacement (HMR) fica lento conforme o projeto cresce
 
-```javascript
-// Um projeto típico de médio porte
-📁 src/
-├── 📁 components/     // 150 componentes
-├── 📁 pages/          // 50 páginas
-├── 📁 utils/          // 80 utilitários
-├── 📁 hooks/          // 40 hooks
-├── 📁 services/       // 30 serviços
-└── 📁 styles/         // 60 arquivos CSS
+<Tip title="O que é HMR?">
+HMR (Hot Module Replacement) é a capacidade do servidor de desenvolvimento de atualizar módulos no navegador <strong>sem recarregar a página inteira</strong>. Quando você edita um arquivo, apenas aquele módulo é substituído em tempo real, preservando o estado da aplicação. Bundlers tradicionais como Webpack precisam recalcular dependências a cada mudança, o que fica cada vez mais lento em projetos grandes.
+</Tip>
 
-// Total: ~400+ módulos
-// Webpack cold start: 15-45 segundos
-// Webpack HMR: 500ms - 2s por edição
+```text
+src/
+├── components/     150 componentes
+├── pages/          50 páginas
+├── utils/          80 utilitários
+├── hooks/          40 hooks
+├── services/       30 serviços
+└── styles/         60 arquivos CSS
+
+Total: ~400+ módulos
+Webpack cold start: 15-45 segundos
+Webpack HMR: 500ms - 2s por edição
 ```
 
 ---
@@ -96,13 +104,14 @@ Desde 2018, todos os navegadores modernos suportam ESModules nativamente:
 
 ```html
 <!-- O navegador entende isso nativamente agora! -->
-<script type="module" src="/src/main.js"></script>
+<script type="module" src="/src/main.ts"></script>
 ```
 
-```javascript
-// main.js - imports funcionam direto no navegador!
-import { createApp } from './app.js'
-import { formatDate } from './utils/date.js'
+```typescript
+// main.ts
+// imports funcionam direto no navegador!
+import { createApp } from './app.ts'
+import { formatDate } from './utils/date.ts'
 
 createApp()
 ```
@@ -161,13 +170,15 @@ O Vite **delega o trabalho de resolução de módulos para o navegador**. Ele s�
 
 Vamos criar dois projetos idênticos para sentir a diferença:
 
-### Projeto com Create React App (Webpack)
+### Projeto com Webpack
 
 ```bash
 # NÃO execute isso agora, é só para ilustração
-npx create-react-app meu-app-webpack
-cd meu-app-webpack
-npm start
+mkdir meu-app-webpack && cd meu-app-webpack
+pnpm init
+pnpm add webpack webpack-cli webpack-dev-server html-webpack-plugin
+# configurar webpack.config.js manualmente...
+pnpm dlx webpack serve
 
 # ⏱️ Tempo até ver algo no navegador: ~15-30 segundos
 ```
@@ -176,10 +187,10 @@ npm start
 
 ```bash
 # Vamos criar esse!
-npm create vite@latest meu-app-vite -- --template vanilla
+pnpm create vite@latest meu-app-vite -- --template svelte-ts
 cd meu-app-vite
-npm install
-npm run dev
+pnpm install
+pnpm dev
 
 # ⏱️ Tempo até ver algo no navegador: ~2-3 segundos
 ```
@@ -196,7 +207,9 @@ O Vite funciona de forma diferente em desenvolvimento e produção:
 - Transforma arquivos sob demanda
 - HMR ultra-rápido
 
-HMR?
+<Question question="O que é HMR?">
+HMR (Hot Module Replacement) permite que o navegador <strong>substitua módulos individuais em tempo real</strong>, sem recarregar a página inteira. Isso preserva o estado da aplicação enquanto você edita o código, tornando o ciclo de desenvolvimento muito mais rápido.
+</Question>
 
 ### Produção
 - Usa Rollup para bundling
@@ -204,8 +217,13 @@ HMR?
 - Tree-shaking, minificação
 - Code splitting automático
 
-Rollup? 
-Tree-Shaking? 
+<Question question="O que é Rollup?">
+Rollup é um <strong>bundler de módulos JavaScript</strong> otimizado para gerar pacotes de produção pequenos e eficientes. Ele entende nativamente ESModules e é excelente em eliminar código não utilizado. O Vite usa o Rollup internamente para o build de produção.
+</Question>
+
+<Question question="O que é Tree-Shaking?">
+Tree-shaking é o processo de <strong>eliminar código morto</strong> (dead code) do bundle final. Se você importa uma biblioteca mas usa apenas uma função dela, o tree-shaking remove todo o restante. O nome vem da analogia de "sacudir a árvore" para derrubar folhas mortas.
+</Question>
 
 <div class="not-prose my-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
   <div class="rounded-xl border border-base-content/10 bg-base-200 overflow-hidden">
@@ -264,21 +282,21 @@ Nesta aula, vamos **criar a base** do nosso Dashboard de Performance:
 cd ~/projetos  # ou sua pasta preferida
 
 # Crie o projeto Vite
-npm create vite@latest dashboard-vite -- --template vanilla
+pnpm create vite@latest dashboard-vite -- --template svelte-ts
 
 # Entre na pasta
 cd dashboard-vite
 
 # Instale as dependências
-npm install
+pnpm install
 
 # Inicie o servidor de desenvolvimento
-npm run dev
+pnpm dev
 ```
 
 ### Passo 2: Observe o tempo de inicialização
 
-Quando rodar `npm run dev`, observe:
+Quando rodar `pnpm dev`, observe:
 - Quanto tempo levou para o servidor iniciar?
 - A mensagem mostra algo como `ready in XXX ms`
 
@@ -295,12 +313,17 @@ Quando rodar `npm run dev`, observe:
 
 ```text
 dashboard-vite/
-├── index.html          # Ponto de entrada (note o <script type="module">)
-├── counter.js          # Módulo JavaScript
-├── main.js             # Módulo principal
-├── style.css           # Estilos
+├── index.html          # Ponto de entrada (note o script type="module")
+├── src/
+│   ├── App.svelte      # Componente principal
+│   ├── main.ts         # Módulo principal
+│   ├── app.css         # Estilos
+│   └── vite-env.d.ts   # Tipos do Vite
 ├── public/             # Arquivos estáticos
 │   └── vite.svg
+├── svelte.config.js    # Configuração do Svelte
+├── tsconfig.json       # Configuração do TypeScript
+├── vite.config.ts      # Configuração do Vite
 ├── package.json        # Dependências e scripts
 └── node_modules/       # Dependências instaladas
 ```
@@ -319,7 +342,7 @@ dashboard-vite/
   <body>
     <div id="app"></div>
     <!-- Note o type="module" - isso ativa ESModules nativos! -->
-    <script type="module" src="/main.js"></script>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
 ```
@@ -333,18 +356,18 @@ Modificar o projeto criado para exibir o tempo de carregamento da página.
 
 ### Instruções
 
-1. Abra o arquivo `main.js`
+1. Abra o arquivo `main.ts`
 2. Adicione código para medir e exibir quanto tempo a página levou para carregar
 3. O tempo deve aparecer na tela, dentro do `#app`
 
 ### Dica
 Use `performance.now()` para medir o tempo:
 
-```javascript
-const inicio = performance.now()
+```typescript
+const inicio: number = performance.now()
 // ... código ...
-const fim = performance.now()
-const tempo = fim - inicio
+const fim: number = performance.now()
+const tempo: number = fim - inicio
 ```
 
 ### Spec de Verificação
@@ -360,15 +383,15 @@ Seu desafio está completo quando:
 <details>
 <summary>🔍 Clique para ver a solução</summary>
 
-```javascript
-// main.js
+```typescript
+// main.ts
 import './style.css'
-import { setupCounter } from './counter.js'
+import { setupCounter } from './counter.ts'
 
 // Marca o início
-const inicioCarregamento = performance.now()
+const inicioCarregamento: number = performance.now()
 
-document.querySelector('#app').innerHTML = `
+document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
     <a href="https://vitejs.dev" target="_blank">
       <img src="/vite.svg" class="logo" alt="Vite logo" />
@@ -383,15 +406,19 @@ document.querySelector('#app').innerHTML = `
   </div>
 `
 
-setupCounter(document.querySelector('#counter'))
+setupCounter(
+  document.querySelector<HTMLButtonElement>('#counter')!
+)
 
 // Calcula e exibe o tempo após o DOM ser atualizado
 requestAnimationFrame(() => {
-  const fimCarregamento = performance.now()
-  const tempoTotal = (fimCarregamento - inicioCarregamento).toFixed(2)
+  const fimCarregamento: number = performance.now()
+  const tempoTotal: string =
+    (fimCarregamento - inicioCarregamento).toFixed(2)
 
-  document.querySelector('#tempo-carregamento').textContent =
-    `⚡ Página carregada em ${tempoTotal}ms`
+  document
+    .querySelector('#tempo-carregamento')!
+    .textContent = `Página carregada em ${tempoTotal}ms`
 })
 ```
 
@@ -407,8 +434,8 @@ Pratique o que aprendeu com o exercício interativo!
 
 ```bash
 cd ../../exercicios/modulo-01/exercicio-1.1
-npm install
-npm test
+pnpm install
+pnpm test
 ```
 
 No exercício você vai criar funções para:

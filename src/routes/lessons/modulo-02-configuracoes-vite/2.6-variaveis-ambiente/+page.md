@@ -4,6 +4,11 @@ module: 2
 order: 6
 ---
 
+<script>
+import Tip from '$lib/components/Tip.svelte';
+import Question from '$lib/components/Question.svelte';
+</script>
+
 # 2.6 — Variáveis de Ambiente e Modos
 
 > Configure diferentes ambientes (dev, staging, produção) com variáveis seguras.
@@ -140,32 +145,54 @@ GITHUB_TOKEN=ghp_xxxxxxxxxxxx
 
 **Importante:** Apenas variáveis com prefixo `VITE_` são expostas ao cliente!
 
-```javascript
-// ✅ Funciona - tem prefixo VITE_
+<Tip title="Cuidado com VITE_">
+Nunca use o prefixo <code>VITE_</code> para segredos como senhas, tokens ou chaves privadas. Tudo com <code>VITE_</code> vai parar no bundle do navegador e qualquer pessoa pode ver no DevTools.
+</Tip>
+
+```typescript
+// Funciona - tem prefixo VITE_
 console.log(import.meta.env.VITE_APP_NAME)
 console.log(import.meta.env.VITE_API_URL)
 
-// ❌ undefined - sem prefixo VITE_
-console.log(import.meta.env.DATABASE_URL) // undefined
-console.log(import.meta.env.SECRET_KEY)   // undefined
+// undefined - sem prefixo VITE_
+// DATABASE_URL e SECRET_KEY nao sao expostas
+console.log(import.meta.env.DATABASE_URL)
+// retorna undefined
+console.log(import.meta.env.SECRET_KEY)
+// retorna undefined
 ```
 
 ### Variáveis Automáticas
 
-```javascript
+```typescript
 // Variáveis sempre disponíveis
-import.meta.env.MODE       // 'development' ou 'production'
-import.meta.env.BASE_URL   // URL base (config.base)
-import.meta.env.PROD       // true se production
-import.meta.env.DEV        // true se development
-import.meta.env.SSR        // true se server-side rendering
+// 'development' ou 'production'
+import.meta.env.MODE
+// URL base (config.base)
+import.meta.env.BASE_URL
+// true se production
+import.meta.env.PROD
+// true se development
+import.meta.env.DEV
+// true se server-side rendering
+import.meta.env.SSR
 ```
 
 ### Exemplo Prático
 
-```javascript
-// src/config.js
-export const config = {
+```typescript
+// src/config.ts
+
+interface AppConfig {
+  appName: string
+  apiUrl: string
+  debug: boolean
+  isDev: boolean
+  isProd: boolean
+  mode: string
+}
+
+export const config: AppConfig = {
   appName: import.meta.env.VITE_APP_NAME,
   apiUrl: import.meta.env.VITE_API_URL,
   debug: import.meta.env.VITE_DEBUG === 'true',
@@ -181,7 +208,9 @@ if (config.isDev) {
 }
 
 // API URL dinâmica
-async function fetchData(endpoint) {
+async function fetchData(
+  endpoint: string
+): Promise<unknown> {
   const url = `${config.apiUrl}/${endpoint}`
   return fetch(url).then(r => r.json())
 }
@@ -216,9 +245,15 @@ Agora você tem autocomplete!
 
 ```typescript
 // TypeScript sabe que essas variáveis existem
-const apiUrl = import.meta.env.VITE_API_URL // string
-const debug = import.meta.env.VITE_DEBUG    // string
+const apiUrl = import.meta.env.VITE_API_URL
+// string
+const debug = import.meta.env.VITE_DEBUG
+// string
 ```
+
+<Tip title="SvelteKit tem algo melhor">
+No SvelteKit, prefira usar <code>$env/static/public</code> e <code>$env/static/private</code> em vez de <code>import.meta.env</code>. Esses módulos sao type-safe, validados em build time, e o SvelteKit garante que variaveis privadas nunca vazem para o cliente.
+</Tip>
 
 ---
 
@@ -264,27 +299,34 @@ VITE_FEATURE_FLAGS={"newUI":true,"betaFeatures":true}
 
 ---
 
-## Usando no vite.config.js
+## Usando no vite.config.ts
 
 ### Carregando Variáveis na Config
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig, loadEnv } from 'vite'
+import type { UserConfig } from 'vite'
 
 export default defineConfig(({ mode }) => {
   // Carrega variáveis de ambiente
   // process.cwd() = diretório atual
-  // '' = prefixo vazio (carrega TODAS as variáveis)
-  const env = loadEnv(mode, process.cwd(), '')
+  // '' = prefixo vazio (carrega TODAS)
+  const env = loadEnv(
+    mode,
+    process.cwd(),
+    ''
+  )
 
   console.log(`Modo: ${mode}`)
   console.log(`API URL: ${env.VITE_API_URL}`)
 
   return {
     define: {
-      // Injeta variáveis customizadas (cuidado com segurança!)
-      __APP_VERSION__: JSON.stringify(env.VITE_APP_VERSION)
+      // Injeta variáveis customizadas
+      __APP_VERSION__: JSON.stringify(
+        env.VITE_APP_VERSION
+      )
     },
 
     server: {
@@ -295,27 +337,35 @@ export default defineConfig(({ mode }) => {
         }
       }
     }
-  }
+  } satisfies UserConfig
 })
 ```
 
 ### Variáveis em Tempo de Build
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   define: {
     // Disponíveis em todo o código
-    __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
-    __COMMIT_HASH__: JSON.stringify(process.env.COMMIT_SHA || 'local')
+    __BUILD_TIME__: JSON.stringify(
+      new Date().toISOString()
+    ),
+    __COMMIT_HASH__: JSON.stringify(
+      process.env.COMMIT_SHA || 'local'
+    )
   }
 })
 ```
 
-```javascript
+```typescript
 // No código
+// declare para TypeScript reconhecer
+declare const __BUILD_TIME__: string
+declare const __COMMIT_HASH__: string
+
 console.log(`Build: ${__BUILD_TIME__}`)
 console.log(`Commit: ${__COMMIT_HASH__}`)
 ```
@@ -332,11 +382,17 @@ console.log(`Commit: ${__COMMIT_HASH__}`)
   <head>
     <meta charset="UTF-8" />
     <title>%VITE_APP_NAME%</title>
-    <meta name="version" content="%VITE_APP_VERSION%">
+    <meta
+      name="version"
+      content="%VITE_APP_VERSION%"
+    >
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
+    <script
+      type="module"
+      src="/src/main.ts"
+    ></script>
   </body>
 </html>
 ```
@@ -347,7 +403,7 @@ O Vite substitui `%VITE_*%` automaticamente!
 
 ## Segurança
 
-### ⚠️ Regras Importantes
+### Regras Importantes
 
 <div class="not-prose my-6">
   <div class="w-full max-w-2xl mx-auto rounded-xl border border-base-content/10 overflow-hidden">
@@ -383,24 +439,38 @@ O Vite substitui `%VITE_*%` automaticamente!
   </div>
 </div>
 
+<Question question="O que acontece se eu colocar uma senha com VITE_ prefix?">
+A senha vai ser incluida no bundle JavaScript final e qualquer pessoa que abrir o DevTools do navegador consegue ver. Isso vale para qualquer variavel com prefixo <code>VITE_</code> — ela e substituida em tempo de build como texto puro no codigo. Nunca coloque senhas, tokens secretos ou chaves privadas com esse prefixo.
+</Question>
+
 ### Validação de Variáveis
 
-```javascript
-// src/env.js
+```typescript
+// src/env.ts
 // Valida que todas as variáveis necessárias existem
 
-const requiredEnvVars = [
+const requiredEnvVars: string[] = [
   'VITE_APP_NAME',
   'VITE_API_URL'
 ]
 
 for (const envVar of requiredEnvVars) {
   if (!import.meta.env[envVar]) {
-    throw new Error(`Variável de ambiente ${envVar} não definida!`)
+    throw new Error(
+      `Variável de ambiente ${envVar} não definida!`
+    )
   }
 }
 
-export const env = {
+interface Env {
+  appName: string
+  apiUrl: string
+  debug: boolean
+  isDev: boolean
+  isProd: boolean
+}
+
+export const env: Env = {
   appName: import.meta.env.VITE_APP_NAME,
   apiUrl: import.meta.env.VITE_API_URL,
   debug: import.meta.env.VITE_DEBUG === 'true',
@@ -411,7 +481,7 @@ export const env = {
 
 ---
 
-## 🎯 Mini-Projeto: Configuração Multi-Ambiente
+## Mini-Projeto: Configuração Multi-Ambiente
 
 Vamos configurar nosso Dashboard para múltiplos ambientes:
 
@@ -446,103 +516,137 @@ VITE_ENVIRONMENT=production
 
 ### Passo 2: Criar módulo de configuração
 
-```javascript
-// src/config/env.js
+```typescript
+// src/config/env.ts
+
+interface AppEnv {
+  app: {
+    name: string
+    version: string
+  }
+  api: {
+    url: string
+  }
+  flags: {
+    debug: boolean
+  }
+  runtime: {
+    mode: string
+    isDev: boolean
+    isProd: boolean
+    environment: string
+  }
+}
 
 // Validação
-const required = ['VITE_APP_NAME', 'VITE_API_URL']
+const required = [
+  'VITE_APP_NAME',
+  'VITE_API_URL'
+]
+
 for (const key of required) {
   if (!import.meta.env[key]) {
-    console.error(`❌ Variável ${key} não definida!`)
+    console.error(
+      `Variável ${key} não definida!`
+    )
   }
 }
 
 // Exporta configuração tipada
-export const env = {
+export const env: AppEnv = {
   app: {
     name: import.meta.env.VITE_APP_NAME,
-    version: import.meta.env.VITE_APP_VERSION || '0.0.0'
+    version:
+      import.meta.env.VITE_APP_VERSION || '0.0.0'
   },
   api: {
     url: import.meta.env.VITE_API_URL
   },
   flags: {
-    debug: import.meta.env.VITE_DEBUG === 'true'
+    debug:
+      import.meta.env.VITE_DEBUG === 'true'
   },
   runtime: {
     mode: import.meta.env.MODE,
     isDev: import.meta.env.DEV,
     isProd: import.meta.env.PROD,
-    environment: import.meta.env.VITE_ENVIRONMENT || 'unknown'
+    environment:
+      import.meta.env.VITE_ENVIRONMENT
+      || 'unknown'
   }
 }
 
 // Log em desenvolvimento
 if (env.flags.debug) {
-  console.log('🔧 Configuração carregada:', env)
+  console.log('Configuração carregada:', env)
 }
 ```
 
 ### Passo 3: Componente de status do ambiente
 
-```javascript
-// src/components/EnvironmentBadge.js
+```svelte
+<!-- src/components/EnvironmentBadge.svelte -->
+<script lang="ts">
+  import { env } from '$lib/config/env'
 
-import { env } from '@/config/env.js'
-
-const colors = {
-  development: '#22c55e', // verde
-  staging: '#f59e0b',     // amarelo
-  production: '#ef4444'   // vermelho
-}
-
-export function createEnvironmentBadge() {
-  const badge = document.createElement('div')
-  badge.className = 'environment-badge'
-  badge.style.cssText = `
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    background: ${colors[env.runtime.environment] || '#666'};
-    color: white;
-    z-index: 9999;
-  `
-  badge.textContent = `${env.runtime.environment} • v${env.app.version}`
-
-  // Não mostra em produção (opcional)
-  if (env.runtime.isProd && !env.flags.debug) {
-    badge.style.display = 'none'
+  const colors: Record<string, string> = {
+    // verde
+    development: '#22c55e',
+    // amarelo
+    staging: '#f59e0b',
+    // vermelho
+    production: '#ef4444'
   }
 
-  return badge
-}
+  const bgColor =
+    colors[env.runtime.environment] || '#666'
+
+  const label =
+    `${env.runtime.environment} • v${env.app.version}`
+
+  const visible =
+    !(env.runtime.isProd && !env.flags.debug)
+</script>
+
+{#if visible}
+  <div
+    class="environment-badge"
+    style="
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      background: {bgColor};
+      color: white;
+      z-index: 9999;
+    "
+  >
+    {label}
+  </div>
+{/if}
 ```
 
-### Passo 4: Atualizar main.js
+### Passo 4: Atualizar main.ts
 
-```javascript
-// src/main.js
-import '@/style.css'
-import { env } from '@/config/env.js'
-import { createEnvironmentBadge } from '@components/EnvironmentBadge.js'
-// ... outros imports
-
-function renderApp() {
-  // ... código existente
-
-  // Adiciona badge de ambiente
-  document.body.appendChild(createEnvironmentBadge())
+```svelte
+<!-- src/App.svelte -->
+<script lang="ts">
+  import { env } from '$lib/config/env'
+  import EnvironmentBadge
+    from './components/EnvironmentBadge.svelte'
 
   // Atualiza título com nome do app
-  document.title = `${env.app.name} - ${env.runtime.environment}`
-}
+  document.title =
+    `${env.app.name} - ${env.runtime.environment}`
+</script>
 
-renderApp()
+<!-- conteúdo do app -->
+<slot />
+<EnvironmentBadge />
 ```
 
 ### Passo 5: Scripts no package.json
@@ -561,7 +665,7 @@ renderApp()
 
 ---
 
-## ✅ Desafio da Aula
+## Desafio da Aula
 
 ### Objetivo
 Criar um sistema de feature flags baseado em variáveis de ambiente.
@@ -587,59 +691,71 @@ VITE_FEATURE_FLAGS={"darkMode":true,"betaCard":true,"analytics":false}
 ### Solução
 
 <details>
-<summary>🔍 Clique para ver a solução</summary>
+<summary>Clique para ver a solução</summary>
 
-```javascript
-// src/config/features.js
-const flagsJson = import.meta.env.VITE_FEATURE_FLAGS || '{}'
+```typescript
+// src/config/features.ts
+const flagsJson =
+  import.meta.env.VITE_FEATURE_FLAGS || '{}'
 
-let flags = {}
+interface FeatureFlags {
+  darkMode: boolean
+  betaCard: boolean
+  analytics: boolean
+}
+
+let flags: Partial<FeatureFlags> = {}
 try {
   flags = JSON.parse(flagsJson)
 } catch (e) {
-  console.error('Erro ao parsear feature flags:', e)
+  console.error(
+    'Erro ao parsear feature flags:',
+    e
+  )
 }
 
-export const featureFlags = {
+export const featureFlags: FeatureFlags = {
   darkMode: flags.darkMode ?? false,
   betaCard: flags.betaCard ?? false,
   analytics: flags.analytics ?? false
 }
 
-export function isEnabled(flag) {
+export function isEnabled(
+  flag: keyof FeatureFlags
+): boolean {
   return featureFlags[flag] === true
 }
 ```
 
-```javascript
-// src/components/BetaCard.js
-import { isEnabled } from '@/config/features.js'
+```svelte
+<!-- src/components/BetaCard.svelte -->
+<script lang="ts">
+  import { isEnabled }
+    from '$lib/config/features'
+</script>
 
-export function createBetaCard() {
-  if (!isEnabled('betaCard')) {
-    return null
-  }
-
-  const card = document.createElement('div')
-  card.className = 'performance-card beta-card'
-  card.innerHTML = `
+{#if isEnabled('betaCard')}
+  <div class="performance-card beta-card">
     <span class="beta-badge">BETA</span>
-    <h3 class="card-title">Funcionalidade Beta</h3>
-    <p>Esta é uma funcionalidade experimental!</p>
-  `
-  return card
-}
+    <h3 class="card-title">
+      Funcionalidade Beta
+    </h3>
+    <p>
+      Esta é uma funcionalidade experimental!
+    </p>
+  </div>
+{/if}
 ```
 
-```javascript
-// src/main.js
-import { createBetaCard } from '@components/BetaCard.js'
+```svelte
+<!-- No componente pai -->
+<script lang="ts">
+  import BetaCard
+    from './components/BetaCard.svelte'
+</script>
 
-// Na função de render
-const betaCard = createBetaCard()
-if (betaCard) {
-  document.querySelector('.cards-grid').appendChild(betaCard)
-}
+<!-- Na área do grid de cards -->
+<BetaCard />
 ```
 
 </details>

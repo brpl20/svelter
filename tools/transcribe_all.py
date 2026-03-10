@@ -32,9 +32,9 @@ def load_api_key():
     env_path = Path.home() / "code" / "env"
     with open(env_path) as f:
         for line in f:
-            if line.startswith("GROK="):
+            if line.startswith("GROQ="):
                 return line.strip().split("=", 1)[1]
-    raise ValueError("GROK API key not found in ~/code/env")
+    raise ValueError("GROQ API key not found in ~/code/env")
 
 
 def get_audio_duration(audio_path: Path) -> float:

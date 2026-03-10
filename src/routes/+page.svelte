@@ -14,9 +14,9 @@
 			<img src={favicon} alt="Svelte logo" class="w-20 h-20 mx-auto mb-6 drop-shadow-lg" />
 			<h1 class="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight">
 				Curso Completo de<br />
-				<span class="bg-gradient-to-r from-[--color-svelte] to-[--color-svelte-light] bg-clip-text text-transparent">Svelte</span>
-				<span class="text-base-content/40">&</span>
-				<span class="bg-gradient-to-r from-[--color-svelte-light] to-[--color-accent] bg-clip-text text-transparent">SvelteKit</span>
+				<span style="background: linear-gradient(to right, #ff3e00, #ff6d3a); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Svelte</span>
+				<span class="text-base-content">&amp;</span>
+				<span style="background: linear-gradient(to right, #ff6d3a, #ff9a6c); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">SvelteKit</span>
 			</h1>
 			<p class="py-6 text-lg opacity-80 leading-relaxed">
 				Do zero ao deploy &mdash; construa aplicacoes web modernas, reativas e performaticas.

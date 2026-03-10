@@ -1,20 +1,22 @@
 ---
-title: "Configuração do vite.config.js"
+title: "Configuração do vite.config.ts"
 module: 2
 order: 4
 ---
 
 <script>
 import CodeSwitch from '$lib/components/CodeSwitch.svelte'
+import Tip from '$lib/components/Tip.svelte';
+import Question from '$lib/components/Question.svelte';
 </script>
 
-# 2.4 — Configuração do `vite.config.js`
+# 2.4 — Configuração do `vite.config.ts`
 
 > Domine o arquivo de configuração: aliases, servidor dev, build e variáveis de ambiente.
 
 ## Objetivos da Aula
 
-- Criar e entender o `vite.config.js`
+- Criar e entender o `vite.config.ts`
 - Configurar aliases de importação
 - Customizar o servidor de desenvolvimento
 - Ajustar opções de build
@@ -56,15 +58,16 @@ export default defineConfig({
 
 Fornece **autocomplete e type-checking** no seu editor:
 
-```javascript
+```typescript
 // Sem defineConfig - sem autocomplete
 export default {
   server: { port: 3000 }
 }
 
-// Com defineConfig - autocomplete completo! ✨
+// Com defineConfig - autocomplete completo!
 export default defineConfig({
-  server: { port: 3000 } // Editor sugere todas as opções
+  server: { port: 3000 }
+  // Editor sugere todas as opções
 })
 ```
 
@@ -74,15 +77,16 @@ export default defineConfig({
 
 ### Estrutura Geral
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
 
 export default defineConfig({
   // Diretório raiz do projeto
   root: '.',
 
-  // Caminho base para produção (útil para GitHub Pages)
+  // Caminho base para produção
+  // (útil para GitHub Pages)
   base: '/',
 
   // Diretório de assets públicos
@@ -124,8 +128,8 @@ export default defineConfig({
 
 Aliases permitem criar atalhos para caminhos longos:
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
 import path from 'path'
 
@@ -136,10 +140,18 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
 
       // Aliases específicos
-      '@components': path.resolve(__dirname, './src/components'),
-      '@utils': path.resolve(__dirname, './src/utils'),
-      '@assets': path.resolve(__dirname, './src/assets'),
-      '@styles': path.resolve(__dirname, './src/styles'),
+      '@components': path.resolve(
+        __dirname, './src/components'
+      ),
+      '@utils': path.resolve(
+        __dirname, './src/utils'
+      ),
+      '@assets': path.resolve(
+        __dirname, './src/assets'
+      ),
+      '@styles': path.resolve(
+        __dirname, './src/styles'
+      ),
     }
   }
 })
@@ -147,18 +159,18 @@ export default defineConfig({
 
 ### Usando Aliases no Código
 
-```javascript
+```typescript
 // ANTES (caminho relativo longo e confuso)
-import { formatarData } from '../../../utils/data.js'
-import Button from '../../../components/ui/Button.js'
+import { formatarData } from '../../../utils/data.ts'
+import Button from '../../../components/ui/Button.svelte'
 
 // DEPOIS (limpo e legível)
-import { formatarData } from '@utils/data.js'
-import Button from '@components/ui/Button.js'
+import { formatarData } from '@utils/data.ts'
+import Button from '@components/ui/Button.svelte'
 
 // Ou simplesmente
-import { formatarData } from '@/utils/data.js'
-import Button from '@/components/ui/Button.js'
+import { formatarData } from '@/utils/data.ts'
+import Button from '@/components/ui/Button.svelte'
 ```
 
 ### TypeScript e Aliases
@@ -178,18 +190,23 @@ Se usar TypeScript, configure também o `tsconfig.json`:
 }
 ```
 
+<Tip title="SvelteKit já tem alias $lib">
+No SvelteKit, o alias `$lib` já vem configurado por padrão e aponta para `src/lib/`. Você não precisa configurar manualmente no `vite.config.ts`. Use `$lib/components/Button.svelte` diretamente nos seus imports.
+</Tip>
+
 ---
 
 ## Servidor de Desenvolvimento
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 export default defineConfig({
   server: {
     // Porta (default: 5173)
     port: 3000,
 
-    // Falhar se a porta estiver ocupada (default: false)
+    // Falhar se a porta estiver ocupada
+    // (default: false)
     strictPort: true,
 
     // Abrir navegador automaticamente
@@ -199,7 +216,8 @@ export default defineConfig({
     open: '/admin',
 
     // Host (default: localhost)
-    host: true, // Expõe na rede local (0.0.0.0)
+    // Expõe na rede local (0.0.0.0)
+    host: true,
 
     // HTTPS
     https: {
@@ -212,7 +230,8 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
+        rewrite: (path: string) =>
+          path.replace(/^\/api/, '')
       }
     },
 
@@ -226,13 +245,16 @@ export default defineConfig({
 
     // Hot Module Replacement
     hmr: {
-      overlay: true, // Mostrar erros na tela
-      port: 24678    // Porta do WebSocket
+      // Mostrar erros na tela
+      overlay: true,
+      // Porta do WebSocket
+      port: 24678
     },
 
     // Observar arquivos específicos
     watch: {
-      usePolling: true, // Útil em Docker/WSL
+      // Útil em Docker/WSL
+      usePolling: true,
       interval: 100
     }
   }
@@ -241,7 +263,7 @@ export default defineConfig({
 
 ### Exemplo: Proxy para API Backend
 
-```javascript
+```typescript
 // Seu frontend chama /api/users
 // Vite redireciona para http://localhost:8080/users
 
@@ -251,11 +273,14 @@ export default defineConfig({
       '/api': {
         target: 'http://localhost:8080',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
+        rewrite: (path: string) =>
+          path.replace(/^\/api/, ''),
         // Log de debug
         configure: (proxy) => {
           proxy.on('proxyReq', (proxyReq, req) => {
-            console.log(`[Proxy] ${req.method} ${req.url} -> ${proxyReq.path}`)
+            console.log(
+              `[Proxy] ${req.method} ${req.url}`
+            )
           })
         }
       }
@@ -264,12 +289,16 @@ export default defineConfig({
 })
 ```
 
+<Question question="Por que usar proxy no dev?">
+Em desenvolvimento, seu frontend roda em `localhost:5173` e sua API em `localhost:8080`. O navegador bloqueia requisições entre origens diferentes (CORS). O proxy do Vite resolve isso redirecionando as chamadas `/api/*` para o backend, como se fossem da mesma origem. Em produção, normalmente um servidor reverso (como Nginx) faz esse papel.
+</Question>
+
 ---
 
 ## Configurações de Build
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 export default defineConfig({
   build: {
     // Diretório de saída
@@ -279,16 +308,20 @@ export default defineConfig({
     assetsDir: 'assets',
 
     // Inline assets menores que (em bytes)
-    assetsInlineLimit: 4096, // 4KB
+    // 4KB
+    assetsInlineLimit: 4096,
 
     // Gerar sourcemaps
-    sourcemap: true, // ou 'hidden', 'inline'
+    // ou 'hidden', 'inline'
+    sourcemap: true,
 
-    // Minificação (esbuild é default, pode usar terser)
-    minify: 'esbuild', // 'esbuild' | 'terser' | false
+    // Minificação
+    // 'esbuild' | 'terser' | false
+    minify: 'esbuild',
 
     // Target de browsers
-    target: 'esnext', // ou ['es2020', 'edge88', 'firefox78', 'chrome87', 'safari14']
+    // ou ['es2020', 'edge88', 'firefox78']
+    target: 'esnext',
 
     // CSS code splitting
     cssCodeSplit: true,
@@ -299,30 +332,26 @@ export default defineConfig({
     // Reportar tamanho comprimido
     reportCompressedSize: true,
 
-    // Limite de warning para chunks grandes (em KB)
+    // Limite de warning para chunks (em KB)
     chunkSizeWarningLimit: 500,
 
     // Configurações do Rollup
     rollupOptions: {
       input: {
         main: './index.html',
-        admin: './admin.html' // Multi-page app
+        // Multi-page app
+        admin: './admin.html'
       },
       output: {
         // Nomes customizados
         entryFileNames: 'js/[name]-[hash].js',
         chunkFileNames: 'js/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash][extname]',
+        assetFileNames:
+          'assets/[name]-[hash][extname]',
 
         // Manual chunks para otimização
         manualChunks: {
           vendor: ['lodash', 'axios'],
-          // ou função para lógica customizada
-          manualChunks(id) {
-            if (id.includes('node_modules')) {
-              return 'vendor'
-            }
-          }
         }
       }
     }
@@ -332,17 +361,19 @@ export default defineConfig({
 
 ### Exemplo: Separar Vendor de App
 
-```javascript
+```typescript
 export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: (id) => {
+        manualChunks: (id: string) => {
           // Separa node_modules em chunk vendor
           if (id.includes('node_modules')) {
-            // Bibliotecas grandes em chunks separados
-            if (id.includes('lodash')) return 'lodash'
-            if (id.includes('chart.js')) return 'charts'
+            // Bibliotecas grandes separadas
+            if (id.includes('lodash'))
+              return 'lodash'
+            if (id.includes('chart.js'))
+              return 'charts'
             return 'vendor'
           }
         }
@@ -356,15 +387,16 @@ export default defineConfig({
 
 ## CSS
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 export default defineConfig({
   css: {
     // Opções do preprocessador
     preprocessorOptions: {
       scss: {
-        // Variáveis globais disponíveis em todos os arquivos
-        additionalData: `@import "@/styles/variables.scss";`
+        // Variáveis globais em todos os arquivos
+        additionalData:
+          `@import "@/styles/variables.scss";`
       },
       less: {
         math: 'always',
@@ -377,14 +409,12 @@ export default defineConfig({
     // CSS Modules
     modules: {
       // Padrão de nomes de classes
-      generateScopedName: '[name]__[local]___[hash:base64:5]',
-      // ou em produção
-      generateScopedName: process.env.NODE_ENV === 'production'
-        ? '[hash:base64:8]'
-        : '[name]__[local]___[hash:base64:5]'
+      generateScopedName:
+        '[name]__[local]___[hash:base64:5]',
     },
 
-    // PostCSS (pode também usar postcss.config.js)
+    // PostCSS
+    // (pode também usar postcss.config.js)
     postcss: {
       plugins: [
         require('autoprefixer'),
@@ -398,31 +428,37 @@ export default defineConfig({
 })
 ```
 
+<Tip title="Svelte tem CSS escopado nativo">
+O Svelte já oferece CSS escopado por componente de forma nativa. Estilos dentro de um bloco `&lt;style&gt;` em arquivos `.svelte` são automaticamente escopados ao componente. Por isso, CSS Modules raramente são necessários em projetos Svelte.
+</Tip>
+
 ---
 
 ## Otimização de Dependências
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 export default defineConfig({
   optimizeDeps: {
     // Incluir no pré-bundling
     include: [
       'lodash-es',
       'axios',
-      // Dependências que são importadas dinamicamente
+      // Dependências importadas dinamicamente
       'some-dynamic-import'
     ],
 
     // Excluir do pré-bundling
+    // Libs que você está desenvolvendo
     exclude: [
-      'minha-lib-local' // Libs que você está desenvolvendo
+      'minha-lib-local'
     ],
 
     // Força re-bundle
-    force: true, // Útil para debug, não deixe em produção
+    // Útil para debug, não deixe em produção
+    force: true,
 
-    // Entradas adicionais para descoberta de dependências
+    // Entradas adicionais
     entries: [
       './src/**/*.html'
     ],
@@ -443,9 +479,10 @@ export default defineConfig({
 
 ### Por Ambiente
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig, loadEnv } from 'vite'
+import type { UserConfig } from 'vite'
 
 export default defineConfig(({ command, mode }) => {
   // command: 'serve' (dev) ou 'build' (prod)
@@ -455,7 +492,7 @@ export default defineConfig(({ command, mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
 
   // Configuração base
-  const config = {
+  const config: UserConfig = {
     plugins: [],
     resolve: {
       alias: {
@@ -508,10 +545,10 @@ export default defineConfig(({ command, mode }) => {
 
 Vamos criar uma configuração profissional para nosso dashboard:
 
-### Criar vite.config.js
+### Criar vite.config.ts
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
 import path from 'path'
 
@@ -520,8 +557,12 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@utils': path.resolve(__dirname, './src/utils'),
+      '@components': path.resolve(
+        __dirname, './src/components'
+      ),
+      '@utils': path.resolve(
+        __dirname, './src/utils'
+      ),
     }
   },
 
@@ -552,7 +593,8 @@ export default defineConfig({
             return 'css/[name]-[hash][extname]'
           }
           // Imagens em pasta separada
-          if (/\.(png|jpg|jpeg|gif|svg|webp)$/.test(assetInfo.name)) {
+          const imgRe = /\.(png|jpg|gif|svg|webp)$/
+          if (imgRe.test(assetInfo.name)) {
             return 'images/[name]-[hash][extname]'
           }
           return 'assets/[name]-[hash][extname]'
@@ -570,12 +612,14 @@ export default defineConfig({
 
 ### Atualizar imports para usar aliases
 
-```javascript
-// src/main.js
+```typescript
+// src/main.ts
 import '@/style.css'
-import { setupCounter } from '@components/Counter.js'
-import { createPerformanceCard } from '@components/PerformanceCard.js'
-import { getMetricasPagina, medirTempo } from '@utils/performance.js'
+import { setupCounter } from '@components/Counter.ts'
+import { createPerformanceCard } from
+  '@components/PerformanceCard.ts'
+import { getMetricasPagina, medirTempo } from
+  '@utils/performance.ts'
 
 // ... resto do código
 ```
@@ -584,11 +628,11 @@ import { getMetricasPagina, medirTempo } from '@utils/performance.js'
 
 ```bash
 # Dev server na porta 3000
-npm run dev
+pnpm dev
 # Deve abrir http://localhost:3000 automaticamente
 
 # Build de produção
-npm run build
+pnpm build
 
 # Verificar estrutura do dist/
 ls -la dist/
@@ -616,18 +660,18 @@ Criar uma configuração que funciona diferente em dev e produção.
 
 ### Spec de Verificação
 
-- [ ] `npm run dev` abre na porta 3000
+- [ ] `pnpm dev` abre na porta 3000
 - [ ] Chamar `fetch('/api/users')` em dev retorna dados do JSONPlaceholder
-- [ ] `npm run build` gera arquivos minificados
-- [ ] `npm run build -- --mode staging` usa base `/staging/`
+- [ ] `pnpm build` gera arquivos minificados
+- [ ] `pnpm build --mode staging` usa base `/staging/`
 
 ### Solução
 
 <details>
 <summary>🔍 Clique para ver a solução</summary>
 
-```javascript
-// vite.config.js
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite'
 import path from 'path'
 
@@ -642,8 +686,12 @@ export default defineConfig(({ command, mode }) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
-        '@components': path.resolve(__dirname, './src/components'),
-        '@utils': path.resolve(__dirname, './src/utils'),
+        '@components': path.resolve(
+          __dirname, './src/components'
+        ),
+        '@utils': path.resolve(
+          __dirname, './src/utils'
+        ),
       }
     },
 
@@ -652,17 +700,23 @@ export default defineConfig(({ command, mode }) => {
       open: true,
       proxy: {
         '/api': {
-          target: 'https://jsonplaceholder.typicode.com',
+          target:
+            'https://jsonplaceholder.typicode.com',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, '')
+          rewrite: (path: string) =>
+            path.replace(/^\/api/, '')
         }
       }
     },
 
     build: {
       sourcemap: true,
-      minify: mode === 'production' || mode === 'staging',
-      outDir: isStaging ? 'dist-staging' : 'dist'
+      minify:
+        mode === 'production' ||
+        mode === 'staging',
+      outDir: isStaging
+        ? 'dist-staging'
+        : 'dist'
     }
   }
 })

@@ -4,16 +4,21 @@ module: 2
 order: 3
 ---
 
+<script>
+import Tip from '$lib/components/Tip.svelte';
+import Question from '$lib/components/Question.svelte';
+</script>
+
 # 2.3 — Criando e Explorando um Projeto Vite
 
 > Crie um projeto do zero, entenda cada arquivo e o fluxo desde o index.html até o navegador.
 
 ## Objetivos da Aula
 
-- Criar um projeto Vite usando `npm create vite`
+- Criar um projeto Vite usando `pnpm create vite`
 - Entender a estrutura de pastas e o papel de cada arquivo
 - Compreender o fluxo de execução do index.html ao navegador
-- Dominar os scripts npm disponíveis
+- Dominar os scripts pnpm disponíveis
 
 ---
 
@@ -22,7 +27,7 @@ order: 3
 ### Método 1: Interativo
 
 ```bash
-npm create vite@latest
+pnpm create vite@latest
 ```
 
 O CLI vai perguntar:
@@ -41,28 +46,25 @@ O CLI vai perguntar:
 ? Select a variant: › - Use arrow-keys. Return to submit.
 ❯   TypeScript
     JavaScript
+    SvelteKit
 ```
 
 ### Método 2: Direto (recomendado para o curso)
 
 ```bash
-# Projeto Vanilla (JavaScript puro)
-npm create vite@latest meu-projeto -- --template vanilla
+# Projeto Svelte com TypeScript (recomendado)
+pnpm create vite@latest meu-projeto -- --template svelte-ts
 
-# Projeto Vanilla com TypeScript
-npm create vite@latest meu-projeto -- --template vanilla-ts
-
-# Projeto Svelte (usaremos mais tarde)
-npm create vite@latest meu-projeto -- --template svelte
-
-# Projeto Svelte com TypeScript
-npm create vite@latest meu-projeto -- --template svelte-ts
+# Projeto Vanilla com TypeScript (para comparação)
+pnpm create vite@latest meu-projeto -- --template vanilla-ts
 ```
 
 ### Templates Disponíveis
 
 | Template | Descrição |
 |----------|-----------|
+| `svelte-ts` | **Svelte + TypeScript (recomendado)** |
+| `svelte` | Svelte |
 | `vanilla` | JavaScript puro |
 | `vanilla-ts` | JavaScript puro + TypeScript |
 | `vue` | Vue 3 |
@@ -72,8 +74,6 @@ npm create vite@latest meu-projeto -- --template svelte-ts
 | `react-swc` | React + SWC (mais rápido) |
 | `preact` | Preact |
 | `lit` | Lit (Web Components) |
-| `svelte` | Svelte |
-| `svelte-ts` | Svelte + TypeScript |
 | `solid` | SolidJS |
 | `qwik` | Qwik |
 
@@ -81,18 +81,24 @@ npm create vite@latest meu-projeto -- --template svelte-ts
 
 ## Estrutura do Projeto
 
-Após criar um projeto vanilla, você terá:
+Após criar um projeto com `svelte-ts`, você terá:
 
 ```text
 meu-projeto/
 ├── index.html          # Ponto de entrada HTML
-├── main.js             # Módulo JavaScript principal
-├── counter.js          # Módulo de exemplo (contador)
-├── style.css           # Estilos CSS
+├── src/
+│   ├── main.ts         # Módulo TypeScript principal
+│   ├── app.css         # Estilos globais
+│   ├── App.svelte      # Componente raiz
+│   ├── lib/
+│   │   └── Counter.svelte  # Componente de exemplo (contador)
+│   └── vite-env.d.ts   # Tipos do Vite
 ├── public/             # Arquivos estáticos (copiados sem processamento)
 │   └── vite.svg        # Ícone do Vite
 ├── package.json        # Dependências e scripts
-├── package-lock.json   # Lock de versões
+├── tsconfig.json       # Configuração do TypeScript
+├── svelte.config.js    # Configuração do Svelte
+├── vite.config.ts      # Configuração do Vite
 └── node_modules/       # Dependências instaladas
 ```
 
@@ -107,70 +113,82 @@ meu-projeto/
     <meta charset="UTF-8" />
     <!-- Favicon vindo da pasta public/ -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite App</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Vite + Svelte + TS</title>
   </head>
   <body>
     <!-- Container onde sua app será montada -->
     <div id="app"></div>
 
     <!-- O SEGREDO: type="module" ativa ESModules nativos -->
-    <script type="module" src="/main.js"></script>
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
 ```
 
-**Diferenças do Webpack/CRA:**
+**Diferenças do Webpack:**
 - O `index.html` fica na **raiz**, não em `public/`
 - O `index.html` é o **verdadeiro ponto de entrada** (não o JavaScript)
 - Você pode ter múltiplos pontos de entrada (multi-page apps)
 
-#### `main.js` — O Módulo Principal
+<Tip title="Importância do type='module'">
+O atributo <code>type="module"</code> no script tag é essencial. Sem ele, o navegador trata o arquivo como um script clássico e os <code>import</code>/<code>export</code> não funcionam. Com <code>type="module"</code>, o navegador ativa o suporte nativo a ESModules, permitindo que o Vite sirva cada módulo individualmente durante o desenvolvimento.
+</Tip>
 
-```javascript
-// Importa CSS como módulo (Vite processa automaticamente)
-import './style.css'
+#### `main.ts` — O Módulo Principal
 
-// Importa função de outro módulo
-import { setupCounter } from './counter.js'
+```typescript
+import './app.css'
+import App from './App.svelte'
 
-// Importa asset da pasta public
-import viteLogo from '/vite.svg'
+// Monta o componente raiz no DOM
+const app = new App({
+  target: document.getElementById('app')!,
+})
 
-// Monta a interface
-document.querySelector('#app').innerHTML = `
-  <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="${viteLogo}" class="logo" alt="Vite logo" />
-    </a>
-    <h1>Hello Vite!</h1>
-    <div class="card">
-      <button id="counter" type="button"></button>
-    </div>
-  </div>
-`
-
-// Configura interatividade
-setupCounter(document.querySelector('#counter'))
+export default app
 ```
 
-#### `counter.js` — Módulo de Exemplo
+#### `App.svelte` — Componente Raiz
 
-```javascript
-// Função que configura um contador
-export function setupCounter(element) {
-  let counter = 0
+```svelte
+<script lang="ts">
+  import Counter from './lib/Counter.svelte'
+</script>
 
-  const setCounter = (count) => {
-    counter = count
-    element.innerHTML = `count is ${counter}`
+<main>
+  <div>
+    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
+      <img src="/vite.svg" class="logo" alt="Vite Logo" />
+    </a>
+  </div>
+  <h1>Vite + Svelte</h1>
+
+  <div class="card">
+    <Counter />
+  </div>
+</main>
+```
+
+#### `Counter.svelte` — Componente de Exemplo
+
+```svelte
+<script lang="ts">
+  // Estado reativo com rune $state
+  let count: number = $state(0)
+
+  // Função tipada para incrementar
+  const increment = (): void => {
+    count += 1
   }
+</script>
 
-  element.addEventListener('click', () => setCounter(counter + 1))
-
-  // Inicializa
-  setCounter(0)
-}
+<button on:click={increment}>
+  count is {count}
+</button>
 ```
 
 #### `style.css` — Estilos
@@ -200,9 +218,16 @@ export function setupCounter(element) {
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@tsconfig/svelte": "^5.0.0",
+    "svelte": "^4.0.0",
+    "svelte-check": "^3.0.0",
+    "tslib": "^2.6.0",
+    "typescript": "^5.0.0",
     "vite": "^5.0.0"
   }
 }
@@ -214,7 +239,7 @@ export function setupCounter(element) {
 
 ## Fluxo de Execução
 
-### Do `npm run dev` ao Navegador
+### Do `pnpm dev` ao Navegador
 
 <div class="not-prose my-6">
   <div class="text-center font-bold text-lg text-base-content mb-4 bg-base-200 rounded-t-xl py-3 border border-base-content/10">FLUXO DE EXECUCAO</div>
@@ -222,7 +247,7 @@ export function setupCounter(element) {
     <div class="w-full max-w-xl bg-base-200 border border-base-content/10 rounded-xl p-4 flex items-start gap-3">
       <div class="badge badge-primary badge-lg font-bold shrink-0">1</div>
       <div>
-        <p class="font-semibold text-base-content">npm run dev</p>
+        <p class="font-semibold text-base-content">pnpm dev</p>
         <p class="text-sm text-base-content/70">Executa: vite</p>
       </div>
     </div>
@@ -247,33 +272,33 @@ export function setupCounter(element) {
       <div class="badge badge-primary badge-lg font-bold shrink-0">4</div>
       <div>
         <p class="font-semibold text-base-content">Navegador parseia index.html</p>
-        <p class="text-sm text-base-content/70">Encontra: &lt;script type="module" src="/main.js"&gt;</p>
+        <p class="text-sm text-base-content/70">Encontra: &lt;script type="module" src="/src/main.ts"&gt;</p>
       </div>
     </div>
     <div class="text-primary text-2xl leading-none py-1">&#9660;</div>
     <div class="w-full max-w-xl bg-base-200 border border-base-content/10 rounded-xl p-4 flex items-start gap-3">
       <div class="badge badge-primary badge-lg font-bold shrink-0">5</div>
       <div>
-        <p class="font-semibold text-base-content">Navegador requisita /main.js</p>
-        <p class="text-sm text-base-content/70">Vite transforma e serve main.js</p>
+        <p class="font-semibold text-base-content">Navegador requisita /src/main.ts</p>
+        <p class="text-sm text-base-content/70">Vite transpila TS e serve como JS</p>
       </div>
     </div>
     <div class="text-primary text-2xl leading-none py-1">&#9660;</div>
     <div class="w-full max-w-xl bg-base-200 border border-base-content/10 rounded-xl p-4 flex items-start gap-3">
       <div class="badge badge-primary badge-lg font-bold shrink-0">6</div>
       <div>
-        <p class="font-semibold text-base-content">Navegador parseia main.js</p>
-        <p class="text-sm text-base-content/70">Encontra: import './style.css'</p>
-        <p class="text-sm text-base-content/70">Encontra: import {'{'} setupCounter {'}'} from './counter.js'</p>
+        <p class="font-semibold text-base-content">Navegador parseia main.ts</p>
+        <p class="text-sm text-base-content/70">Encontra: import './app.css'</p>
+        <p class="text-sm text-base-content/70">Encontra: import App from './App.svelte'</p>
       </div>
     </div>
     <div class="text-primary text-2xl leading-none py-1">&#9660;</div>
     <div class="w-full max-w-xl bg-base-200 border border-base-content/10 rounded-xl p-4 flex items-start gap-3">
       <div class="badge badge-primary badge-lg font-bold shrink-0">7</div>
       <div>
-        <p class="font-semibold text-base-content">Navegador requisita style.css e counter.js</p>
+        <p class="font-semibold text-base-content">Navegador requisita app.css e App.svelte</p>
         <p class="text-sm text-base-content/70">Vite transforma CSS (injeta via JS)</p>
-        <p class="text-sm text-base-content/70">Vite serve counter.js</p>
+        <p class="text-sm text-base-content/70">Vite compila .svelte para JS</p>
       </div>
     </div>
     <div class="text-primary text-2xl leading-none py-1">&#9660;</div>
@@ -294,24 +319,25 @@ Abra o DevTools → Network e observe:
 Name                    Status    Type      Size     Time
 ────────────────────────────────────────────────────────────
 localhost               200       document  1.2 KB   5ms
-main.js                 200       script    0.8 KB   3ms
-style.css               200       script    1.1 KB   2ms
-counter.js              200       script    0.3 KB   2ms
+main.ts                 200       script    0.4 KB   3ms
+App.svelte              200       script    1.5 KB   3ms
+app.css                 200       script    1.1 KB   2ms
+Counter.svelte          200       script    0.6 KB   2ms
 vite.svg               200       svg       1.5 KB   1ms
 ```
 
-Note: `style.css` aparece como `script` porque o Vite injeta CSS via JavaScript para HMR!
+Note: `app.css` aparece como `script` porque o Vite injeta CSS via JavaScript para HMR!
 
 ---
 
-## Scripts NPM
+## Scripts pnpm
 
-### `npm run dev`
+### `pnpm dev`
 
 Inicia o servidor de desenvolvimento:
 
 ```bash
-npm run dev
+pnpm dev
 
 # Output:
   VITE v5.0.0  ready in 234 ms
@@ -325,21 +351,21 @@ npm run dev
 
 ```bash
 # Expor na rede local (para testar em celular)
-npm run dev -- --host
+pnpm dev --host
 
 # Usar porta específica
-npm run dev -- --port 3000
+pnpm dev --port 3000
 
 # Abrir navegador automaticamente
-npm run dev -- --open
+pnpm dev --open
 ```
 
-### `npm run build`
+### `pnpm build`
 
 Gera build de produção:
 
 ```bash
-npm run build
+pnpm build
 
 # Output:
 vite v5.0.0 building for production...
@@ -350,13 +376,13 @@ dist/assets/index-D8mTLhPd.js    1.45 kB │ gzip:  0.75 kB
 ✓ built in 234ms
 ```
 
-### `npm run preview`
+### `pnpm preview`
 
 Serve o build de produção localmente:
 
 ```bash
-npm run build   # Primeiro, gere o build
-npm run preview # Depois, sirva localmente
+pnpm build   # Primeiro, gere o build
+pnpm preview # Depois, sirva localmente
 
 # Output:
   ➜  Local:   http://localhost:4173/
@@ -381,9 +407,11 @@ public/
 ```html
 <!-- Em HTML: caminho absoluto -->
 <img src="/vite.svg" />
+```
 
-<!-- Em JavaScript: string direta -->
-const img = document.createElement('img')
+```typescript
+// Em TypeScript: string direta
+const img: HTMLImageElement = document.createElement('img')
 img.src = '/vite.svg'
 ```
 
@@ -396,50 +424,62 @@ img.src = '/vite.svg'
 | Arquivos muito grandes | Bundling e otimização |
 | Arquivos referenciados externamente | Tree-shaking necessário |
 
+<Question question="Quando usar public/ vs imports?">
+Use <code>public/</code> para arquivos que precisam de URL fixa e previsível (como <code>robots.txt</code>, <code>favicon.ico</code>, ou assets referenciados por serviços externos). Use <strong>imports</strong> para tudo que faz parte do código da aplicação: o Vite adiciona um hash ao nome do arquivo (ex: <code>foto-abc123.png</code>), o que garante cache-busting automático quando o arquivo muda. Imports também permitem tree-shaking e otimização de tamanho.
+</Question>
+
 ---
 
 ## Importando Assets
 
 ### Imagens
 
-```javascript
-// Import como URL
+```typescript
+// Import como URL (Vite resolve o caminho)
 import imgUrl from './img/foto.png'
-document.querySelector('img').src = imgUrl
 
+const img: HTMLImageElement = document.querySelector('img')!
+img.src = imgUrl
 // Em produção: /assets/foto-abc123.png (com hash)
 ```
 
 ### JSON
 
-```javascript
-// Import direto como objeto
+```typescript
+// Import direto como objeto tipado
 import dados from './dados.json'
-console.log(dados.nome) // Acesso direto
+
+// TypeScript infere o tipo automaticamente
+console.log(dados.nome)
 ```
 
 ### CSS
 
-```javascript
+```typescript
 // CSS global (injetado no <head>)
 import './styles/global.css'
 
-// CSS Modules
+// CSS Modules (retorna objeto com classes)
 import styles from './Button.module.css'
 element.className = styles.button
 ```
 
 ### Texto/Raw
 
-```javascript
-// Importar como string
+```typescript
+// Importar como string bruta
 import texto from './arquivo.txt?raw'
-console.log(texto) // Conteúdo do arquivo
+console.log(texto)
 
-// Importar como URL
+// Importar como URL (sem processar conteúdo)
 import url from './arquivo.txt?url'
-console.log(url) // /assets/arquivo-abc123.txt
+console.log(url)
+// /assets/arquivo-abc123.txt
 ```
+
+<Tip title="Sufixos especiais de import do Vite">
+O Vite suporta sufixos especiais nas importações: <code>?raw</code> importa o conteúdo como string bruta (útil para shaders, templates, etc.), <code>?url</code> retorna apenas a URL resolvida do asset, e <code>?worker</code> importa o arquivo como Web Worker. Esses sufixos são processados pelo Vite em tempo de build e não existem no JavaScript padrão.
+</Tip>
 
 ---
 
@@ -453,16 +493,20 @@ Vamos organizar melhor nosso dashboard criando uma estrutura profissional:
 dashboard-vite/
 ├── index.html
 ├── src/
-│   ├── main.js              # Ponto de entrada
-│   ├── style.css            # Estilos globais
-│   ├── components/
-│   │   ├── Counter.js       # Componente contador
-│   │   ├── HmrMonitor.js    # Monitor de HMR
-│   │   └── PerformanceCard.js # Card de métricas
+│   ├── main.ts              # Ponto de entrada
+│   ├── App.svelte           # Componente raiz
+│   ├── app.css              # Estilos globais
+│   ├── lib/
+│   │   ├── Counter.svelte       # Componente contador
+│   │   ├── HmrMonitor.svelte    # Monitor de HMR
+│   │   └── PerformanceCard.svelte # Card de métricas
 │   └── utils/
-│       └── performance.js    # Utilitários de performance
+│       └── performance.ts    # Utilitários de performance
 ├── public/
 │   └── vite.svg
+├── tsconfig.json
+├── svelte.config.js
+├── vite.config.ts
 └── package.json
 ```
 
@@ -470,10 +514,7 @@ dashboard-vite/
 
 ```bash
 cd dashboard-vite
-mkdir -p src/components src/utils
-mv main.js src/
-mv counter.js src/components/Counter.js
-mv style.css src/
+mkdir -p src/lib src/utils
 ```
 
 ### Passo 2: Atualizar index.html
@@ -484,63 +525,86 @@ mv style.css src/
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
     <title>Dashboard Vite - Performance Monitor</title>
   </head>
   <body>
     <div id="app"></div>
-    <!-- Note: caminho atualizado! -->
-    <script type="module" src="/src/main.js"></script>
+    <!-- Note: caminho atualizado para TypeScript! -->
+    <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
 ```
 
-### Passo 3: Criar utils/performance.js
+### Passo 3: Criar utils/performance.ts
 
-```javascript
-// src/utils/performance.js
+```typescript
+// src/utils/performance.ts
+
+interface MetricasPagina {
+  domReady: number | string
+  pageLoad: number | string
+  dnsLookup: number | string
+  tcpConnect: number | string
+  serverResponse: number | string
+  download: number | string
+  ttfb: number
+  fcp: string
+}
 
 /**
  * Mede o tempo de execução de uma função
  */
-export function medirTempo(fn, label = 'Execução') {
-  const inicio = performance.now()
-  const resultado = fn()
-  const fim = performance.now()
+export function medirTempo(
+  fn: () => void,
+  label: string = 'Execução'
+): void {
+  const inicio: number = performance.now()
+  fn()
+  const fim: number = performance.now()
 
-  console.log(`⏱️ ${label}: ${(fim - inicio).toFixed(2)}ms`)
-
-  return resultado
+  console.log(
+    `⏱️ ${label}: ${(fim - inicio).toFixed(2)}ms`
+  )
 }
 
 /**
  * Retorna métricas de performance da página
  */
-export function getMetricasPagina() {
-  const timing = performance.timing || {}
-  const navigation = performance.getEntriesByType('navigation')[0] || {}
+export function getMetricasPagina(): MetricasPagina {
+  const navigation = performance
+    .getEntriesByType('navigation')[0] as
+    PerformanceNavigationTiming | undefined
 
   return {
-    // Tempo até o DOM estar pronto
-    domReady: timing.domContentLoadedEventEnd - timing.navigationStart,
-
-    // Tempo até a página carregar completamente
-    pageLoad: timing.loadEventEnd - timing.navigationStart,
-
-    // Tempo de DNS
-    dnsLookup: timing.domainLookupEnd - timing.domainLookupStart,
-
-    // Tempo de conexão
-    tcpConnect: timing.connectEnd - timing.connectStart,
-
-    // Tempo de resposta do servidor
-    serverResponse: timing.responseEnd - timing.requestStart,
-
-    // Tempo de download
-    download: timing.responseEnd - timing.responseStart,
-
-    // Métricas modernas (se disponíveis)
-    ttfb: navigation.responseStart || 0,
+    domReady: navigation
+      ? navigation.domContentLoadedEventEnd
+      : 'N/A',
+    pageLoad: navigation
+      ? navigation.loadEventEnd
+      : 'N/A',
+    dnsLookup: navigation
+      ? navigation.domainLookupEnd -
+        navigation.domainLookupStart
+      : 'N/A',
+    tcpConnect: navigation
+      ? navigation.connectEnd -
+        navigation.connectStart
+      : 'N/A',
+    serverResponse: navigation
+      ? navigation.responseEnd -
+        navigation.requestStart
+      : 'N/A',
+    download: navigation
+      ? navigation.responseEnd -
+        navigation.responseStart
+      : 'N/A',
+    ttfb: navigation
+      ? navigation.responseStart
+      : 0,
     fcp: getFirstContentfulPaint()
   }
 }
@@ -548,142 +612,165 @@ export function getMetricasPagina() {
 /**
  * Obtém o First Contentful Paint
  */
-function getFirstContentfulPaint() {
-  const paintEntries = performance.getEntriesByType('paint')
-  const fcp = paintEntries.find(entry => entry.name === 'first-contentful-paint')
-  return fcp ? fcp.startTime.toFixed(2) : 'N/A'
+function getFirstContentfulPaint(): string {
+  const paintEntries = performance
+    .getEntriesByType('paint')
+  const fcp = paintEntries.find(
+    (entry) => entry.name === 'first-contentful-paint'
+  )
+  return fcp
+    ? fcp.startTime.toFixed(2)
+    : 'N/A'
 }
 
 /**
  * Formata bytes para leitura humana
  */
-export function formatarBytes(bytes) {
+export function formatarBytes(bytes: number): string {
   if (bytes === 0) return '0 Bytes'
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB']
-  const i = Math.floor(Math.log(bytes) / Math.log(k))
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-}
-```
-
-### Passo 4: Criar components/PerformanceCard.js
-
-```javascript
-// src/components/PerformanceCard.js
-
-/**
- * Cria um card de métrica de performance
- */
-export function createPerformanceCard(titulo, valor, unidade = 'ms') {
-  const card = document.createElement('div')
-  card.className = 'performance-card'
-  card.innerHTML = `
-    <h3 class="card-title">${titulo}</h3>
-    <p class="card-value">${valor}<span class="card-unit">${unidade}</span></p>
-  `
-  return card
-}
-
-/**
- * Atualiza o valor de um card existente
- */
-export function updatePerformanceCard(card, valor) {
-  const valueEl = card.querySelector('.card-value')
-  const unit = card.querySelector('.card-unit')?.textContent || ''
-  valueEl.innerHTML = `${valor}<span class="card-unit">${unit}</span>`
-}
-```
-
-### Passo 5: Atualizar main.js
-
-```javascript
-// src/main.js
-import './style.css'
-import { setupCounter } from './components/Counter.js'
-import { createPerformanceCard } from './components/PerformanceCard.js'
-import { getMetricasPagina, medirTempo } from './utils/performance.js'
-
-// Mede o tempo de renderização
-const inicioRender = performance.now()
-
-function renderApp() {
-  const app = document.querySelector('#app')
-
-  app.innerHTML = `
-    <div class="dashboard">
-      <header class="header">
-        <img src="/vite.svg" class="logo" alt="Vite logo" />
-        <h1>Dashboard de Performance</h1>
-        <p class="subtitle">Monitorando seu ambiente Vite</p>
-      </header>
-
-      <main class="main">
-        <section class="section">
-          <h2>⚡ Métricas de Carregamento</h2>
-          <div id="metricas-container" class="cards-grid">
-            <!-- Cards serão inseridos aqui -->
-          </div>
-        </section>
-
-        <section class="section">
-          <h2>🔧 Interatividade</h2>
-          <div class="cards-grid">
-            <div class="card">
-              <h3>Contador de Teste</h3>
-              <button id="counter" type="button">Clique!</button>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      <footer class="footer">
-        <p>Tempo de renderização: <span id="tempo-render">calculando...</span></p>
-      </footer>
-    </div>
-  `
-
-  // Setup do contador
-  setupCounter(document.querySelector('#counter'))
-
-  // Exibe métricas após a página carregar
-  window.addEventListener('load', exibirMetricas)
-
-  // Exibe tempo de render
-  requestAnimationFrame(() => {
-    const tempoRender = (performance.now() - inicioRender).toFixed(2)
-    document.querySelector('#tempo-render').textContent = `${tempoRender}ms`
-  })
-}
-
-function exibirMetricas() {
-  const container = document.querySelector('#metricas-container')
-  const metricas = getMetricasPagina()
-
-  const cards = [
-    createPerformanceCard('DOM Ready', metricas.domReady || 'N/A'),
-    createPerformanceCard('Page Load', metricas.pageLoad || 'N/A'),
-    createPerformanceCard('FCP', metricas.fcp),
-    createPerformanceCard('TTFB', metricas.ttfb?.toFixed(2) || 'N/A')
+  const k: number = 1024
+  const sizes: string[] = [
+    'Bytes', 'KB', 'MB', 'GB'
   ]
-
-  cards.forEach(card => container.appendChild(card))
-}
-
-// Renderiza a aplicação
-medirTempo(renderApp, 'Render inicial')
-
-// HMR
-if (import.meta.hot) {
-  import.meta.hot.accept(() => {
-    medirTempo(renderApp, 'HMR Re-render')
-  })
+  const i: number = Math.floor(
+    Math.log(bytes) / Math.log(k)
+  )
+  return (
+    parseFloat(
+      (bytes / Math.pow(k, i)).toFixed(2)
+    ) + ' ' + sizes[i]
+  )
 }
 ```
 
-### Passo 6: Atualizar style.css
+### Passo 4: Criar lib/PerformanceCard.svelte
+
+```svelte
+<!-- src/lib/PerformanceCard.svelte -->
+<script lang="ts">
+  let {
+    titulo,
+    valor,
+    unidade = 'ms'
+  }: {
+    titulo: string
+    valor: string | number
+    unidade?: string
+  } = $props()
+</script>
+
+<div class="performance-card">
+  <h3 class="card-title">{titulo}</h3>
+  <p class="card-value">
+    {valor}<span class="card-unit">{unidade}</span>
+  </p>
+</div>
+```
+
+### Passo 5: Atualizar main.ts
+
+```typescript
+// src/main.ts
+import './app.css'
+import App from './App.svelte'
+
+const app = new App({
+  target: document.getElementById('app')!,
+})
+
+export default app
+```
+
+### Passo 6: Criar App.svelte
+
+```svelte
+<!-- src/App.svelte -->
+<script lang="ts">
+  import Counter from './lib/Counter.svelte'
+  import PerformanceCard from './lib/PerformanceCard.svelte'
+  import {
+    getMetricasPagina,
+    medirTempo,
+    type MetricasPagina
+  } from './utils/performance'
+
+  let metricas: MetricasPagina | null = $state(null)
+  let tempoRender: string = $state('calculando...')
+
+  const inicioRender: number = performance.now()
+
+  $effect(() => {
+    // Calcula tempo de render
+    requestAnimationFrame(() => {
+      tempoRender =
+        (performance.now() - inicioRender).toFixed(2)
+    })
+
+    // Carrega métricas após a página carregar
+    window.addEventListener('load', () => {
+      metricas = getMetricasPagina()
+    })
+  })
+</script>
+
+<div class="dashboard">
+  <header class="header">
+    <img src="/vite.svg" class="logo" alt="Vite logo" />
+    <h1>Dashboard de Performance</h1>
+    <p class="subtitle">
+      Monitorando seu ambiente Vite
+    </p>
+  </header>
+
+  <main class="main">
+    <section class="section">
+      <h2>Métricas de Carregamento</h2>
+      <div class="cards-grid">
+        {#if metricas}
+          <PerformanceCard
+            titulo="DOM Ready"
+            valor={metricas.domReady}
+          />
+          <PerformanceCard
+            titulo="Page Load"
+            valor={metricas.pageLoad}
+          />
+          <PerformanceCard
+            titulo="FCP"
+            valor={metricas.fcp}
+          />
+          <PerformanceCard
+            titulo="TTFB"
+            valor={metricas.ttfb.toFixed(2)}
+          />
+        {/if}
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Interatividade</h2>
+      <div class="cards-grid">
+        <div class="card">
+          <h3>Contador de Teste</h3>
+          <Counter />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>
+      Tempo de renderização:
+      <span id="tempo-render">{tempoRender}ms</span>
+    </p>
+  </footer>
+</div>
+```
+
+### Passo 7: Atualizar style.css
 
 ```css
-/* src/style.css */
+/* src/app.css */
 :root {
   --bg-primary: #0f0f0f;
   --bg-secondary: #1a1a1a;
@@ -840,9 +927,16 @@ Adicionar um card que mostra quantos módulos JavaScript foram carregados.
 
 ### Dica
 
-```javascript
-const recursos = performance.getEntriesByType('resource')
-const scripts = recursos.filter(r => r.initiatorType === 'script')
+```typescript
+const recursos: PerformanceResourceTiming[] =
+  performance.getEntriesByType(
+    'resource'
+  ) as PerformanceResourceTiming[]
+
+const scripts = recursos.filter(
+  (r) => r.initiatorType === 'script'
+)
+
 console.log('Scripts carregados:', scripts.length)
 ```
 
@@ -857,36 +951,54 @@ console.log('Scripts carregados:', scripts.length)
 <details>
 <summary>🔍 Clique para ver a solução</summary>
 
-Adicione em `utils/performance.js`:
+Adicione em `utils/performance.ts`:
 
-```javascript
-export function getModulosCarregados() {
-  const recursos = performance.getEntriesByType('resource')
-  const scripts = recursos.filter(r =>
-    r.initiatorType === 'script' ||
-    r.name.endsWith('.js')
+```typescript
+interface ModulosInfo {
+  quantidade: number
+  tamanhoTotal: number
+  lista: Array<{
+    nome: string
+    tamanho: number
+  }>
+}
+
+export function getModulosCarregados(): ModulosInfo {
+  const recursos = performance
+    .getEntriesByType(
+      'resource'
+    ) as PerformanceResourceTiming[]
+
+  const scripts = recursos.filter(
+    (r) =>
+      r.initiatorType === 'script' ||
+      r.name.endsWith('.js')
   )
 
-  const tamanhoTotal = scripts.reduce((acc, s) => acc + (s.transferSize || 0), 0)
+  const tamanhoTotal: number = scripts.reduce(
+    (acc, s) => acc + (s.transferSize || 0),
+    0
+  )
 
   return {
     quantidade: scripts.length,
-    tamanhoTotal: tamanhoTotal,
-    lista: scripts.map(s => ({
-      nome: s.name.split('/').pop(),
+    tamanhoTotal,
+    lista: scripts.map((s) => ({
+      nome: s.name.split('/').pop() || '',
       tamanho: s.transferSize
     }))
   }
 }
 ```
 
-E em `main.js`, na função `exibirMetricas()`:
+E no `App.svelte`, adicione o card:
 
-```javascript
-const modulos = getModulosCarregados()
-cards.push(
-  createPerformanceCard('Módulos JS', modulos.quantidade, 'arquivos')
-)
+```svelte
+<PerformanceCard
+  titulo="Módulos JS"
+  valor={modulosInfo.quantidade}
+  unidade="arquivos"
+/>
 ```
 
 </details>
